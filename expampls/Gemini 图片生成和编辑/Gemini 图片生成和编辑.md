@@ -1,8 +1,4 @@
----
-title: "多模态交互新篇章"
-description: "加入 gemini-2.0-flash-exp 模型支持"
-icon: ''
----
+# 多模态交互新篇章
 
 **说明：**
 - 需要新增参数来体验新特性 `"modalities":["text","image"]`
@@ -11,59 +7,6 @@ icon: ''
 - 输出图片的默认高度为 1024px
 - python 调用需要最新的 openai sdk 支持，请先运行 `pip install -U openai`
 - 了解更多请访问 [Gemini 官方文档](https://ai.google.dev/gemini-api/docs/image-generation)
-
-## 输入参考结构：
-```json
-"modalities": ["text","image"]
-{
-    "model": "gemini-2.0-flash-exp",
-    "messages": [
-      {
-        "role": "user",
-        "content": "生成一幅山水画，并给出一首诗词描述"
-      }
-    ],
-    "modalities":["text","image"], //需要添加 image
-    "temperature": 0.7
-  }'
-```
-
-## 输出参考结构：
-```json
-"choices":
-    [
-        {
-            "index": 0,
-            "message":
-            {
-                "role": "assistant",
-                "content": "Hello! How can I assist you today?",
-                "refusal": null,
-                "multi_mod_content": //📍 新增
-                [
-                    {
-                        "text": "",
-                        "inlineData":
-                        {
-                          "data":"base64 str",
-                          "mimeType":"png"
-                        }
-                    },
-                    {
-                        "text": "hello",
-                        "inlineData":
-                        {
-                        }
-                    }
-                ],
-                "annotations":
-                []
-            },
-            "logprobs": null,
-            "finish_reason": "stop"
-        }
-    ],
-```
 
 ## 图文生成
 Iuput：text
