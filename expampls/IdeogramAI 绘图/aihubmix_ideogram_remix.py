@@ -44,7 +44,7 @@ def compress_image(image_path, max_size_mb=1, max_dimension=1024):
     output.seek(0)
     return output
 
-url = "https://api.aihubmix.com/ideogram/remix"
+url = "https://aihubmix.com/ideogram/remix"
 
 # Prepare image path
 image_path = os.path.join(script_dir, 'img', 'panda-jerlin.png')

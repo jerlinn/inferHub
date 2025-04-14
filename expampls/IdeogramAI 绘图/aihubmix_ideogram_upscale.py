@@ -8,7 +8,7 @@ from PIL import Image
 # Get the directory where the script is located
 script_dir = os.path.dirname(os.path.abspath(__file__))
 
-url = "https://api.aihubmix.com/ideogram/upscale"
+url = "https://aihubmix.com/ideogram/upscale"
 
 # Open the original image
 original_image_path = os.path.join(script_dir, 'img', 'Monstera-variegata-compressed.png')

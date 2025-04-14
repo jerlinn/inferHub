@@ -4,7 +4,7 @@ import os
 # https://x.com/intent/follow?screen_name=eviljer
 # Get Key: https://aihubmix.com?aff=m6tE
 
-url = "https://api.aihubmix.com/ideogram/generate"
+url = "https://aihubmix.com/ideogram/generate"
 
 payload = { "image_request": {
         "prompt": "3D cartoon, An adorable white owl baby with tilted head, shiny amber eyes with highlight, fluffy body, standing on a trunk with moss and lots of glowing mushrooms, Close up, cinematic lighting, low angle, deep sense of depth. The background is a magical spring landscape, cute and esthetic, huge title design \"Always Curious\"", #中文支持还不太好

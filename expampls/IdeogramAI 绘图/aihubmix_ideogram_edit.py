@@ -4,7 +4,7 @@ import os
 # https://x.com/intent/follow?screen_name=eviljer
 # Get Key: https://aihubmix.com?aff=m6tE
 
-url = "https://api.aihubmix.com/ideogram/edit"
+url = "https://aihubmix.com/ideogram/edit"
 
 files = {
     "image_file": open('/Users/jerlin/inferHub/expampls/IdeogramAI 绘图/img/cover-jerlin.jpeg', 'rb'),  #Required

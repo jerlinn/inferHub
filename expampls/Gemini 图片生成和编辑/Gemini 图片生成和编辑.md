@@ -21,7 +21,7 @@ import base64
 
 client = OpenAI(
     api_key=os.getenv("AIHUBMIX_API_KEY"),
-    base_url="https://api.aihubmix.com/v1",
+    base_url="https://aihubmix.com/v1",
 )
 
 # Using text-only input
@@ -95,7 +95,7 @@ import base64
 
 client = OpenAI(
     api_key=os.getenv("AIHUBMIX_API_KEY"),
-    base_url="https://api.aihubmix.com/v1",
+    base_url="https://aihubmix.com/v1",
 )
 
 project_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -191,7 +191,7 @@ fi
 
 IMG_BASE64=$(base64 "$B64FLAGS" "$IMG_PATH" 2>&1)
 
-curl https://api.aihubmix.com/v1/chat/completions \
+curl https://aihubmix.com/v1/chat/completions \
   -H "Content-Type: application/json" \
   -H "Authorization: Bearer sk-***" \
   -d '{
