@@ -26,7 +26,7 @@ tools = [
 ]
 
 response = client.responses.create(
-  model="gpt-4o",
+  model="gpt-4o-mini",
   tools=tools,
   input="What is the weather like in Boston today?",
   tool_choice="auto"
