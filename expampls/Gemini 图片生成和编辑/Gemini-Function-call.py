@@ -1,5 +1,3 @@
-from google import genai
-from google.genai import types
 from openai import OpenAI
 import os
 
@@ -35,7 +33,7 @@ schedule_meeting_function = {
 # Configure the client
 client = OpenAI(
     api_key=os.getenv("AIHUBMIX_API_KEY"),
-    base_url="https://api.aihubmix.com/v1",
+    base_url="https://aihubmix.com/v1",
 )
 
 # Send request with function declarations using OpenAI compatible format
