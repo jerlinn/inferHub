@@ -8,10 +8,6 @@ import os
 llm_cfg = {
     'model': 'Qwen/Qwen3-30B-A3B',
 
-    # Use the endpoint provided by Alibaba Model Studio:
-    # 'model_type': 'qwen_dashscope',
-    # 'api_key': os.getenv('DASHSCOPE_API_KEY'),
-
     # Use a custom endpoint compatible with OpenAI API:
     'model_server': 'https://aihubmix.com/v1',
     'api_key': os.getenv('AIHUBMIX_API_KEY'),

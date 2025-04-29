@@ -1,7 +1,7 @@
 from openai import OpenAI
 
 client = OpenAI(
-    api_key="sk-93AGqeTs7VkF6xzW1cEa2e8370Dd4400A77c558e885d0817", # 🔑 换成你在 AiHubMix 生成的密钥
+    api_key="sk-***", # 🔑 换成你在 AiHubMix 生成的密钥
     base_url="https://aihubmix.com/v1",
 )
 
