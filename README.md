@@ -4,7 +4,6 @@ A public repository for developers to explore and experience pre-built API usage
 # Catalog
 - README.md
 - docs/
-  - Overview.md
   - faq.md
 - expampls/
   - Claude Text Edit Tool/
@@ -17,9 +16,9 @@ A public repository for developers to explore and experience pre-built API usage
     - Code-execution.py
     - Gemini-2.5-reasoning-OAI.py
     - Image-understanding.py
-    - Video-understanding-url.py
+    - Video-understanding-url.py # Youtube 视频链接
     - Video-understanding.py
-    - OAI-reasoning_effort.py
+    - OAI-reasoning_effort.py # 推理深度
     - 非流式.py
   - Gemini 图片生成和编辑/
     - Gemini 图片生成和编辑.md
@@ -33,9 +32,9 @@ A public repository for developers to explore and experience pre-built API usage
     - aihubmix_ideogram_upscale.py
     - img/
   - JinaAI/
-    - jina_Embeddings.py
-    - jina_Reranker.py
-    - jina_DeepSearch.py
+    - jina_Embeddings.py # 向量嵌入
+    - jina_Reranker.py # 重排序
+    - jina_DeepSearch.py # 深度搜索
   - OAI/
     - Responses API/
       - Text_input.py
@@ -57,4 +56,4 @@ A public repository for developers to explore and experience pre-built API usage
     - inferEra-Grounding-with-Google.py
     - inferEra-surfing.py
 - scripts/
-  - Latency-and-Throughput.py
+  - Latency-and-Throughput.py # 计算模型的首 Token 延迟和吞吐量
