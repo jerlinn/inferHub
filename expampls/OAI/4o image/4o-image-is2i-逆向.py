@@ -10,29 +10,40 @@ def encode_image(image_path):
 # Get the image path
 image_path = "/Users/jerlin/Desktop/Portland_Head_Light__Maine.jpg"
 
-# Encode the image
-base64_image = encode_image(image_path)
+# Encode the first image
+base64_image1 = encode_image(image_path)
+
+# Get the second image path
+image_path2 = "/Users/jerlin/Desktop/ref.jpeg"
+
+# Encode the second image
+base64_image2 = encode_image(image_path2)
 
 client = OpenAI(
-    api_key=os.getenv("AIHUBMIX_API_KEY"),
+    api_key="sk-***", # 🔑 换成你在 AiHubMix 生成的密钥
     base_url="https://aihubmix.com/v1"
 )
 
-# 创建聊天完成请求
 stream = client.chat.completions.create(
-    model="gpt-4o-image", #gpt-4o-image-vip, gpt-4o-image
+    model="gpt-4o-image-vip", #gpt-4o-image-vip, gpt-4o-image
     messages=[
         {
             "role": "user",
             "content": [
                 {
                     "type": "text",
-                    "text": """convert the image into the style of ghibli, bright tone. 3:2"""
+                    "text": """convert image 1 into the style of image 2, bright tone. 2:3"""
                 },
                 {
                     "type": "image_url",
                     "image_url": {
-                        "url": f"data:image/jpeg;base64,{base64_image}"
+                        "url": f"data:image/jpeg;base64,{base64_image1}"
+                    }
+                },
+                {
+                    "type": "image_url",
+                    "image_url": {
+                        "url": f"data:image/jpeg;base64,{base64_image2}"
                     }
                 }
             ]

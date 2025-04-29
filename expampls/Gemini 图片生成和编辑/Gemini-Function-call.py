@@ -32,7 +32,7 @@ schedule_meeting_function = {
 
 # Configure the client
 client = OpenAI(
-    api_key=os.getenv("AIHUBMIX_API_KEY"),
+    api_key="sk-***", # 🔑 换成你在 AiHubMix 生成的密钥
     base_url="https://aihubmix.com/v1",
 )
 

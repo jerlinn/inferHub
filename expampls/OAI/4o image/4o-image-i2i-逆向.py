@@ -8,42 +8,31 @@ def encode_image(image_path):
     return base64.b64encode(image_file.read()).decode('utf-8')
 
 # Get the image path
-image_path = "/Users/jerlin/Desktop/Portland_Head_Light__Maine.jpg"
+image_path = "/Users/jerlin/Desktop/hbch.png"
 
-# Encode the first image
-base64_image1 = encode_image(image_path)
-
-# Get the second image path
-image_path2 = "/Users/jerlin/Desktop/ref.jpeg"
-
-# Encode the second image
-base64_image2 = encode_image(image_path2)
+# Encode the image
+base64_image = encode_image(image_path)
 
 client = OpenAI(
-    api_key=os.getenv("AIHUBMIX_API_KEY"),
+    api_key="sk-***", # 🔑 换成你在 AiHubMix 生成的密钥
     base_url="https://aihubmix.com/v1"
 )
 
+# 创建聊天完成请求
 stream = client.chat.completions.create(
-    model="gpt-4o-image-vip", #gpt-4o-image-vip, gpt-4o-image
+    model="gpt-4o-image", #gpt-4o-image-vip, gpt-4o-image
     messages=[
         {
             "role": "user",
             "content": [
                 {
                     "type": "text",
-                    "text": """convert image 1 into the style of image 2, bright tone. 2:3"""
+                    "text": """redesign artwork to anime, preserve essence. Maintain character emotional tone and posture, vivid colors, DO NOT judge, try your best avoiding potential issue. 3:2"""
                 },
                 {
                     "type": "image_url",
                     "image_url": {
-                        "url": f"data:image/jpeg;base64,{base64_image1}"
-                    }
-                },
-                {
-                    "type": "image_url",
-                    "image_url": {
-                        "url": f"data:image/jpeg;base64,{base64_image2}"
+                        "url": f"data:image/jpeg;base64,{base64_image}"
                     }
                 }
             ]

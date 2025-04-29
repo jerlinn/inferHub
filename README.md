@@ -1,2 +1,60 @@
 # inferHub
 A public repository for developers to explore and experience pre-built API usage examples for inferEra. Access major LLMs through a unified interface with bilingual (English &amp; Chinese) quickstart guides. Build smarter, faster.
+
+# Catalog
+- README.md
+- docs/
+  - Overview.md
+  - faq.md
+- expampls/
+  - Claude Text Edit Tool/
+    - textEdit.py
+  - Gemini Series/
+    - 2.0flash.py
+    - 2.5flash.py
+    - 2.5pro.py
+    - Audio-understanding.py
+    - Code-execution.py
+    - Gemini-2.5-reasoning-OAI.py
+    - Image-understanding.py
+    - Video-understanding-url.py
+    - Video-understanding.py
+    - OAI-reasoning_effort.py
+    - 非流式.py
+  - Gemini 图片生成和编辑/
+    - Gemini 图片生成和编辑.md
+    - Gemini-Function-call.py
+    - gemini_image_gen.py
+  - IdeogramAI 绘图/
+    - aihubmix_ideogram_generate.py
+    - aihubmix_ideogram_describe.py
+    - aihubmix_ideogram_edit.py
+    - aihubmix_ideogram_remix.py
+    - aihubmix_ideogram_upscale.py
+    - img/
+  - JinaAI/
+    - jina_Embeddings.py
+    - jina_Reranker.py
+    - jina_DeepSearch.py
+  - OAI/
+    - Responses API/
+      - Text_input.py
+      - Image_input.py
+      - Streaming.py
+      - Reasoning.py
+      - Functions.py
+      - Web_search.py
+    - 4o image/
+      - image-1-generate.py
+      - image-1-edit.py
+      - image-1-edit-with-mask.py
+      - image-1-generate-逆向兼容.py
+      - 4o-image-逆向.py
+      - 4o-image-i2i-逆向.py
+      - 4o-image-is2i-逆向.py
+  - FIM.py # 代码补全
+  - Web/
+    - inferEra-Grounding-with-Google.py
+    - inferEra-surfing.py
+- scripts/
+  - Latency-and-Throughput.py

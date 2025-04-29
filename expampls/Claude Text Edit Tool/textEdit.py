@@ -1,7 +1,7 @@
 import anthropic
 
 client = anthropic.Anthropic(
-    api_key="sk-***",
+    api_key="sk-***", # 替换为你的 AiHubMix 密钥
     base_url="https://aihubmix.com"
 )
 

@@ -2,7 +2,7 @@ from openai import OpenAI
 import os
 
 client = OpenAI(
-    api_key=os.getenv("AIHUBMIX_API_KEY"),
+    api_key="sk-***", # 🔑 换成你在 AiHubMix 生成的密钥 
     base_url="https://aihubmix.com/v1"
 )
 
@@ -14,7 +14,8 @@ stream = client.chat.completions.create(
             "content": [
                 {
                     "type": "text",
-                    "text": """a sweet mermaid princess on the rock, with shell tops, in the style of Ghibli, golden hour, detailed, avoid noises, 2:3"""
+                    "text": """redesign poster of the movie [Black Swam], 3D cartoon, smooth render, bright tone, 2:3
+"""
                 }
             ]
         }

@@ -1,11 +1,9 @@
 from openai import OpenAI
 import os
 
-# 🚧 azure 提供商无响应，修复中
-
 client = OpenAI(
     api_key=os.getenv("AIHUBMIX_API_KEY"),
-    base_url="https://aihubmix.com/v1/"
+    base_url="https://aihubmix.com/v1"
 )
 
 response = client.responses.create(
