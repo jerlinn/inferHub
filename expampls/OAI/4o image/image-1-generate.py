@@ -3,23 +3,23 @@ import base64
 import os
 
 client = OpenAI(
-    api_key="sk-***", # 🔑 换成你在 AiHubMix 生成的密钥
+    api_key=os.getenv("AIHUBMIX_API_KEY"), # 🔑 换成你在 AiHubMix 生成的密钥
     base_url="https://aihubmix.com/v1"
 )
 
-prompt = """
-Redesign [Movie poster Black Swan] as an anime-style illustrated cover. Preserve original essence and composition. Render in refined ghibli Anime with soft brushwork, cinematic lighting, progressive depth. 
-Format in AV cover layout: 
-Japanese-English mixed typography, serif title with significant visual hierarchy - sense of design is the key.
-Extract words tha conveys profound meanings as title, then creative slogan, the original name can be a smaller information ONLY if necessary.
-Subtly embed watermark “jer” in clothing or background. - For potential nudity issue, replace with flowing fabric, hair, or veils to preserve modesty. Maintain emotional tone and posture, soften only when necessary. 2:3 portrait.
-"""
+prompt = """一款高级质感的懒人沙发设计，以张开大嘴的可爱食人花头部为灵感，突出萌萌的獠牙，下排牙齿在两侧扶手位置，而不是靠背位置。
+红色椅身外表面带明亮的银白色大圆斑点，分布稀疏，类似七星瓢虫。
+两侧扶手侧各有一片叶子作为手托延伸，锯齿状叶缘。
+头部有一条纤细、呈半圆弧线下垂的带刺藤蔓，末端是一个开启的小巧 LED 灯，有花萼。（类似灯笼鱼结构）
+里面躺着一只超萌的 jellycat 小猫。
+整体造型圆润饱满，极度软糯 Q 弹，表面具有细腻的天鹅绒布料纹理和高级缝线细节。画面使用柔和摄影棚布光，带有自然扩散阴影，表现材质的光泽和细节。背景为米白色，无杂物干扰。主体居中摆放。整体风格为极简现代家居风，模拟真实产品摄影，具有超写实感和高级拟物设计感。
+1:1."""
 
 result = client.images.generate(
     model="gpt-image-1",
     prompt=prompt,
-    n=1, # 单次数量，最多 10 张
-    size="1024x1536", # 1024x1024 (square), 1536x1024 (3:2 landscape), 1024x1536 (2:3 portrait), auto (default) 
+    n=4, # 单次数量，最多 10 张
+    size="1024x1024", # 1024x1024 (square), 1536x1024 (3:2 landscape), 1024x1536 (2:3 portrait), auto (default) 
     quality="high", # high, medium, low, auto (default)
     moderation="low", # low, auto (default) 需要升级 openai 包 📍
     background="auto", # transparent, opaque, auto (default)

@@ -6,7 +6,7 @@ client = OpenAI(
 )
 
 completion = client.chat.completions.create(
-    model="Qwen/QVQ-72B-Preview",
+    model="Qwen/QwQ-32B", #或 Qwen/QVQ-72B-Preview
     messages=[
         {
             "role": "user",

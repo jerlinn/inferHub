@@ -16,6 +16,9 @@ completion = client.chat.completions.create(
     stream=True
 )
 
+#print(completion)
 for chunk in completion:
-    if chunk.choices[0].delta.content is not None:
-        print(chunk.choices[0].delta.content, end="")
+    # 安全地检查是否有内容
+    if hasattr(chunk.choices, '__len__') and len(chunk.choices) > 0:
+        if hasattr(chunk.choices[0].delta, 'content') and chunk.choices[0].delta.content is not None:
+            print(chunk.choices[0].delta.content, end="")

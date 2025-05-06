@@ -175,8 +175,17 @@ cython_debug/
 
 .DS_Store
 /output
+docs/README.md
+docs/Readme1.md
 aihubmix_ideogram_generate-v3.py
 image-1-generate-test.py
+image-1-generate个人专用.py
 image-1-generate-test1.py
 image-1-edit 2.py
 expampls/OAI/PDF_input.py
+qwen3-siliconflow-test.py
+qwen3-openrouter.py
+qwen-tools-openrouter.py
+qwen-tools-mcp-openrouter-未支持.py
+qwen-tools-mcp-regular-未支持.py
+expampls/bento_card_artifacts

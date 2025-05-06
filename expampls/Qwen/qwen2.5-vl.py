@@ -23,7 +23,7 @@ base64_image = encode_image(image_path)
 
 # 创建包含文本和图像的消息
 completion = client.chat.completions.create(
-    model="qwen2.5-vl-72b-instruct",
+    model="Qwen/QVQ-72B-Preview", #qwen2.5-vl-72b-instruct 或 Qwen/QVQ-72B-Preview
     messages=[
         {
             "role": "user",
