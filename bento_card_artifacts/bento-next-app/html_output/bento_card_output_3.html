@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI 时代的超能力</title>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300..700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        :root {
+            --bg: #fefefe;
+            /* Base tone derived from content (intellectual, forward-looking): Blue hue family */
+            --hue: 215; /* Hue for a clean blue */
+            /* Primary accent for icons, vivid */
+            --accent: hsl(var(--hue), 100%, 50%); /* Pure HSL for calc, or use a specific hex like #007AFF */
+            /* Vivid surface tone for core card (matching accent hue, lower saturation) */
+            --core-surface: hsl(var(--hue), 60%, 90%); /* Example: hsl(215, 60%, 90%) approx #cfe7ff */
+            /* Slightly soft surface tone for secondary cards (matching accent hue, lower saturation than core) */
+            --secondary-surface: hsl(var(--hue), 30%, 95%); /* Example: hsl(215, 30%, 95%) approx #eef6ff */
+            --text-primary: #1a1a1a; /* Dark text for readability */
+            --gap: 16px;
+            --card-radius: 16px;
+            --icon-size: 48px;
+            --body-font-size: 16px;
+        }
+
+        body {
+            font-family: 'Space Grotesk', sans-serif;
+            background-color: var(--bg);
+            color: var(--text-primary);
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh; /* Ensure it takes at least full viewport height */
+            padding: var(--gap);
+            box-sizing: border-box;
+            overflow: hidden; /* Prevent body scroll if content exceeds 100vh */
+        }
+
+        .bento-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr); /* 3 columns */
+            /* grid-template-rows: repeat(auto-fit, minmax(100px, 1fr)); /* Flexible rows */
+            grid-auto-rows: minmax(min-content, max-content); /* Rows size based on content */
+            gap: var(--gap);
+            width: 100%;
+            max-width: 800px; /* Optional: limit max width for larger screens */
+            box-sizing: border-box;
+            /* max-height: calc(100vh - var(--gap) * 2); This can help ensure it fits, but careful with content overflow within cards */
+            overflow: hidden; /* Hide grid overflow if cards push it beyond parent max-height */
+        }
+
+        .card {
+            background-color: var(--secondary-surface);
+            border-radius: var(--card-radius);
+            padding: var(--gap);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            box-sizing: border-box;
+            text-decoration: none; /* Remove link underline */
+            color: var(--text-primary); /* Inherit text color */
+            min-height: 0; /* Allow flex items to shrink below content size */
+        }
+
+        /* Core Block Styling */
+        .card.core {
+            background-color: var(--core-surface);
+            grid-column: span 2; /* Span 2 columns */
+            grid-row: span 2; /* Span 2 rows */
+            /* Specific grid area for precise placement in the 3x grid */
+            grid-area: 1 / 1 / 3 / 3;
+        }
+
+        /* Grid Area Assignments (based on the 3x4 conceptual grid) */
+        /* Core is 1/1/3/3 */
+        .card:nth-child(2) { grid-area: 1 / 3 / 2 / 4; } /* Top Right */
+        .card:nth-child(3) { grid-area: 2 / 3 / 3 / 4; } /* Middle Right */
+        .card:nth-child(4) { grid-area: 3 / 1 / 4 / 2; } /* Bottom Left */
+        .card:nth-child(5) { grid-area: 3 / 2 / 4 / 3; } /* Bottom Middle */
+        .card:nth-child(6) { grid-area: 3 / 3 / 4 / 4; } /* Bottom Right */
+        .card:nth-child(7) { grid-area: 4 / 1 / 5 / 3; } /* Bottom Row, span 2 */
+        .card:nth-child(8) { grid-area: 4 / 3 / 5 / 4; } /* Bottom Row, last column */
+
+
+        /* Single Card Row Handling - Not needed for this 3x4 grid layout, but kept as a note */
+        /* If a row *only* contained one card, you might use: */
+        /* .card.single-row { grid-column: 1 / -1; } */
+
+
+        .card [data-lucide],
+        .card svg {
+            width: var(--icon-size) !important;
+            height: var(--icon-size) !important;
+            color: var(--accent); /* Apply accent color to icons */
+            flex-shrink: 0; /* Prevent icon from shrinking */
+        }
+
+        .card .card-text {
+            font-size: var(--body-font-size);
+            line-height: 1.4;
+            margin-top: 0.5em; /* Space between icon/title and text */
+        }
+
+         .card.core .card-text {
+             font-size: calc(var(--body-font-size) * 1.2); /* Slightly larger text for core */
+             font-weight: 600;
+         }
+
+         .card h3 {
+             margin: 0;
+             font-size: var(--body-font-size); /* Keep title size consistent with body if used */
+             font-weight: 600;
+         }
+
+         /* Ensure text within core link is styled correctly */
+         .card.core a {
+            text-decoration: none;
+            color: inherit;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            height: 100%; /* Make the link fill the card */
+         }
+
+
+         /* Basic responsiveness - Stack vertically on small screens */
+        @media (max-width: 600px) {
+            .bento-grid {
+                grid-template-columns: 1fr; /* Single column */
+                grid-auto-rows: minmax(min-content, max-content); /* Still size based on content */
+                max-height: unset; /* Allow vertical scrolling */
+                overflow-y: auto; /* Add scroll if needed */
+            }
+
+            .card,
+            .card.core {
+                grid-column: span 1 !important; /* Reset column spans */
+                grid-row: span 1 !important; /* Reset row spans */
+                grid-area: unset !important; /* Reset grid areas */
+            }
+
+            body {
+                 align-items: flex-start; /* Align to top on small screens */
+                 padding: var(--gap);
+                 min-height: unset;
+                 height: auto;
+                 overflow-y: auto;
+            }
+             .card.core .card-text {
+                 font-size: var(--body-font-size); /* Reset core text size */
+             }
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="bento-grid">
+        <!-- Core Block (Link) -->
+        <a href="https://x.com/intent/follow?screen_name=eviljer" class="card core">
+            <i data-lucide="sparkles"></i>
+            <div class="card-text">
+                AI 时代的超能力
+            </div>
+        </a>
+
+        <!-- Secondary Blocks -->
+        <div class="card">
+             <i data-lucide="pen"></i>
+            <div class="card-text">
+                 语言具象化
+            </div>
+        </div>
+
+        <div class="card">
+            <i data-lucide="workflow"></i>
+            <div class="card-text">
+                规模化自动化
+            </div>
+        </div>
+
+        <div class="card">
+            <i data-lucide="compass"></i>
+            <div class="card-text">
+                洞察未知模式
+            </div>
+        </div>
+
+        <div class="card">
+            <i data-lucide="zap"></i>
+            <div class="card-text">
+                消除创造摩擦
+            </div>
+        </div>
+
+         <div class="card">
+            <i data-lucide="infinity"></i>
+            <div class="card-text">
+                 超人执行复利
+            </div>
+        </div>
+
+         <div class="card">
+            <i data-lucide="rocket"></i>
+            <div class="card-text">
+                 赋能创造者
+            </div>
+        </div>
+
+         <div class="card">
+            <i data-lucide="help-circle"></i>
+            <div class="card-text">
+                 提问是核心
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        lucide.createIcons();
+    </script>
+
+</body>
+</html>

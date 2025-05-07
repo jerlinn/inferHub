@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI时代的超能力</title>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300..700&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
+      font-family: 'Space Grotesk', sans-serif;
+      background-color: #fefefe;
+      color: #333;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+      max-height: 100vh;
+      overflow: hidden;
+    }
+    
+    .container {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      grid-template-rows: repeat(3, auto);
+      gap: 16px;
+      max-height: calc(100vh - 40px);
+    }
+    
+    .card {
+      border-radius: 16px;
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      background-color: #f5f1fa;
+      position: relative;
+      overflow: hidden;
+      border: 1px solid rgba(138, 43, 226, 0.1);
+    }
+    
+    .card[data-lucide], 
+    .card svg {
+      width: 48px !important;
+      height: 48px !important;
+      color: #8a2be2;
+    }
+    
+    .number {
+      font-size: 48px;
+      font-weight: 700;
+      margin-bottom: 8px;
+      color: #8a2be2;
+    }
+    
+    .title {
+      font-size: 24px;
+      font-weight: 600;
+      margin-bottom: 12px;
+    }
+    
+    .text {
+      font-size: 16px;
+      line-height: 1.4;
+    }
+    
+    .core {
+      background-color: #dcd0f0;
+      grid-column: span 2;
+      grid-row: span 2;
+    }
+    
+    .md {
+      grid-column: span 2;
+    }
+    
+    .sm {
+      grid-column: span 1;
+    }
+    
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
+    
+    .icon-container {
+      margin-bottom: 12px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <!-- Core Block -->
+    <a href="https://x.com/intent/follow?screen_name=eviljer" class="card core">
+      <div class="icon-container">
+        <i data-lucide="brain-circuit"></i>
+      </div>
+      <div class="title">AI时代的超能力</div>
+      <div class="text">
+        从意图到实例化<br>
+        具象化 · 自动化 · 洞察力<br>
+        提问本身成为核心入口
+      </div>
+    </a>
+    
+    <!-- Card 2 -->
+    <div class="card md">
+      <div class="icon-container">
+        <i data-lucide="lightbulb"></i>
+      </div>
+      <div class="title">语言具象化能力</div>
+      <div class="text">
+        自然语言 → 即时创作<br>
+        模糊意图 → 精确成果
+      </div>
+    </div>
+    
+    <!-- Card 3 -->
+    <div class="card sm">
+      <div class="icon-container">
+        <i data-lucide="infinity"></i>
+      </div>
+      <div class="title">规模化</div>
+      <div class="text">
+        多线程并行创造<br>
+        执行复利
+      </div>
+    </div>
+    
+    <!-- Card 4 -->
+    <div class="card sm">
+      <div class="icon-container">
+        <i data-lucide="compass"></i>
+      </div>
+      <div class="title">洞察力增强</div>
+      <div class="text">
+        拆解 · 重组 · 归纳<br>
+        发现未知问题
+      </div>
+    </div>
+    
+    <!-- Card 5 -->
+    <div class="card md">
+      <div class="icon-container">
+        <i data-lucide="alert-circle"></i>
+      </div>
+      <div class="title">AI不能替代</div>
+      <div class="text">
+        目的感 · 选择权 · 边界感<br>
+        价值判断 · 审美直觉
+      </div>
+    </div>
+    
+    <!-- Card 6 -->
+    <div class="card md">
+      <div class="icon-container">
+        <i data-lucide="diff"></i>
+      </div>
+      <div class="title">搜索 vs AI</div>
+      <div class="text">
+        搜索：你知道不知道什么<br>
+        AI：找到你不知道不知道的
+      </div>
+    </div>
+  </div>
+
+  <script>
+    lucide.createIcons();
+  </script>
+</body>
+</html>

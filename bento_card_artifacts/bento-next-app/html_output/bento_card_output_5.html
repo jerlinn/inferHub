@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI 时代的超能力</title>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300..700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Space Grotesk', sans-serif;
+            background-color: #fefefe;
+            color: #333;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 16px;
+            box-sizing: border-box;
+        }
+
+        .bento-container {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            grid-template-rows: auto repeat(2, minmax(0, 1fr)); /* Auto for title, then flexible rows */
+            gap: 16px;
+            width: 100%;
+            max-width: 900px; /* Optional: Limit max width */
+            max-height: calc(100vh - 32px); /* Account for padding */
+            box-sizing: border-box;
+            grid-template-areas:
+                "intro intro intro intro"
+                "sup1 sup2 cantdo core"
+                "sup3 compare cantdo core";
+        }
+
+        .card {
+            background-color: #f5f4f7; /* Soft surface */
+            border-radius: 16px;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            overflow: hidden;
+            box-sizing: border-box;
+            position: relative; /* Needed for absolute positioning if used */
+            min-height: 0; /* Allow shrinking */
+        }
+
+        .card-core {
+            background-color: #dad4eb; /* Vivid surface */
+            grid-area: core;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .card-intro { grid-area: intro; }
+        .card-sup1 { grid-area: sup1; }
+        .card-sup2 { grid-area: sup2; }
+        .card-sup3 { grid-area: sup3; }
+        .card-compare { grid-area: compare; }
+        .card-cantdo { grid-area: cantdo; }
+
+
+        .card .icon {
+            margin-bottom: 10px; /* Space below icon */
+            color: #4d32a8; /* Primary accent */
+        }
+
+        .card h3 {
+            font-size: 18px; /* Slightly larger for keywords */
+            margin: 0 0 10px 0;
+            font-weight: 600;
+        }
+
+        .card p {
+            font-size: 16px; /* Body text */
+            margin: 0;
+            line-height: 1.4;
+        }
+
+        .card .highlight {
+            font-size: 48px; /* Highlight icon/number size */
+            font-weight: 700;
+            color: #4d32a8; /* Primary accent */
+            margin-bottom: 10px;
+        }
+
+        .card svg {
+            width: 48px !important;
+            height: 48px !important;
+            stroke-width: 1.5; /* Lucide icon stroke width */
+        }
+
+        /* Specific styles for core card */
+        .card-core .icon {
+             margin-bottom: 15px;
+        }
+         .card-core h3 {
+            font-size: 20px;
+            margin-bottom: 15px;
+         }
+         .card-core p {
+            font-size: 17px;
+         }
+
+
+        /* Responsive adjustments if needed, though 4-column is usually okay on larger screens */
+        @media (max-width: 768px) {
+            .bento-container {
+                grid-template-columns: repeat(2, 1fr); /* 2 columns on smaller screens */
+                grid-template-rows: auto auto auto auto auto; /* More rows */
+                grid-template-areas:
+                    "intro intro"
+                    "compare cantdo"
+                    "sup1 sup2"
+                    "sup3 core"
+                    "cantdo core"; /* Rearrange areas */
+                max-height: none; /* Allow scrolling on small screens */
+                height: auto;
+            }
+            .card-intro { grid-area: intro; }
+            .card-compare { grid-area: compare; }
+            .card-cantdo { grid-area: cantdo; } /* 2x1 or 1x2 depending on flow */
+            .card-sup1 { grid-area: sup1; }
+            .card-sup2 { grid-area: sup2; }
+            .card-sup3 { grid-area: sup3; }
+            .card-core { grid-area: core; } /* 2x2 or similar */
+
+            /* Adjust specific card areas for 2-column layout */
+            .bento-container {
+                 grid-template-areas:
+                    "intro intro"
+                    "sup1 sup2"
+                    "sup3 compare"
+                    "cantdo cantdo"
+                    "core core"; /* Simple vertical flow for core */
+                 grid-template-rows: auto auto auto auto auto;
+            }
+             .card-cantdo { grid-area: cantdo; }
+             .card-core { grid-area: core; }
+        }
+    </style>
+</head>
+<body>
+    <div class="bento-container">
+        <div class="card card-intro">
+            <div class="icon"><i data-lucide="sparkles"></i></div>
+            <h3>AI 时代 超能力</h3>
+            <p>具象化 自动化 洞察 融合</p>
+        </div>
+
+        <div class="card card-compare">
+            <div class="icon"><i data-lucide="repeat"></i></div>
+            <h3>搜索 vs AI</h3>
+            <p>搜索: 查询者</p>
+            <p>AI: 创造者</p>
+        </div>
+
+        <div class="card card-sup1">
+             <div class="icon"><i data-lucide="layers"></i></div>
+            <h3>语言 具象化</h3>
+            <p>想法 → 结果</p>
+            <p>消除 摩擦</p>
+        </div>
+
+        <div class="card card-sup2">
+            <div class="icon"><i data-lucide="rocket"></i></div>
+            <h3>大规模 自动化</h3>
+            <p>并行创造</p>
+            <p>超人 执行</p>
+        </div>
+
+        <div class="card card-sup3">
+            <div class="icon"><i data-lucide="eye"></i></div>
+            <h3>洞察力 增强</h3>
+            <p>模式洞察</p>
+            <p>未知发掘</p>
+            <p>找问题</p>
+        </div>
+
+        <div class="card card-cantdo">
+            <div class="icon"><i data-lucide="user-x"></i></div>
+            <h3>AI 不能替代</h3>
+            <p>目的 选择 边界</p>
+            <p>价值 审美 情绪</p>
+        </div>
+
+        <a href="https://x.com/intent/follow?screen_name=eviljer" class="card card-core">
+            <div class="icon"><i data-lucide="message-circle"></i></div>
+            <h3>提问 本身</h3>
+            <p>超能力 入口</p>
+            <p>敢问者 稀缺</p>
+            <div class="icon" style="margin-top: 15px;"><i data-lucide="arrow-right"></i></div>
+        </a>
+    </div>
+
+    <script>
+        lucide.createIcons();
+    </script>
+</body>
+</html>

@@ -2,8 +2,6 @@
 # -*- coding: utf-8 -*-
 
 """
-AiHubMix API 客户端库
-
 提供与 AiHubMix API 交互的功能，用于管理 KEY、查询账户信息等。
 """
 

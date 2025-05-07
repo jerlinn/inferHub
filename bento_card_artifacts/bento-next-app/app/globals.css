@@ -1,0 +1,139 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --foreground-rgb: 0, 0, 0;
+  --background-rgb: 250, 250, 250;
+}
+
+body {
+  color: rgb(var(--foreground-rgb));
+  background: rgb(var(--background-rgb));
+}
+
+/* 流式输出动画效果 */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(4px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.animate-fadeIn {
+  animation: fadeIn 0.2s ease-out forwards;
+}
+
+/* 自动滚动动画 */
+@keyframes autoScroll {
+  0% { transform: translateY(0); }
+  100% { transform: translateY(-50%); }
+}
+
+/* 使内容滚动而不是整个容器 */
+.scrollable-content {
+  position: relative;
+  overflow: hidden;
+}
+
+.scrolling-content {
+  will-change: transform;
+}
+
+/* 打字机效果 */
+@keyframes typing {
+  from { width: 0 }
+  to { width: 100% }
+}
+
+.typing-effect {
+  display: inline-block;
+  overflow: hidden;
+  white-space: nowrap;
+  border-right: 2px solid transparent;
+  animation: typing 1s steps(40, end);
+}
+
+/* 确保渐变容器遵循圆角 */
+.rounded-xl,
+.rounded-lg,
+.rounded-2xl,
+.rounded-3xl {
+  overflow: hidden;
+  mask-image: radial-gradient(white, black);
+  -webkit-mask-image: radial-gradient(white, black);
+}
+
+/* 修复圆角边框裁剪问题 */
+.border.rounded-xl,
+.border.rounded-lg,
+.border.rounded-2xl,
+.border.rounded-3xl {
+  position: relative;
+  z-index: 0;
+}
+
+/* 卡片样式增强 */
+.bento-card {
+  overflow: hidden;
+  backface-visibility: hidden;
+  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.03);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.bento-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px -5px rgba(0, 0, 0, 0.1), 0 0 0 1px rgba(0, 0, 0, 0.03);
+}
+
+/* 白色卡片样式 */
+.rounded-3xl.shadow-md {
+  box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.06), 0 0 0 1px rgba(0, 0, 0, 0.02);
+  transition: box-shadow 0.3s ease;
+}
+
+.rounded-3xl.shadow-md:hover {
+  box-shadow: 0 6px 24px -4px rgba(0, 0, 0, 0.08), 0 0 0 1px rgba(0, 0, 0, 0.02);
+}
+
+/* 文本显示优化 - 移除会导致过早换行的样式 */
+.whitespace-pre-wrap {
+  white-space: pre-wrap;
+  word-break: break-word;
+  max-width: 100%;
+}
+
+/* 代码块特殊显示 */
+.code-block-indicator,
+.inline-block.px-1\.5.py-0\.5.rounded.bg-gray-100 {
+  display: inline-block;
+  background-color: rgba(99, 91, 255, 0.1);
+  color: rgb(99, 91, 255);
+  border-radius: 4px;
+  padding: 1px 4px;
+  font-family: monospace;
+  font-size: 0.85em;
+  border: 1px solid rgba(99, 91, 255, 0.2);
+}
+
+/* 组件标签样式 */
+.inline-block.px-1\.5.py-0\.5.rounded.bg-indigo-50 {
+  display: inline-block;
+  background-color: rgba(99, 102, 241, 0.1);
+  color: rgb(79, 70, 229);
+  border-radius: 4px;
+  padding: 1px 4px;
+  font-family: monospace;
+  font-size: 0.85em;
+  border: 1px solid rgba(99, 102, 241, 0.2);
+}
+
+/* 渐变边框容器 */
+.p-\[1px\].rounded-xl.bg-gradient-to-tr {
+  background-size: 200% 200%;
+  animation: gradientShift 6s ease infinite;
+}
+
+@keyframes gradientShift {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}

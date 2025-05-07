@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI 时代的超能力</title>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300..700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        :root {
+            --bg: #fafafa;
+            --text: #333;
+            --accent: #4d4dff; /* HSL(240, 60%, 50%) */
+            --surface-soft: #f2f2ff; /* HSL(240, 10%, 95%) */
+            --surface-vivid: #e0e0ff; /* HSL(240, 30%, 90%) */
+            --gap: 16px;
+            --radius: 16px;
+            --icon-size: 48px;
+            --body-font-size: 16px;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: var(--bg);
+            font-family: 'Space Grotesk', sans-serif;
+            color: var(--text);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            overflow: hidden; /* Prevent body scroll if grid padding exceeds viewport */
+            box-sizing: border-box;
+        }
+
+        .bento-container {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            grid-template-rows: repeat(4, minmax(0, 1fr)); /* Use minmax(0, 1fr) for flexible rows */
+            gap: var(--gap);
+            width: calc(100% - calc(var(--gap) * 2)); /* Full width minus padding */
+            max-width: 1200px; /* Optional: Max width for larger screens */
+            height: calc(100vh - calc(var(--gap) * 2)); /* Full height minus padding */
+            padding: var(--gap); /* Add padding around grid */
+            box-sizing: border-box;
+            grid-template-areas:
+                "header   header   header"
+                "block1   block2   block3"
+                "comp     comp     ainot"
+                "scarce   core     core";
+        }
+
+        .card {
+            background-color: var(--surface-soft);
+            border-radius: var(--radius);
+            padding: var(--gap);
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start; /* Align content to top by default */
+            align-items: flex-start; /* Align text to left */
+            overflow: hidden; /* Hide potential overflow if content is too long */
+            box-sizing: border-box;
+            position: relative; /* For icon positioning */
+            text-decoration: none; /* Remove link underline for anchor cards */
+            color: var(--text); /* Inherit text color for anchor cards */
+        }
+
+        .card.core {
+            background-color: var(--surface-vivid);
+             justify-content: space-between; /* Distribute content top/bottom */
+             cursor: pointer; /* Indicate clickable */
+        }
+
+        .card i[data-lucide],
+        .card svg {
+            width: var(--icon-size) !important;
+            height: var(--icon-size) !important;
+            color: var(--accent); /* Apply accent color to icons */
+            margin-bottom: calc(var(--gap) / 2); /* Space below icon */
+            flex-shrink: 0; /* Prevent icon from shrinking */
+        }
+
+        .card h3 {
+            font-size: var(--body-font-size); /* Using h3 for titles, apply body size */
+            margin: 0 0 calc(var(--gap) / 4) 0; /* Space below heading */
+            font-weight: 600;
+            line-height: 1.3;
+        }
+
+        .card p {
+             font-size: var(--body-font-size);
+             margin: 0;
+             line-height: 1.4;
+             opacity: 0.9; /* Slightly softer text */
+             word-break: break-word; /* Prevent long words from overflowing */
+        }
+
+        .card p + p {
+            margin-top: calc(var(--gap) / 4); /* Space between paragraphs */
+        }
+
+        /* Ensure numbers have space */
+        .card p strong {
+            font-weight: inherit; /* Keep weight same */
+        }
+
+
+        /* Specific Grid Areas */
+        .header { grid-area: header; }
+        .block-1 { grid-area: block1; }
+        .block-2 { grid-area: block2; }
+        .block-3 { grid-area: block3; }
+        .comparison { grid-area: comp; }
+        .ai-not { grid-area: ainot; }
+        .scarce-skill { grid-area: scarce; }
+        .core-block { grid-area: core; }
+
+
+        .core-block .content {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .core-block .content:last-child {
+            margin-top: auto; /* Push the second content block to the bottom */
+        }
+
+         /* Style for the link text within the core block */
+        .core-block .link-text {
+            color: var(--accent); /* Apply accent color to the link text part */
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            margin-top: calc(var(--gap) / 2); /* Space above link */
+        }
+
+        .core-block .link-text i[data-lucide],
+        .core-block .link-text svg {
+             width: calc(var(--body-font-size) * 1.2) !important; /* Smaller icon for link */
+             height: calc(var(--body-font-size) * 1.2) !important;
+             margin-right: 4px;
+             margin-bottom: 0; /* Reset margin from base icon style */
+             color: var(--accent); /* Apply accent color to the link icon */
+        }
+
+
+    </style>
+</head>
+<body>
+
+<div class="bento-container">
+
+    <div class="card header">
+        <i data-lucide="sparkles"></i>
+        <h3>AI 时代的超能力</h3>
+        <p>具象、自动化、洞察融合</p>
+    </div>
+
+    <div class="card block-1">
+        <i data-lucide="lightbulb"></i>
+        <h3>1. 具象化能力</h3>
+        <p>想法 → 可用结果</p>
+        <p>模糊意图 → 美学方案</p>
+    </div>
+
+    <div class="card block-2">
+         <i data-lucide="repeat"></i>
+        <h3>2. 大规模自动化</h3>
+        <p>并行创造</p>
+        <p>执行复利</p>
+        <p>例如：50 邮件，100 文案</p>
+    </div>
+
+    <div class="card block-3">
+        <i data-lucide="trending-up"></i>
+        <h3>3. 洞察力增强</h3>
+        <p>发现未知问题</p>
+        <p>数据找规律</p>
+    </div>
+
+    <div class="card comparison">
+        <i data-lucide="scale"></i>
+        <h3>搜索 vs AI</h3>
+        <p>答案 vs 问题</p>
+        <p>查询者 vs 创造者</p>
+    </div>
+
+     <div class="card ai-not">
+        <i data-lucide="alert-triangle"></i>
+        <h3>AI 不是...</h3>
+        <p>非目的 / 选择 / 边界</p>
+        <p>非价值 / 审美 / 情绪</p>
+    </div>
+
+    <div class="card scarce-skill">
+         <i data-lucide="help-circle"></i>
+        <h3>稀缺能力</h3>
+        <p>定义问题</p>
+        <p>会提问的人</p>
+    </div>
+
+    <a href="https://x.com/intent/follow?screen_name=eviljer" class="card core core-block">
+        <div class="content">
+             <i data-lucide="zap"></i>
+            <h3>AI 超能力构成</h3>
+            <p>1. 具象化</p>
+            <p>2. 自动化</p>
+            <p>3. 洞察</p>
+        </div>
+         <div class="content">
+             <p>真正核心：<strong>提问</strong></p>
+             <span class="link-text">Follow eviljer <i data-lucide="arrow-right"></i></span>
+         </div>
+    </a>
+
+</div>
+
+<script>
+  lucide.createIcons();
+</script>
+
+</body>
+</html>

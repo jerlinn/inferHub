@@ -2,9 +2,7 @@
 # -*- coding: utf-8 -*-
 
 """
-AiHubMix API 管理工具
-
-该脚本提供了一个简单的命令行接口，用于管理 AiHubMix API KEY 和查询账户信息。
+AiHubMix API 实用管理脚本：用于管理 AiHubMix API KEY 和查询账户信息。
 
 使用示例：
   python aihubmix_cli.py --url "https://aihubmix.com" --token "YOUR_ACCESS_TOKEN" --action create_token --name "新KEY名称"

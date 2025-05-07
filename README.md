@@ -64,8 +64,6 @@ A public repository for developers to explore and experience pre-built API usage
 - output/
 - scripts/
   - Latency-and-Throughput.py # 计算模型的首 Token 延迟和吞吐量
-- .gitignore
-- apiManagement.py # 原始 API 管理脚本
 - aihubmix_cli.py # AiHubMix API 命令行工具
 - aihubmix_client.py # AiHubMix API 客户端库
 - requirements.txt # 项目依赖
