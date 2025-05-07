@@ -30,8 +30,11 @@ Note:
 ```
 
 ## Quick start in App/Web:
-> 用于 [Claude](https://claude.ai) project 或 [v0 Chat](https://v0.dev/chat)，**这种方式最简单，生成的结果也最美观**；bento-next-app 主要用于复刻这种方式；而 python 脚本则为更轻量的实现——它既不依赖 AI 服务的会员、也不需要编译 jsx 组件，生成的 html 直接能看，唯一的弊端是界面效果会略有损失。
- 
+
+该提示词用于 [Claude](https://claude.ai) project 或 [v0 Chat](https://v0.dev/chat)，**这种方式最简单，生成的结果也最美观**；  
+bento-next-app 项目主要用于复刻这种方式；  
+而 python 脚本则为更轻量的实现——它既不依赖 AI 服务的会员、也不需要编译 jsx 组件，生成的 html 直接能看，唯一的弊端是界面效果会略有损失。  
+
 1. Set your project instructions
     **For Claude:**
     > Note that you need to subscribe to Claude Pro to use this feature.

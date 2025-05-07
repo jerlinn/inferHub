@@ -50,7 +50,7 @@ npm run dev
 ## Tips
 - Claude 有一定的概率使用错误的图标引用，这种情况下系统会回退到默认图标 { BadgeInfo }，你可以更换成其他图标
 - 如果你希望生成的卡片包含大标题，可以在 SystemPrompt 组件的 JSON 结构中插入一个字段 `"h1": true,`
-- 输出材料的语言由 `"lang_output": "same as user query, 中文 as default"` 影响
+- 输出材料的语言受 `"lang_output": "same as user query, 中文 as default"` 影响
 
 ## 技术栈
 
