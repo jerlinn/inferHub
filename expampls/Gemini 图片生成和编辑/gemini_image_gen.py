@@ -30,7 +30,7 @@ try:
     # Print basic response information
     print(f"Creation time: {response.created}")
     print(f"Token usage: {response.usage.total_tokens}")
-    print(response.usage_metadata)
+    #print(response.usage_metadata)
     
     # Check if multi_mod_content field exists
     if (
