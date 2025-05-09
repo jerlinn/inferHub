@@ -74,9 +74,10 @@ inferHub/bento_card_artifacts/bento-next-app/
 │   ├── bento-view/ - Bento Grid 展示页面
 │   └── page.jsx - 首页
 ├── components/ - React 组件
+│   └── SystemPrompt.ts 系统提示词组件
 │   ├── BentoGrid.jsx - 生成的 Bento Grid 组件（每次覆盖）
 │   └── DefaultBentoGrid.jsx - 默认的示例 Bento Grid
-│   └── SystemPrompt.ts 系统提示词组件
+│   └── BentoGrid_goodCase.jsx - 补充的示例
 └── ...
 ```
 

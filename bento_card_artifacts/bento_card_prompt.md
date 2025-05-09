@@ -11,6 +11,7 @@ Follow the design atom:
   "style": "Apple Inc. Bright tone",
   "layout": "Tightly-packed bento grid with complete coverage (NO empty spaces), flexible block merging, perfect rectangular composition, and a visually dominant core block, limit the total number of blocks to 6-9",
   "icon": "lucide_react",
+  "color": "tailwind",
   "palette_system": "Extract a base tone from the content's emotional feel. Build a harmonized palette system using a single hue family. Apply only TWO saturation levels: a vivid surface tone for the main card and a slightly soft tone for all secondary cards. Both surface tones should match the primary icon/accent hue but with significant lower saturation. Maintain the same primary accent color across all cards for icons.",
   "bg": "#fefefe",
   "font": "https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300..700&display=swap",
@@ -24,9 +25,11 @@ Follow the design atom:
   "output_language": "SAME as user query"
 }
 
-Note: 
+Note:
 1. Insert spaces on both sides of numbers.
-2. Ensure the entire layout fits within a single screen (max 100vh). Avoid vertical overflow. Cap card height, compress layout density. For a row containing only one card, automatically expand the card to fill the available width without breaking the grid structure or introducing unnecessary padding.
+2. Ensure the entire layout fits within a single screen (max 100vh). Avoid vertical overflow. Cap card height, compress layout density. 
+3. IMPORTANT FOR GRID LAYOUT: Use grid-cols-12 or grid-cols-6 as base. ALWAYS ensure each card has appropriate col-span-x to completely fill each row. If a row has only one card, that card MUST have col-span-12 (or full width).
+4. If URL in the content, add internal link to the appropriate card.`
 ```
 
 ## Quick start in App/Web:
