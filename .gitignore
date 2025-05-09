@@ -129,6 +129,7 @@ celerybeat.pid
 
 # Environments
 .env
+.env.local
 .venv
 env/
 venv/
@@ -189,3 +190,4 @@ qwen-tools-openrouter.py
 qwen-tools-mcp-openrouter-未支持.py
 qwen-tools-mcp-regular-未支持.py
 claude-3-7-sonnet-jsx.py
+bento_card_artifacts/bento-next-app/.env.local
