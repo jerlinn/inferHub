@@ -10,10 +10,17 @@ export default function Home() {
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState('')
   const [streamOutput, setStreamOutput] = useState([])
+  const [isHovering, setIsHovering] = useState(false)
+  const [isMounted, setIsMounted] = useState(false)
   const router = useRouter()
   const streamRef = useRef(null)
   const streamAbortController = useRef(null)
   const outputBuffer = useRef('') // 用于累积不完整的文本片段
+
+  // 客户端加载后设置挂载状态
+  useEffect(() => {
+    setIsMounted(true)
+  }, [])
 
   // 自动滚动到最新输出
   useEffect(() => {
@@ -45,7 +52,7 @@ export default function Home() {
       // 创建一个 AbortController 实例以便在需要时中止请求
       streamAbortController.current = new AbortController()
       
-      // 发送内容到API端点，使用流式响应
+      // 发送内容到 API 端点，使用流式响应
       const response = await fetch('/api/generate-bento', {
         method: 'POST',
         headers: {
@@ -96,22 +103,32 @@ export default function Home() {
               
               // 如果收到完成消息，准备重定向
               if (data.text === '✅ 便当制作完成') {
+                console.log('收到完成消息，准备重定向...')
+                setStreamOutput(prev => [...prev, '🔄 正在准备跳转到结果页面...'])
+                
+                // 确保在UI更新后再跳转
                 setTimeout(() => {
-                  // 添加时间戳参数，确保每次都获取新页面
-                  router.push(`/bento-view?t=${Date.now()}`)
-                }, 800)
+                  const timestamp = Date.now()
+                  console.log(`正在跳转到: /bento-view?t=${timestamp}`)
+                  
+                  // 使用window.location进行强制跳转
+                  window.location.href = `/bento-view?t=${timestamp}`
+                  
+                  // 保留router作为备用方案
+                  // router.push(`/bento-view?t=${timestamp}`)
+                }, 1000)
               }
             }
           } catch (e) {
-            console.warn('解析 SSE 消息失败:', e)
+            console.warn('解析 SSE 消息失败：', e)
           }
         }
       }
       
     } catch (error) {
-      console.error('生成 Bento Grid 请求失败:', error)
+      console.error('生成 Bento Grid 请求失败：', error)
       setError(error.message || '生成失败，请重试')
-      setStreamOutput(prev => [...prev, `❌ 错误: ${error.message || '未知错误'}`])
+      setStreamOutput(prev => [...prev, `❌ 错误：${error.message || '未知错误'}`])
     } finally {
       setIsLoading(false)
       streamAbortController.current = null
@@ -119,113 +136,174 @@ export default function Home() {
   }
 
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-4 sm:p-6 md:p-24 bg-[#fafafa]">
-      <div className="w-full max-w-2xl mx-auto">
+    <main className="flex min-h-screen flex-col items-center justify-between p-6 pt-20 sm:p-6 md:p-24 bg-[#fafafa]">
+      <div 
+        className={`w-full max-w-2xl mx-auto ${isMounted ? 'animate-fade-in' : 'opacity-0'}`} 
+        style={{ 
+          transitionDuration: '500ms'
+        }}
+      >
+        {/* 外层阴影容器 */}
         <div 
-          className="bg-white rounded-3xl overflow-hidden p-6 mb-6"
-          style={{
-            boxShadow: '0 10px 25px -12px rgba(0, 0, 0, 0.1), 0 4px 8px -4px rgba(0, 0, 0, 0.06), 0 0 0 1px rgba(0, 0, 0, 0.02)',
-            transform: 'translateY(0px)',
-            transition: 'transform 0.2s, box-shadow 0.2s',
-          }}
+          className="relative mb-6"
+          onMouseEnter={() => setIsHovering(true)}
+          onMouseLeave={() => setIsHovering(false)}
         >
-          <h1 className="text-3xl font-bold mb-8 mt-6 text-center">🍱 Bento Grid Maker</h1>
+          {/* 底层大阴影 */}
+          <div 
+            className="absolute -inset-4 blur-2xl transition-all duration-300"
+            style={{
+              background: 'rgba(0, 0, 0, 0.12)',
+              transform: `translateY(${isHovering ? '8px' : '10px'})`,
+              opacity: isHovering ? 0.17 : 0.12,
+              zIndex: 0
+            }}
+          />
+          {/* 中层阴影 */}
+          <div 
+            className="absolute -inset-2 blur-xl transition-all duration-300"
+            style={{
+              background: 'rgba(0, 0, 0, 0.1)',
+              transform: `translateY(${isHovering ? '3px' : '4px'})`,
+              opacity: isHovering ? 0.15 : 0.1,
+              zIndex: 0
+            }}
+          />
+          {/* 靠近卡片的阴影 */}
+          <div 
+            className="absolute -inset-1 blur-sm transition-all duration-300"
+            style={{
+              background: 'rgba(0, 0, 0, 0.08)',
+              transform: `translateY(${isHovering ? '1px' : '2px'})`,
+              opacity: isHovering ? 0.13 : 0.08,
+              zIndex: 0
+            }}
+          />
           
-          <form onSubmit={handleSubmit} className="flex flex-col gap-4">
-            <textarea
-              value={content}
-              onChange={(e) => setContent(e.target.value)}
-              placeholder="输入问题或粘贴任意内容"
-              className="w-full h-64 p-4 bg-gray-50/50 text-base rounded-xl border border-gray-200 focus:ring-2 focus:ring-violet-300 focus:border-transparent resize-vertical"
-              disabled={isLoading}
-              style={{ 
-                overflowY: 'auto',
-                minHeight: '12rem',
-                maxHeight: '24rem'
+          {/* 主卡片内容 */}
+          <div 
+            className="relative bg-white rounded-[32px] overflow-hidden p-6 transition-transform duration-300"
+            style={{
+              background: 'linear-gradient(180deg, rgba(255, 255, 255, 1) 0%, rgba(249, 249, 249, 1) 100%)',
+              boxShadow: '0 0 0 0.5px rgba(0, 0, 0, 0.03)',
+              transform: isHovering ? 'translateY(-1px)' : 'translateY(0)',
+              position: 'relative',
+              zIndex: 1
+            }}
+          >
+            {/* 内部高光边框 */}
+            <div 
+              className="absolute inset-0 rounded-3xl pointer-events-none"
+              style={{
+                boxShadow: 'inset 0 0 0 0.5px rgba(255, 255, 255, 0.9), inset 0 0.5px 0 0 rgba(255, 255, 255, 1)',
+                zIndex: 1
               }}
             />
+            <h1 className="text-3xl font-bold mb-6 mt-2 text-center flex items-center justify-center gap-2">
+              <span className="text-4xl">🍱</span> 
+              <span>Bento Grid Maker</span>
+            </h1>
             
-            <button
-              type="submit"
-              disabled={isLoading || !content.trim()}
-              className={`flex items-center justify-center gap-2 bg-violet-600 text-white rounded-xl font-medium py-3 px-4 h-14 ${
-                isLoading ? 'opacity-80 cursor-not-allowed' : 'hover:bg-violet-700'
-              } transition-colors`}
-            >
-              {isLoading ? (
-                <>
-                  便当制作中
-                  <LoaderPinwheel className="h-5 w-5 animate-spin" />
-                </>
-              ) : (
-                <>
-                  生成
-                  <Wand className="h-5 w-5" />
-                </>
-              )}
-            </button>
-          </form>
-          
-          {/* 流式输出追踪卡片 */}
-          {isLoading && streamOutput.length > 0 && (
-            <div className="mt-6 relative">
-              <div className="relative overflow-hidden rounded-xl">
-                {/* 外层容器 - 处理描边 */}
-                <div 
-                  className="p-[1px] rounded-xl bg-gradient-to-tr from-gray-200 via-gray-200 to-gray-200"
-                  style={{
-                    boxShadow: '0 0 0 1px rgba(99, 102, 241, 0.15), 0 1px 3px 0 rgba(0, 0, 0, 0.1)'
-                  }}
-                >
-                  {/* 内层滚动容器的包装 */}
-                  <div className="relative bg-gray-50 rounded-xl overflow-hidden">
-                    {/* 渐变遮罩层 - 固定在容器上方 */}
-                    <div 
-                      className="pointer-events-none absolute inset-x-0 top-0 h-6 z-10"
-                      style={{ 
-                        background: 'linear-gradient(to bottom, rgba(249, 250, 251, 1) 0%, rgba(249, 250, 251, 0) 100%)'
-                      }}
-                    />
-                    
-                    {/* 内层滚动容器 */}
-                    <div 
-                      ref={streamRef}
-                      className="h-28 p-4 overflow-y-auto text-sm text-gray-600"
-                      style={{ 
-                        scrollBehavior: 'smooth',
-                      }}
-                    >
-                      {/* 内容区域 - 显示完整响应，无截断处理 */}
-                      <div className="relative pt-2 pb-2">
-                        {streamOutput.map((line, index) => (
-                          <div 
-                            key={index} 
-                            className="mb-1.5 text-gray-700 animate-fadeIn whitespace-pre-wrap"
-                          >
-                            {line}
-                          </div>
-                        ))}
+            <form onSubmit={handleSubmit} className="flex flex-col gap-5">
+              <textarea
+                value={content}
+                onChange={(e) => setContent(e.target.value)}
+                placeholder="输入问题或粘贴任意内容"
+                className="w-full p-4 bg-gray-50/80 text-sm rounded-xl border border-gray-100 focus:ring-2 focus:ring-orange-300 focus:border-transparent resize-vertical transition-colors duration-200 hover:border-gray-200"
+                disabled={isLoading}
+                style={{ 
+                  overflowY: 'auto',
+                  minHeight: '12rem',
+                  maxHeight: '24rem',
+                  boxShadow: 'inset 0 2px 4px rgba(0, 0, 0, 0.02)'
+                }}
+              />
+              
+              <button
+                type="submit"
+                disabled={isLoading || !content.trim()}
+                className={`relative flex items-center justify-center gap-2 bg-orange-500 text-white rounded-xl font-medium py-3 px-4 h-14 ${
+                  isLoading ? 'opacity-80 cursor-not-allowed' : 'hover:bg-orange-600 active:translate-y-0.5'
+                } transition-all duration-150`}
+                style={{
+                  boxShadow: '0 2px 5px rgba(234, 88, 12, 0.2), 0 1px 2px rgba(234, 88, 12, 0.1), 0 0 0 1px rgba(234, 88, 12, 0.1)'
+                }}
+              >
+                {isLoading ? (
+                  <>
+                    便当制作中
+                    <LoaderPinwheel className="h-5 w-5 animate-spin" />
+                  </>
+                ) : (
+                  <>
+                    生成
+                    <Wand className="h-5 w-5" />
+                  </>
+                )}
+              </button>
+            </form>
+            
+            {/* 流式输出追踪卡片 */}
+            {isLoading && streamOutput.length > 0 && (
+              <div className="mt-6 relative">
+                <div className="relative overflow-hidden rounded-xl">
+                  {/* 外层容器 - 处理描边 */}
+                  <div 
+                    className="p-[1px] rounded-xl bg-gradient-to-tr from-gray-200 via-gray-200 to-gray-200"
+                    style={{
+                      boxShadow: '0 0 0 1px rgba(234, 88, 12, 0.15), 0 1px 3px 0 rgba(0, 0, 0, 0.1)'
+                    }}
+                  >
+                    {/* 内层滚动容器的包装 */}
+                    <div className="relative bg-gray-50 rounded-xl overflow-hidden">
+                      {/* 渐变遮罩层 - 固定在容器上方 */}
+                      <div 
+                        className="pointer-events-none absolute inset-x-0 top-0 h-6 z-10"
+                        style={{ 
+                          background: 'linear-gradient(to bottom, rgba(249, 250, 251, 1) 0%, rgba(249, 250, 251, 0) 100%)'
+                        }}
+                      />
+                      
+                      {/* 内层滚动容器 */}
+                      <div 
+                        ref={streamRef}
+                        className="h-28 p-4 overflow-y-auto text-sm text-gray-600"
+                        style={{ 
+                          scrollBehavior: 'smooth',
+                        }}
+                      >
+                        {/* 内容区域 - 显示完整响应，无截断处理 */}
+                        <div className="relative pt-2 pb-2">
+                          {streamOutput.map((line, index) => (
+                            <div 
+                              key={index} 
+                              className="mb-1.5 text-gray-700 animate-fadeIn whitespace-pre-wrap"
+                            >
+                              {line}
+                            </div>
+                          ))}
+                        </div>
                       </div>
+                      
+                      {/* 渐变遮罩层 - 固定在容器下方 */}
+                      <div 
+                        className="pointer-events-none absolute inset-x-0 bottom-0 h-6 z-10"
+                        style={{ 
+                          background: 'linear-gradient(to top, rgba(249, 250, 251, 1) 0%, rgba(249, 250, 251, 0) 100%)'
+                        }}
+                      />
                     </div>
-                    
-                    {/* 渐变遮罩层 - 固定在容器下方 */}
-                    <div 
-                      className="pointer-events-none absolute inset-x-0 bottom-0 h-6 z-10"
-                      style={{ 
-                        background: 'linear-gradient(to top, rgba(249, 250, 251, 1) 0%, rgba(249, 250, 251, 0) 100%)'
-                      }}
-                    />
                   </div>
                 </div>
               </div>
-            </div>
-          )}
+            )}
+          </div>
         </div>
         
         <div className="w-full flex justify-between items-center text-sm text-gray-500">
           <Link 
             href="/bento-view?example=default" 
-            className="inline-flex items-center space-x-1.5 text-gray-500 hover:text-violet-600 transition-colors p-1"
+            className="inline-flex items-center space-x-1.5 text-gray-500 hover:text-orange-600 transition-colors p-1"
           >
             <Lightbulb className="h-4 w-4" />
             <span>示例</span>
@@ -238,7 +316,7 @@ export default function Home() {
               href="https://x.com/intent/follow?screen_name=eviljer" 
               target="_blank" 
               rel="noopener noreferrer"
-              className="inline-flex items-center text-gray-500 hover:text-violet-600 transition-colors"
+              className="inline-flex items-center text-gray-500 hover:text-orange-600 transition-colors"
             >
               <Twitter className="h-4 w-4" />
             </Link>
@@ -246,7 +324,7 @@ export default function Home() {
               href="https://github.com/jerlinn/inferHub" 
               target="_blank" 
               rel="noopener noreferrer"
-              className="inline-flex items-center text-gray-500 hover:text-violet-600 transition-colors"
+              className="inline-flex items-center text-gray-500 hover:text-orange-600 transition-colors"
             >
               <Github className="h-4 w-4" />
             </Link>

@@ -113,7 +113,7 @@ async function generateBentoWithClaudeStream(content, onProgress) {
       if (!jsxContent.trim().startsWith("'use client'")) {
         jsxContent = "'use client'\n\n" + jsxContent
       }
-      return jsxContent
+      return validateAndFixJSX(jsxContent)
     }
     
     // 如果流式处理未提取到代码，尝试从完整响应中提取
@@ -178,6 +178,9 @@ async function generateBentoWithClaudeStream(content, onProgress) {
       jsxContent = createComponentFromResponse(fullResponse)
     }
     
+    // 验证和修复 JSX 内容
+    jsxContent = validateAndFixJSX(jsxContent)
+    
     // 打印提取的JSX内容
     console.log("提取的JSX代码:", jsxContent)
     
@@ -187,6 +190,72 @@ async function generateBentoWithClaudeStream(content, onProgress) {
     console.error("调用Claude API生成Bento Grid失败:", error)
     throw error
   }
+}
+
+// 验证和修复 JSX 代码，特别是 SafeIcon 组件的使用
+function validateAndFixJSX(jsxContent) {
+  // 检查是否有未完成的 SafeIcon 调用
+  const incompleteIconRegex = /<SafeIcon\s+icon(?!\s*=)/g;
+  const incompleteIconMatches = jsxContent.match(incompleteIconRegex);
+  
+  if (incompleteIconMatches) {
+    console.warn(`检测到 ${incompleteIconMatches.length} 个不完整的 SafeIcon 调用，尝试修复...`);
+    
+    // 修复未完成的 SafeIcon 调用，使用 BadgeInfo 作为默认图标
+    jsxContent = jsxContent.replace(incompleteIconRegex, '<SafeIcon icon={BadgeInfo}');
+  }
+  
+  // 检查是否有未正确关闭的 JSX 标签
+  const openDivRegex = /<div[^>]*>(?![\s\S]*?<\/div>)/g;
+  const openDivMatches = jsxContent.match(openDivRegex);
+  
+  if (openDivMatches) {
+    console.warn(`检测到 ${openDivMatches.length} 个未关闭的 div 标签，尝试修复...`);
+    // 为简单起见，我们只检测未关闭的情况，但不尝试修复（这需要更复杂的解析）
+    // 这里我们只添加一个警告日志，后面通过 ErrorBoundary 捕获渲染错误
+  }
+  
+  // 确保导入 BadgeInfo
+  if (!jsxContent.includes('BadgeInfo') && jsxContent.includes('lucide-react')) {
+    // 查找 import 语句
+    const importMatch = jsxContent.match(/import\s+{([^}]*)}\s+from\s+['"]lucide-react['"]/);
+    if (importMatch) {
+      const existingImports = importMatch[1];
+      const newImport = existingImports.includes('BadgeInfo') 
+        ? existingImports 
+        : `${existingImports}, BadgeInfo`;
+      
+      jsxContent = jsxContent.replace(
+        /import\s+{([^}]*)}\s+from\s+['"]lucide-react['"]/,
+        `import {${newImport}} from 'lucide-react'`
+      );
+    }
+  }
+  
+  // 移除任何不必要的CSS导入，特别是Space Grotesk相关的CSS
+  jsxContent = jsxContent.replace(/import\s+['"]\.\/space-grotesk\.css['"]\s*\n/g, '');
+  jsxContent = jsxContent.replace(/import\s+['"]\.\/fonts\.css['"]\s*\n/g, '');
+  
+  // 移除重复的'use client'声明
+  let useClientCount = 0;
+  jsxContent = jsxContent.replace(/(['"])use client\1\s*\n/g, match => {
+    useClientCount++;
+    return useClientCount === 1 ? match : '';
+  });
+  
+  // 如果有使用font-space-grotesk类名或其他字体类，替换为内联样式
+  jsxContent = jsxContent.replace(
+    /className="([^"]*)font-space-grotesk([^"]*)"/g, 
+    'className="$1$2" style={{ fontFamily: "\'Space Grotesk\', sans-serif" }}'
+  );
+  
+  // 如果div已经有style，但需要添加字体样式
+  jsxContent = jsxContent.replace(
+    /className="([^"]*)font-space-grotesk([^"]*)"\s+style={{([^}]*)}}/g,
+    'className="$1$2" style={{ $3, fontFamily: "\'Space Grotesk\', sans-serif" }}'
+  );
+
+  return jsxContent;
 }
 
 // 根据响应创建一个基本组件
@@ -290,7 +359,7 @@ function throttle(func, limit) {
     if (args[0] && typeof args[0] === 'string') {
       textBuffer += args[0];
       
-      // 不再过滤过短的文本，每次都尝试发送
+      // 不过滤过短的文本，每次都尝试发送
       args[0] = textBuffer;
       
       // 只有在达到限流时间后才清空缓冲区

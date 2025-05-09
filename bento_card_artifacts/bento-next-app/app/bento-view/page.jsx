@@ -6,6 +6,11 @@ import { House, RefreshCw } from 'lucide-react'
 import dynamic from 'next/dynamic'
 import { useSearchParams } from 'next/navigation'
 
+// 导入错误边界组件
+const BentoErrorBoundary = dynamic(() => import('../../components/BentoErrorBoundary'), {
+  ssr: false
+})
+
 // 动态导入 BentoGrid 组件，添加noCache选项确保每次都重新加载
 const DynamicBentoGrid = dynamic(() => {
   // 使用时间戳作为缓存破坏，但不添加到文件名中
@@ -83,7 +88,7 @@ export default function BentoView() {
   }, [refreshKey, example]) // 依赖refreshKey和example参数
 
   return (
-    <main className="min-h-screen bg-slate-50 pb-8 pt-8 px-4 md:p-8">
+    <main className="min-h-screen bg-slate-50 pb-8 pt-8 px-6 md:p-8">
       <div className="w-full max-w-7xl mx-auto">
         <div className="mb-6 flex justify-between items-center">
           <Link 
@@ -103,7 +108,7 @@ export default function BentoView() {
           </button>
         </div>
 
-        <div className="bg-white rounded-3xl shadow-md overflow-hidden mb-8">
+        <div className="bg-white rounded-[32px] shadow-lg shadow-[#f1f1f1] overflow-hidden">
           {loading ? (
             <div className="flex justify-center items-center h-96">
               <div className="animate-spin rounded-full h-16 w-16 border-t-2 border-b-2 border-blue-500"></div>
@@ -111,8 +116,8 @@ export default function BentoView() {
           ) : (
             <>
               {isExample && (
-                <div className="bg-violet-50 border-l-4 border-violet-400 text-violet-700 p-4 m-4 md:m-8 rounded-r-md">
-                  <p>这是默认示例 Bento Grid。返回首页提交文本内容可生成自定义的 Bento Grid。</p>
+                <div className="bg-violet-50 border-l-4 border-violet-400 text-violet-700 p-4 m-4 md:m-8 rounded-r-xl">
+                  <p>这是示例 Bento Grid。返回首页提交文本内容可生成自定义的 Bento Grid。</p>
                 </div>
               )}
               
@@ -123,11 +128,13 @@ export default function BentoView() {
               )}
               
               <div className="p-4 md:p-8">
-                {/* 根据参数决定显示示例或生成的内容 */}
+                {/* 根据参数决定显示示例或生成的内容，并用错误边界包裹 */}
                 {isExample ? (
                   <DefaultBentoGrid key={refreshKey} />
                 ) : (
-                  <DynamicBentoGrid key={refreshKey} />
+                  <BentoErrorBoundary>
+                    <DynamicBentoGrid key={refreshKey} />
+                  </BentoErrorBoundary>
                 )}
               </div>
             </>

@@ -9,7 +9,7 @@ Follow the design atom:
   "icon": "lucide_react",
   "palette_system": "Extract a base tone from the content's emotional feel. Build a harmonized palette system using a single hue family. Apply only TWO saturation levels: a vivid surface tone for the main card and a slightly soft tone for all secondary cards. Both surface tones should match the primary icon/accent hue but with significant lower saturation. Maintain the same primary accent color across all cards for icons.",
   "bg": "#fefefe",
-  "font": "https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300..700&display=swap",
+  "font": "Space Grotesk",
   "hierarchy": {
     "highlight_icon_or_number": "48px",
     "body_text": "16px"
@@ -47,7 +47,11 @@ const SafeIcon = ({ icon: Icon, fallback: Fallback = BadgeInfo, ...props }) => {
 }
 \`\`\`
 - Use the SafeIcon component for all icon rendering: <SafeIcon icon={IconName} size={32} className="..." />
+- DO NOT import any custom CSS files - the Space Grotesk font is already loaded in the app layout
+- For font styling, use inline styles if needed: style={{ fontFamily: "'Space Grotesk', sans-serif" }}
+- NEVER add "import './space-grotesk.css'" or similar CSS imports
 
 Note:
 1. Insert spaces on both sides of numbers.
-2. Ensure the entire layout fits within a single screen (max 100vh). Avoid vertical overflow. Cap card height, compress layout density. For a row containing only one card, automatically expand the card to fill the available width without breaking the grid structure or introducing unnecessary padding.` 
+2. Ensure the entire layout fits within a single screen (max 100vh). Avoid vertical overflow. Cap card height, compress layout density. For a row containing only one card, automatically expand the card to fill the available width without breaking the grid structure or introducing unnecessary padding.
+3. If URL in the content, add internal link to the appropriate card.`

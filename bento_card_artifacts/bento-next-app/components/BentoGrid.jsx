@@ -1,15 +1,7 @@
 'use client'
 
 import React from 'react'
-import { 
-  BadgeInfo, 
-  Target, 
-  Brain, 
-  TimerOff, 
-  ArrowRightLeft, 
-  CheckCircle, 
-  GitCompare
-} from 'lucide-react'
+import { BadgeInfo, Zap, Heart, Droplets, Award, Volume2, Lock, BatteryCharging, Smile } from 'lucide-react'
 
 // SafeIcon: if failed, use BadgeInfo as fallback
 const SafeIcon = ({ icon: Icon, fallback: Fallback = BadgeInfo, ...props }) => {
@@ -28,123 +20,157 @@ const SafeIcon = ({ icon: Icon, fallback: Fallback = BadgeInfo, ...props }) => {
 }
 
 export default function BentoGrid() {
-  const accentColor = "#2563eb" // Primary accent color for icons
-  const mainCardBg = "#ebf3ff" // Vivid surface tone for main card
-  const secondaryCardBg = "#f5f9ff" // Soft tone for secondary cards
-
   return (
-    <div className="max-w-5xl mx-auto p-4" style={{ 
+    <div style={{ 
+      padding: '24px',
+      background: '#fefefe',
       fontFamily: "'Space Grotesk', sans-serif",
-      background: "#fefefe",
-      minHeight: "100vh",
-      color: "#333"
+      maxWidth: '1200px',
+      margin: '0 auto'
     }}>
-      <div className="grid grid-cols-3 gap-4">
-        {/* Core Block - Spans 2x2 */}
-        <div className="col-span-2 row-span-2 rounded-2xl p-6 flex flex-col" 
-          style={{ background: mainCardBg, position: 'relative' }}
-          onClick={() => window.open("https://x.com/intent/follow?screen_name=eviljer", "_blank")}>
-          <div className="flex justify-between items-start mb-4">
-            <div>
-              <h2 className="text-2xl font-bold mb-2">课题分离</h2>
-              <p className="text-base opacity-80">把"学习"还原成价值创造的直线</p>
-            </div>
-            <SafeIcon icon={Target} size={48} className="flex-shrink-0" style={{ color: accentColor }} />
+      <div style={{
+        display: 'grid',
+        gridTemplateColumns: 'repeat(3, 1fr)',
+        gridTemplateRows: 'auto',
+        gap: '16px',
+        gridTemplateAreas: `
+          "main main sub1"
+          "main main sub2"
+          "sub3 sub4 sub5"
+        `
+      }}>
+        {/* 主卡片 */}
+        <a href="https://detail.tmall.com/item.htm?id=682202291873" target="_blank" rel="noopener noreferrer" style={{
+          gridArea: 'main',
+          background: '#FFE6EE',
+          borderRadius: '16px',
+          padding: '24px',
+          display: 'flex',
+          flexDirection: 'column',
+          textDecoration: 'none',
+          color: 'inherit'
+        }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '16px' }}>
+            <SafeIcon icon={Heart} size={48} style={{ color: '#FF6699' }} />
+            <h2 style={{ fontSize: '28px', fontWeight: '700', margin: 0, color: '#333' }}>逗豆鸟</h2>
           </div>
-          <div className="mt-2">
-            <p className="text-base mb-4">学习本身不产生价值，只有知识在具体课题中应用才能转化为能量</p>
-            <div className="mt-auto">
-              <div className="inline-flex items-center px-3 py-1 rounded-full text-sm" style={{ background: 'rgba(37, 99, 235, 0.1)' }}>
-                <span>Learning is the map, not the territory</span>
-              </div>
+          <p style={{ fontSize: '16px', margin: '0 0 16px 0', fontWeight: '500', color: '#333' }}>
+            经典入门款，2019年蝉联天猫所在类目 Top1，单品销售额破亿，百万女生口碑推荐。
+          </p>
+          <div style={{ display: 'flex', flexWrap: 'wrap', gap: '12px' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+              <SafeIcon icon={Zap} size={20} style={{ color: '#FF6699' }} />
+              <span style={{ fontSize: '16px', fontWeight: '500' }}>3档声波吮吸</span>
+            </div>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+              <SafeIcon icon={Volume2} size={20} style={{ color: '#FF6699' }} />
+              <span style={{ fontSize: '16px', fontWeight: '500' }}>低于50分贝</span>
+            </div>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+              <SafeIcon icon={Droplets} size={20} style={{ color: '#FF6699' }} />
+              <span style={{ fontSize: '16px', fontWeight: '500' }}>IPX6防水</span>
             </div>
           </div>
-        </div>
+        </a>
 
-        {/* Why Learning Becomes a Trap */}
-        <div className="rounded-2xl p-5" style={{ background: secondaryCardBg }}>
-          <div className="flex items-start gap-3 mb-3">
-            <SafeIcon icon={Brain} size={32} style={{ color: accentColor }} />
-            <h3 className="font-semibold text-lg">学习陷阱</h3>
+        {/* 子卡片1 */}
+        <div style={{
+          gridArea: 'sub1',
+          background: '#FFF0F5',
+          borderRadius: '16px',
+          padding: '20px',
+          display: 'flex',
+          flexDirection: 'column',
+        }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '12px' }}>
+            <SafeIcon icon={Zap} size={28} style={{ color: '#FF6699' }} />
+            <h3 style={{ fontSize: '18px', fontWeight: '600', margin: 0, color: '#333' }}>性能亮点</h3>
           </div>
-          <ul className="ml-2 space-y-2 text-base">
-            <li>注意力错置在进度而非结果</li>
-            <li>身份幻觉带来提前满足感</li>
-            <li>回避风险、延后失败</li>
+          <ul style={{ margin: '0', paddingLeft: '20px' }}>
+            <li style={{ fontSize: '16px', marginBottom: '4px' }}>通体震动4档可调</li>
+            <li style={{ fontSize: '16px', marginBottom: '4px' }}>8000+神经末梢刺激</li>
+            <li style={{ fontSize: '16px' }}>双层FDA级硅胶材质</li>
           </ul>
         </div>
 
-        {/* Two Paths Comparison */}
-        <div className="rounded-2xl p-5" style={{ background: secondaryCardBg }}>
-          <div className="flex items-start gap-3 mb-3">
-            <SafeIcon icon={ArrowRightLeft} size={32} style={{ color: accentColor }} />
-            <h3 className="font-semibold text-lg">路径对比</h3>
+        {/* 子卡片2 */}
+        <div style={{
+          gridArea: 'sub2',
+          background: '#FFF0F5',
+          borderRadius: '16px',
+          padding: '20px',
+          display: 'flex',
+          flexDirection: 'column',
+        }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '12px' }}>
+            <SafeIcon icon={Lock} size={28} style={{ color: '#FF6699' }} />
+            <h3 style={{ fontSize: '18px', fontWeight: '600', margin: 0, color: '#333' }}>贴心设计</h3>
           </div>
-          <div className="grid grid-cols-2 gap-2 text-sm">
-            <div>
-              <p className="font-semibold">伪学习:</p>
-              <p>章节/课时/证书</p>
-              <p>长反馈周期</p>
-            </div>
-            <div>
-              <p className="font-semibold">课题分离:</p>
-              <p>可量化结果</p>
-              <p>短闭环反馈</p>
-            </div>
-          </div>
+          <ul style={{ margin: '0', paddingLeft: '20px' }}>
+            <li style={{ fontSize: '16px', marginBottom: '4px' }}>安全锁防误触</li>
+            <li style={{ fontSize: '16px', marginBottom: '4px' }}>电量提示红灯</li>
+            <li style={{ fontSize: '16px' }}>一键启动操作简便</li>
+          </ul>
         </div>
 
-        {/* Implementation Method */}
-        <div className="col-span-2 rounded-2xl p-5" style={{ background: secondaryCardBg }}>
-          <div className="flex items-start gap-3 mb-3">
-            <SafeIcon icon={CheckCircle} size={32} style={{ color: accentColor }} />
-            <h3 className="font-semibold text-lg">从"学"到"干"的实施方法</h3>
+        {/* 子卡片3 */}
+        <div style={{
+          gridArea: 'sub3',
+          background: '#FFF0F5',
+          borderRadius: '16px',
+          padding: '20px',
+          display: 'flex',
+          flexDirection: 'column',
+        }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '12px' }}>
+            <SafeIcon icon={BatteryCharging} size={28} style={{ color: '#FF6699' }} />
+            <h3 style={{ fontSize: '18px', fontWeight: '600', margin: 0, color: '#333' }}>配套设施</h3>
           </div>
-          <div className="grid grid-cols-2 gap-4 text-base">
-            <div>
-              <p className="font-semibold mb-1">1. 效用问题标题</p>
-              <p>"学Python" → "批量整理 300 张发票脚本"</p>
-            </div>
-            <div>
-              <p className="font-semibold mb-1">2. 最小可行解</p>
-              <p>缩小范围至可一天验证的大小</p>
-            </div>
-            <div>
-              <p className="font-semibold mb-1">3. 反向索引知识</p>
-              <p>按需"懒加载"，遇障碍再学</p>
-            </div>
-            <div>
-              <p className="font-semibold mb-1">4. 价值日志</p>
-              <p>记录时间、金钱、情绪收益</p>
-            </div>
-          </div>
+          <p style={{ margin: '0', fontSize: '16px' }}>防尘收纳盒 + 充电底座 + 暖味氛围灯</p>
         </div>
 
-        {/* Time-saving */}
-        <div className="rounded-2xl p-5" style={{ background: secondaryCardBg }}>
-          <div className="flex items-start gap-3 mb-3">
-            <SafeIcon icon={TimerOff} size={32} style={{ color: accentColor }} />
-            <h3 className="font-semibold text-lg">时间效率</h3>
+        {/* 子卡片4 */}
+        <div style={{
+          gridArea: 'sub4',
+          background: '#FFF0F5',
+          borderRadius: '16px',
+          padding: '20px',
+          display: 'flex',
+          flexDirection: 'column',
+        }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '12px' }}>
+            <SafeIcon icon={Smile} size={28} style={{ color: '#FF6699' }} />
+            <h3 style={{ fontSize: '18px', fontWeight: '600', margin: 0, color: '#333' }}>使用场景</h3>
           </div>
-          <p className="text-base">最大化投入产出比，避免盲目知识储备，专注解决卡点</p>
+          <ul style={{ margin: '0', paddingLeft: '20px' }}>
+            <li style={{ fontSize: '16px', marginBottom: '4px' }}>工作日放松</li>
+            <li style={{ fontSize: '16px', marginBottom: '4px' }}>浴室享受</li>
+            <li style={{ fontSize: '16px' }}>伴侣共用/异地相思</li>
+          </ul>
         </div>
 
-        {/* Learning as By-product */}
-        <div className="col-span-3 rounded-2xl p-5" style={{ background: secondaryCardBg }}>
-          <div className="flex items-start gap-3 mb-3">
-            <SafeIcon icon={GitCompare} size={32} style={{ color: accentColor }} />
-            <h3 className="font-semibold text-lg">学习成为副产品</h3>
+        {/* 子卡片5 */}
+        <div style={{
+          gridArea: 'sub5',
+          background: '#FFF0F5',
+          borderRadius: '16px',
+          padding: '20px',
+          display: 'flex',
+          flexDirection: 'column',
+        }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '12px' }}>
+            <SafeIcon icon={Award} size={28} style={{ color: '#FF6699' }} />
+            <h3 style={{ fontSize: '18px', fontWeight: '600', margin: 0, color: '#333' }}>设计荣誉</h3>
           </div>
-          <p className="text-base mb-3">
-            当课题先行，学习变成自然副作用：攻关时查到的新语法、为省时而学的并发模型、为说服而读的报告...
-          </p>
-          <p className="text-base font-medium">
-            下次想"学点什么"时，先问："如果明天要交付，卡脖子的是什么？"
-          </p>
+          <ul style={{ margin: '0', paddingLeft: '20px' }}>
+            <li style={{ fontSize: '16px', marginBottom: '4px' }}>台湾金点设计奖</li>
+            <li style={{ fontSize: '16px', marginBottom: '4px' }}>德国红点设计大奖</li>
+            <li style={{ fontSize: '16px' }}>美国IDEA设计铜奖</li>
+          </ul>
         </div>
       </div>
     </div>
   )
 }
 
-// Generated at: 2025-05-07T15:18:56.738Z
+// Generated at: 2025-05-09T14:24:29.294Z
