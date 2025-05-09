@@ -232,10 +232,6 @@ function validateAndFixJSX(jsxContent) {
     }
   }
   
-  // 移除任何不必要的CSS导入，特别是Space Grotesk相关的CSS
-  jsxContent = jsxContent.replace(/import\s+['"]\.\/space-grotesk\.css['"]\s*\n/g, '');
-  jsxContent = jsxContent.replace(/import\s+['"]\.\/fonts\.css['"]\s*\n/g, '');
-  
   // 移除重复的'use client'声明
   let useClientCount = 0;
   jsxContent = jsxContent.replace(/(['"])use client\1\s*\n/g, match => {
@@ -243,17 +239,10 @@ function validateAndFixJSX(jsxContent) {
     return useClientCount === 1 ? match : '';
   });
   
-  // 如果有使用font-space-grotesk类名或其他字体类，替换为内联样式
-  jsxContent = jsxContent.replace(
-    /className="([^"]*)font-space-grotesk([^"]*)"/g, 
-    'className="$1$2" style={{ fontFamily: "\'Space Grotesk\', sans-serif" }}'
-  );
-  
-  // 如果div已经有style，但需要添加字体样式
-  jsxContent = jsxContent.replace(
-    /className="([^"]*)font-space-grotesk([^"]*)"\s+style={{([^}]*)}}/g,
-    'className="$1$2" style={{ $3, fontFamily: "\'Space Grotesk\', sans-serif" }}'
-  );
+  // 修复lucide-react中常见的错误图标名称引用
+  jsxContent = jsxContent.replace(/icon={HandShake}/g, 'icon={Handshake}');
+  jsxContent = jsxContent.replace(/icon={BarChart}/g, 'icon={BarChart2}');
+  jsxContent = jsxContent.replace(/icon={ArrowDown}/g, 'icon={ArrowDownRight}');
 
   return jsxContent;
 }
