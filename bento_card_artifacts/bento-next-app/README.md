@@ -88,5 +88,7 @@ inferHub/bento_card_artifacts/bento-next-app/
 
 ## Todo
 
+- [x] 支持导出图片
+- [ ] 导出图片进一步优化，更准确，更简洁
 - [] 支持链接
 - [] 支持文件

@@ -137,3 +137,118 @@ body {
   50% { background-position: 100% 50%; }
   100% { background-position: 0% 50%; }
 }
+
+/* 确保导出图片样式正确 - 添加以下样式 */
+/* 确保在截图时网格间隙正确显示 */
+.grid {
+  display: grid;
+}
+.grid-cols-3 {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+.gap-4 {
+  gap: 1rem;
+}
+/* 确保col-span正确识别 */
+.col-span-2 {
+  grid-column: span 2 / span 2;
+}
+.col-span-3 {
+  grid-column: span 3 / span 3;
+}
+/* 确保圆角和内边距正确 */
+.rounded-2xl {
+  border-radius: 1rem;
+}
+.rounded-3xl {
+  border-radius: 1.5rem;
+}
+.rounded-\[32px\] {
+  border-radius: 32px;
+}
+.p-4 {
+  padding: 1rem;
+}
+.p-6 {
+  padding: 1.5rem;
+}
+.p-8 {
+  padding: 2rem;
+}
+/* 确保bento卡片容器正确显示 */
+.bento-card-container {
+  width: 100%;
+}
+
+/* 确保字体大小在截图时保持一致 */
+.text-xs {
+  font-size: 0.75rem;
+  line-height: 1rem;
+}
+.text-sm {
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+}
+.text-base {
+  font-size: 1rem;
+  line-height: 1.5rem;
+}
+.text-lg {
+  font-size: 1.125rem;
+  line-height: 1.75rem;
+}
+.text-xl {
+  font-size: 1.25rem;
+  line-height: 1.75rem;
+}
+.text-2xl {
+  font-size: 1.5rem;
+  line-height: 2rem;
+}
+.text-3xl {
+  font-size: 1.875rem;
+  line-height: 2.25rem;
+}
+.text-4xl {
+  font-size: 2.25rem;
+  line-height: 2.5rem;
+}
+
+/* 特殊处理导出图片间距 */
+/* 直接匹配网格布局 */
+.grid.grid-cols-3 {
+  display: grid !important;
+  grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+  gap: 1rem !important;
+}
+
+/* 网格内容区域补充规则 */
+.rounded-2xl {
+  overflow: visible !important;
+}
+
+/* 图片导出时确保正确对齐 */
+.bento-card-container > div {
+  box-sizing: border-box !important;
+}
+
+/* 打印优化 */
+@media print {
+  .grid.grid-cols-3 {
+    display: grid !important;
+    grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+    gap: 1rem !important;
+  }
+}
+
+/* 图片导出优化 */
+.capture-ready {
+  transform: none !important;
+  transition: none !important;
+  position: relative !important;
+}
+
+.capture-ready * {
+  transform: none !important;
+  transition: none !important;
+}
