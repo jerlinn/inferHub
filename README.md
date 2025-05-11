@@ -5,6 +5,10 @@ A public repository for developers to explore and experience pre-built API usage
 - README.md
 - docs/
   - faq.md
+- bento_card_artifacts # 便当卡片生成器  
+  - bento-next-app # 主程序
+    - README.md # 说明
+    - script # Python 免编译版本，输出到 html_output 目录
 - expampls/
   - Claude Text Edit Tool/
     - textEdit.py
