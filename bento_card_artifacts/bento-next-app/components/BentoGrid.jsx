@@ -1,21 +1,21 @@
 'use client'
 
 import React from 'react'
-import { 
-  BadgeInfo, 
-  Star, 
-  Award, 
-  Droplets, 
-  HeartHandshake, 
-  Zap, 
-  Gift, 
-  ShowerHead, 
-  Lightbulb
+import Link from 'next/link'
+import {
+  BadgeInfo,
+  Globe,
+  CreditCard,
+  ArrowRightLeft,
+  Building,
+  Wallet,
+  Bank,
+  Banknote,
+  ExternalLink
 } from 'lucide-react'
 
 // SafeIcon: if failed, use BadgeInfo as fallback
 const SafeIcon = ({ icon: Icon, fallback: Fallback = BadgeInfo, ...props }) => {
-  // 首先检查图标是否未定义
   if (!Icon) {
     console.warn(`Icon is undefined, using fallback`)
     return <Fallback {...props} />
@@ -29,99 +29,101 @@ const SafeIcon = ({ icon: Icon, fallback: Fallback = BadgeInfo, ...props }) => {
   }
 }
 
-export default function BentoGrid() {
+const BentoGrid = () => {
   return (
-    <div className="w-full p-6 bg-[#fefefe] font-['Space_Grotesk']">
-      <div className="grid grid-cols-12 gap-4">
-        {/* 主卡片 - 全宽度 */}
-        <div className="col-span-12 bg-pink-100 rounded-2xl p-6 flex flex-col justify-between">
-          <div className="flex items-start justify-between">
-            <h2 className="text-2xl font-bold text-pink-900">逗豆鸟</h2>
-            <SafeIcon icon={Star} size={48} className="text-pink-500" />
+    <div className="w-full max-w-4xl mx-auto p-4">
+      <div className="grid grid-cols-3 gap-4">
+        {/* Row 1 - Full Width Card */}
+        <div className="col-span-3 bg-blue-50 p-6 rounded-2xl">
+          <div className="flex items-center justify-between mb-4">
+            <h2 className="text-xl font-bold text-gray-800">海外资金回款路径</h2>
+            <SafeIcon icon={Globe} size={32} className="text-blue-500" />
           </div>
-          <p className="mt-2 text-pink-800">
-            经典入门级设计 · 震动+吮吸 · 破亿销售额 · 天猫类目Top1
+          <p className="text-base text-gray-700">
+            安全高效的四步海外资金回流方案
           </p>
         </div>
 
-        {/* 三卡片一行 */}
-        <div className="col-span-4 bg-pink-50 rounded-2xl p-4 flex flex-col">
-          <SafeIcon icon={Zap} size={32} className="text-pink-500 mb-2" />
-          <h3 className="font-semibold text-pink-800">声波技术</h3>
-          <p className="text-sm text-pink-700 mt-1">
-            Sonic声波吮吸技术
-            <br />
-            3档可调节强度
-          </p>
+        {/* Row 2 - Two Cards */}
+        <div className="col-span-2 bg-blue-50/70 p-6 rounded-2xl">
+          <div className="flex items-center mb-3">
+            <div className="bg-blue-500 text-white rounded-full w-10 h-10 flex items-center justify-center font-bold text-lg mr-3">
+              1
+            </div>
+            <h3 className="text-lg font-bold text-gray-800">境外支付渠道</h3>
+          </div>
+          <div className="flex items-center">
+            <SafeIcon icon={Wallet} size={24} className="text-blue-500 mr-2" />
+            <p className="text-base text-gray-700">
+              香港公司开通 Stripe/Paypal 收款
+            </p>
+          </div>
+        </div>
+        
+        <div className="col-span-1 bg-blue-50/70 p-6 rounded-2xl">
+          <div className="flex items-center mb-3">
+            <div className="bg-blue-500 text-white rounded-full w-10 h-10 flex items-center justify-center font-bold text-lg mr-3">
+              2
+            </div>
+            <h3 className="text-lg font-bold text-gray-800">提现流转</h3>
+          </div>
+          <div className="flex items-center">
+            <SafeIcon icon={Building} size={24} className="text-blue-500 mr-2" />
+            <p className="text-base text-gray-700">
+              空中云汇公司账户
+            </p>
+          </div>
         </div>
 
-        <div className="col-span-4 bg-pink-50 rounded-2xl p-4 flex flex-col">
-          <SafeIcon icon={Droplets} size={32} className="text-pink-500 mb-2" />
-          <h3 className="font-semibold text-pink-800">防水设计</h3>
-          <p className="text-sm text-pink-700 mt-1">
-            IPX6级防水
-            <br />
-            可直接冲洗/淋浴使用
-          </p>
+        {/* Row 3 - Two Cards */}
+        <div className="col-span-1 bg-blue-50/70 p-6 rounded-2xl">
+          <div className="flex items-center mb-3">
+            <div className="bg-blue-500 text-white rounded-full w-10 h-10 flex items-center justify-center font-bold text-lg mr-3">
+              3
+            </div>
+            <h3 className="text-lg font-bold text-gray-800">个人香港卡</h3>
+          </div>
+          <div className="flex items-center">
+            <SafeIcon icon={CreditCard} size={24} className="text-blue-500 mr-2" />
+            <p className="text-base text-gray-700">
+              提现到香港银行卡
+            </p>
+          </div>
+        </div>
+        
+        <div className="col-span-2 bg-blue-50/70 p-6 rounded-2xl">
+          <div className="flex items-center mb-3">
+            <div className="bg-blue-500 text-white rounded-full w-10 h-10 flex items-center justify-center font-bold text-lg mr-3">
+              4
+            </div>
+            <h3 className="text-lg font-bold text-gray-800">国内到账</h3>
+          </div>
+          <div className="flex items-center">
+            <SafeIcon icon={Bank} size={24} className="text-blue-500 mr-2" />
+            <p className="text-base text-gray-700">
+              转入个人国内银行卡
+            </p>
+          </div>
         </div>
 
-        <div className="col-span-4 bg-pink-50 rounded-2xl p-4 flex flex-col">
-          <SafeIcon icon={HeartHandshake} size={32} className="text-pink-500 mb-2" />
-          <h3 className="font-semibold text-pink-800">舒适材质</h3>
-          <p className="text-sm text-pink-700 mt-1">
-            双层柔软硅胶
-            <br />
-            FDA级标准安全材质
-          </p>
-        </div>
-
-        {/* 两卡片一行 */}
-        <div className="col-span-6 bg-pink-50 rounded-2xl p-4 flex flex-col">
-          <SafeIcon icon={ShowerHead} size={32} className="text-pink-500 mb-2" />
-          <h3 className="font-semibold text-pink-800">使用场景</h3>
-          <p className="text-sm text-pink-700 mt-1">
-            日常放松 · 浴室享受
-            <br />
-            浪漫纪念日 · 异地恋情
-          </p>
-        </div>
-
-        <div className="col-span-6 bg-pink-50 rounded-2xl p-4 flex flex-col">
-          <SafeIcon icon={Lightbulb} size={32} className="text-pink-500 mb-2" />
-          <h3 className="font-semibold text-pink-800">贴心设计</h3>
-          <p className="text-sm text-pink-700 mt-1">
-            安全锁功能 · 极静设计
-            <br />
-            电量提示 · 暖光氛围灯
-          </p>
-        </div>
-
-        {/* 全宽度卡片 */}
-        <div className="col-span-12 bg-pink-50 rounded-2xl p-4 flex flex-col">
+        {/* Row 4 - Full Width Card */}
+        <Link href="https://x.com/intent/follow?screen_name=eviljer" 
+              className="col-span-3 bg-blue-50/70 p-6 rounded-2xl hover:bg-blue-100/80 transition-colors group">
           <div className="flex items-center justify-between">
-            <h3 className="font-semibold text-pink-800">设计荣誉</h3>
-            <SafeIcon icon={Award} size={32} className="text-pink-500" />
+            <div className="flex items-center">
+              <SafeIcon icon={ArrowRightLeft} size={24} className="text-blue-500 mr-3" />
+              <p className="text-base text-gray-700">
+                完整资金流：香港公司收款 → 空中云汇 → 香港卡 → 国内银行卡
+              </p>
+            </div>
+            <SafeIcon icon={ExternalLink} size={20} className="text-blue-500 opacity-0 group-hover:opacity-100 transition-opacity" />
           </div>
-          <div className="mt-2 grid grid-cols-3 gap-2 text-sm text-pink-700">
-            <div className="bg-pink-100/50 rounded-lg p-2 text-center">2019 台湾金点设计奖</div>
-            <div className="bg-pink-100/50 rounded-lg p-2 text-center">2019 德国红点设计大奖</div>
-            <div className="bg-pink-100/50 rounded-lg p-2 text-center">2020 美国 IDEA 设计铜奖</div>
-          </div>
-        </div>
-
-        {/* 购买链接卡片 */}
-        <a 
-          href="https://detail.tmall.com/item.htm?id=682202291873" 
-          target="_blank" 
-          rel="noopener noreferrer"
-          className="col-span-12 bg-pink-100 rounded-2xl p-6 flex items-center justify-between transition hover:bg-pink-200 cursor-pointer"
-        >
-          <h3 className="font-bold text-xl text-pink-800">立即购买 - 百万女生口碑推荐</h3>
-          <SafeIcon icon={Gift} size={32} className="text-pink-500" />
-        </a>
+        </Link>
       </div>
     </div>
   )
 }
 
-// Generated at: 2025-05-09T14:59:52.003Z
+export default BentoGrid
+
+// Generated at: 2025-05-11T06:12:59.893Z

@@ -2,14 +2,14 @@
 
 ## Prompt:
 ```
-extract the [content], design a bento grid page.
-
+extract the [content], design a bento grid.
+> A bento grid consists of rectangles of different sizes that create one larger rectangular layout.
 Follow the design atom:
 {
-  "form": "react",
+  "implementation": "react, mobile-friendly",
   "content": "Friendly infographic. Focus on keywords + concise takeaway points. NO [Emoji, long sentence]",
   "style": "Apple Inc. Bright tone",
-  "layout": "Tightly-packed bento grid with complete coverage (NO empty spaces), flexible block merging, perfect rectangular composition, and a visually dominant core block, limit the total number of blocks to 6-9",
+  "layout": "Tightly-packed bento grid with complete rectangular coverage (NO empty spaces), limit to 6-9 blocks. Each row MUST form a complete rectangle. Single card in a row MUST span full width",
   "icon": "lucide_react",
   "color": "tailwind",
   "palette_system": "Extract a base tone from the content's emotional feel. Build a harmonized palette system using a single hue family. Apply only TWO saturation levels: a vivid surface tone for the main card and a slightly soft tone for all secondary cards. Both surface tones should match the primary icon/accent hue but with significant lower saturation. Maintain the same primary accent color across all cards for icons.",
@@ -28,8 +28,7 @@ Follow the design atom:
 Note:
 1. Insert spaces on both sides of numbers.
 2. Ensure the entire layout fits within a single screen (max 100vh). Avoid vertical overflow. Cap card height, compress layout density. 
-3. IMPORTANT FOR GRID LAYOUT: Use grid-cols-12 or grid-cols-6 as base. ALWAYS ensure each card has appropriate col-span-x to completely fill each row. If a row has only one card, that card MUST have col-span-12 (or full width).
-4. If URL in the content, add internal link to the appropriate card.`
+3. If URL in the content, add internal link to the appropriate card.`
 ```
 
 ## Quick start in App/Web:
