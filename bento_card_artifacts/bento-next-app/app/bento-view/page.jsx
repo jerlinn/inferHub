@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react'
 import Link from 'next/link'
-import { House, RefreshCw } from 'lucide-react'
+import { House, RefreshCw, User, ShoppingBag, BookOpen, BarChart3, Grid } from 'lucide-react'
 import dynamic from 'next/dynamic'
 import { useSearchParams } from 'next/navigation'
 
@@ -33,7 +33,7 @@ const DynamicBentoGrid = dynamic(() => {
 })
 
 // 默认 Bento Grid 组件
-const DefaultBentoGrid = dynamic(() => import('../../components/DefaultBentoGrid'), {
+const DefaultBentoGrid = dynamic(() => import('../../components/BentoGrid_konwledge_NVR'), {
   ssr: false,
   loading: () => (
     <div className="flex justify-center items-center h-48 w-full">
@@ -41,6 +41,15 @@ const DefaultBentoGrid = dynamic(() => import('../../components/DefaultBentoGrid
     </div>
   )
 })
+
+// 动态映射所有 BentoGrid 组件
+const gridComponentMap = {
+  default: dynamic(() => import('../../components/BentoGrid_stableGrid'), { ssr: false }),
+  BentoGrid_BIO: dynamic(() => import('../../components/BentoGrid_BIO'), { ssr: false }),
+  BentoGrid_goods: dynamic(() => import('../../components/BentoGrid_goods'), { ssr: false }),
+  BentoGrid_knowledge_nagomi: dynamic(() => import('../../components/BentoGrid_knowledge_nagomi'), { ssr: false }),
+  BentoGrid_konwledge_NVR: dynamic(() => import('../../components/BentoGrid_konwledge_NVR'), { ssr: false }),
+}
 
 export default function BentoView() {
   const searchParams = useSearchParams()
@@ -98,7 +107,31 @@ export default function BentoView() {
             <House className="mr-2 h-4 w-4" />
             Home
           </Link>
-          
+
+          {/* 示例按钮区 居中 */}
+          <div className="flex items-center gap-4">
+            <Link href="/bento-view?example=default" className="flex flex-row items-center px-4 py-2 rounded-full bg-white border border-gray-200 shadow-sm hover:bg-blue-50 transition group gap-2">
+              <Grid className="text-gray-600" size={16} />
+              <span className="text-xs text-gray-900 font-medium">默认</span>
+            </Link>
+            <Link href="/bento-view?example=BentoGrid_BIO" className="flex flex-row items-center px-4 py-2 rounded-full bg-white border border-gray-200 shadow-sm hover:bg-blue-50 transition group gap-2">
+              <User className="text-gray-600" size={16} />
+              <span className="text-xs text-gray-900 font-medium">个人档案</span>
+            </Link>
+            <Link href="/bento-view?example=BentoGrid_goods" className="flex flex-row items-center px-4 py-2 rounded-full bg-white border border-gray-200 shadow-sm hover:bg-blue-50 transition group gap-2">
+              <ShoppingBag className="text-gray-600" size={16} />
+              <span className="text-xs text-gray-900 font-medium">商品</span>
+            </Link>
+            <Link href="/bento-view?example=BentoGrid_knowledge_nagomi" className="flex flex-row items-center px-4 py-2 rounded-full bg-white border border-gray-200 shadow-sm hover:bg-blue-50 transition group gap-2">
+              <BookOpen className="text-gray-600" size={16} />
+              <span className="text-xs text-gray-900 font-medium">概念讲解</span>
+            </Link>
+            <Link href="/bento-view?example=BentoGrid_konwledge_NVR" className="flex flex-row items-center px-4 py-2 rounded-full bg-white border border-gray-200 shadow-sm hover:bg-blue-50 transition group gap-2">
+              <BarChart3 className="text-gray-600" size={16} />
+              <span className="text-xs text-gray-900 font-medium">数据信息</span>
+            </Link>
+          </div>
+
           <button
             onClick={handleRefresh}
             className="inline-flex items-center text-gray-600 hover:text-gray-800 transition-colors p-2 rounded-full hover:bg-gray-100"
@@ -114,33 +147,21 @@ export default function BentoView() {
               <div className="animate-spin rounded-full h-16 w-16 border-t-2 border-b-2 border-blue-500"></div>
             </div>
           ) : (
-            <>
-              {isExample && (
-                <div className="bg-violet-50 border-l-4 border-violet-400 text-violet-700 p-4 m-4 md:m-8 rounded-r-xl">
-                  <p>这是示例 Bento Grid。返回首页提交文本内容可生成自定义的 Bento Grid。</p>
-                </div>
-              )}
-              
-              {useDefault && !isExample && (
-                <div className="bg-yellow-100 border-l-4 border-yellow-500 text-yellow-700 p-4 m-4 md:m-8 rounded-r-md">
-                  <p>使用默认 Bento Grid 组件展示。你可以返回首页提交文本内容来生成自定义的 Bento Grid。</p>
-                </div>
-              )}
-              
-              <div className="p-4 md:p-8">
-                {/* 根据参数决定显示示例或生成的内容，并用错误边界包裹 */}
-                {isExample ? (
-                  <DefaultBentoGrid key={refreshKey} />
-                ) : (
-                  <BentoErrorBoundary>
-                    <DynamicBentoGrid key={refreshKey} />
-                  </BentoErrorBoundary>
-                )}
-              </div>
-            </>
+            <div className="p-4 md:p-8">
+              {/* 动态加载对应 BentoGrid 组件 */}
+              {(() => {
+                const key = example && gridComponentMap[example] ? example : 'default';
+                const GridComponent = gridComponentMap[key];
+                return <GridComponent key={refreshKey} />
+              })()}
+            </div>
           )}
         </div>
       </div>
+      {/* Footer 居中下移 */}
+      <footer className="mt-10 flex justify-center items-center w-full text-xs text-gray-400">
+        © 2024 Bento Grid Maker
+      </footer>
     </main>
   )
 } 

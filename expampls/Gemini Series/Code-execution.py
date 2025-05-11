@@ -2,7 +2,7 @@ from google import genai
 from google.genai import types
 
 # 读取文件为二进制数据
-file_path = "/Users/jerlin/Desktop/macro_china_supply_of_money.csv"
+file_path = "macro_china_supply_of_money.csv"
 with open(file_path, "rb") as f:
     file_bytes = f.read()
 
