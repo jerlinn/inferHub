@@ -9,10 +9,10 @@ import {
   Heart, 
   Sparkles, 
   RefreshCw, 
-  Activity,
+  Eye,
   Coffee, 
-  Home, 
-  Users
+  MountainSnow, 
+  CheckCheck
 } from "lucide-react";
 
 // SafeIcon: if failed, use BadgeInfo as fallback
@@ -80,7 +80,7 @@ export default function NagomiBentoGrid() {
         </div>
         
         <div className="col-span-4 bg-teal-50/70 p-5 rounded-2xl">
-          <SafeIcon icon={Activity} size={32} className="text-teal-500 mb-2" />
+          <SafeIcon icon={Eye} size={32} className="text-teal-500 mb-2" />
           <h3 className="font-bold text-teal-700 mb-1">核心洞见</h3>
           <p className="text-teal-800 text-sm">
             非排除冲突 · 是调和再均衡 · 主动创造 · 张力转化
@@ -88,7 +88,7 @@ export default function NagomiBentoGrid() {
         </div>
         
         <div className="col-span-6 bg-teal-50/70 p-5 rounded-2xl">
-          <SafeIcon icon={Home} size={32} className="text-teal-500 mb-2" />
+          <SafeIcon icon={MountainSnow} size={32} className="text-teal-500 mb-2" />
           <h3 className="font-bold text-teal-700 mb-1">物质体现</h3>
           <p className="text-teal-800 text-sm">
             茶室躙口设计 · 榻榻米触感 · 和纸漫反射 · 枯山水布局 · 怀石料理五味平衡
@@ -96,7 +96,7 @@ export default function NagomiBentoGrid() {
         </div>
         
         <div className="col-span-6 bg-teal-50/70 p-5 rounded-2xl">
-          <SafeIcon icon={Users} size={32} className="text-teal-500 mb-2" />
+          <SafeIcon icon={CheckCheck} size={32} className="text-teal-500 mb-2" />
           <h3 className="font-bold text-teal-700 mb-1">现代应用</h3>
           <p className="text-teal-800 text-sm">
             疗愈经济 · 压力管理 · 和み经营企业哲学 · 日常微和み实践 · 工作生活平衡设计

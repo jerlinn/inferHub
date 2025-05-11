@@ -2,7 +2,7 @@
 
 import { useState, useRef, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
-import { Wand, Twitter, Github, LoaderPinwheel, Lightbulb } from 'lucide-react'
+import { Wand, Twitter, Github, LoaderPinwheel, Lightbulb, Grid, User, ShoppingBag, BookOpen, BarChart3 } from 'lucide-react'
 import Link from 'next/link'
 
 export default function Home() {
@@ -111,7 +111,7 @@ export default function Home() {
                   const timestamp = Date.now()
                   console.log(`正在跳转到: /bento-view?t=${timestamp}`)
                   
-                  // 使用window.location进行强制跳转
+                  // 使用window.location进行强制跳转，确保不带example参数
                   window.location.href = `/bento-view?t=${timestamp}`
                   
                   // 保留router作为备用方案
@@ -136,7 +136,7 @@ export default function Home() {
   }
 
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-6 pt-20 sm:p-6 md:p-24 bg-[#fafafa]">
+    <main className="flex min-h-screen flex-col items-center justify-between p-6 pt-20 sm:pt-20 md:px-6 md:pt-20 md:pb-12 bg-[#fafafa]">
       <div 
         className={`w-full max-w-2xl mx-auto ${isMounted ? 'animate-fade-in' : 'opacity-0'}`} 
         style={{ 
@@ -297,17 +297,71 @@ export default function Home() {
                 </div>
               </div>
             )}
+            
+            {/* 示例模板选项 */}
+            <div className="mt-6">
+              <div className="flex flex-col gap-3">
+                <h3 className="text-sm font-medium text-gray-500 flex items-center gap-1.5">
+                  <Lightbulb className="h-4 w-4 text-gray-500" />
+                  <span>示例</span>
+                </h3>
+                
+                <div className="overflow-x-auto hide-scrollbar -mx-0 pr-0 w-full">
+                  <div className="flex items-center gap-3 pl-1 pr-0 py-1 whitespace-nowrap">
+                    <Link 
+                      href="/bento-view?example=default" 
+                      className="flex flex-row items-center px-3 py-2 rounded-full bg-white border border-gray-200 shadow-sm hover:bg-blue-50 hover:border-blue-300 transition group gap-2 min-w-[72px] justify-center"
+                    >
+                      <div className="text-gray-600 size-4 flex items-center justify-center group-hover:text-blue-500">
+                        <Grid className="size-4" />
+                      </div>
+                      <span className="text-xs text-gray-900 font-medium">默认</span>
+                    </Link>
+                    <Link 
+                      href="/bento-view?example=BentoGrid_BIO" 
+                      className="flex flex-row items-center px-3 py-2 rounded-full bg-white border border-gray-200 shadow-sm hover:bg-blue-50 hover:border-blue-300 transition group gap-2 min-w-[72px] justify-center"
+                    >
+                      <div className="text-gray-600 size-4 flex items-center justify-center group-hover:text-blue-500">
+                        <User className="size-4" />
+                      </div>
+                      <span className="text-xs text-gray-900 font-medium">档案</span>
+                    </Link>
+                    <Link 
+                      href="/bento-view?example=BentoGrid_goods" 
+                      className="flex flex-row items-center px-3 py-2 rounded-full bg-white border border-gray-200 shadow-sm hover:bg-blue-50 hover:border-blue-300 transition group gap-2 min-w-[72px] justify-center"
+                    >
+                      <div className="text-gray-600 size-4 flex items-center justify-center group-hover:text-blue-500">
+                        <ShoppingBag className="size-4" />
+                      </div>
+                      <span className="text-xs text-gray-900 font-medium">商品</span>
+                    </Link>
+                    <Link 
+                      href="/bento-view?example=BentoGrid_knowledge_nagomi" 
+                      className="flex flex-row items-center px-3 py-2 rounded-full bg-white border border-gray-200 shadow-sm hover:bg-blue-50 hover:border-blue-300 transition group gap-2 min-w-[72px] justify-center"
+                    >
+                      <div className="text-gray-600 size-4 flex items-center justify-center group-hover:text-blue-500">
+                        <BookOpen className="size-4" />
+                      </div>
+                      <span className="text-xs text-gray-900 font-medium">概念</span>
+                    </Link>
+                    <Link 
+                      href="/bento-view?example=BentoGrid_konwledge_NVR" 
+                      className="flex flex-row items-center px-3 py-2 rounded-full bg-white border border-gray-200 shadow-sm hover:bg-blue-50 hover:border-blue-300 transition group gap-2 min-w-[72px] justify-center"
+                    >
+                      <div className="text-gray-600 size-4 flex items-center justify-center group-hover:text-blue-500">
+                        <BarChart3 className="size-4" />
+                      </div>
+                      <span className="text-xs text-gray-900 font-medium">数据</span>
+                    </Link>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
         
         <div className="w-full flex justify-between items-center text-sm text-gray-500">
-          <Link 
-            href="/bento-view?example=default" 
-            className="inline-flex items-center space-x-1.5 text-gray-500 hover:text-orange-600 transition-colors p-1"
-          >
-            <Lightbulb className="h-4 w-4" />
-            <span>示例</span>
-          </Link>
+          <div></div>
           
           <div className="flex items-center space-x-6">
             <p>Powered by Claude Sonnet 3.7</p>
@@ -331,6 +385,16 @@ export default function Home() {
           </div>
         </div>
       </div>
+
+      <style jsx global>{`
+        .hide-scrollbar {
+          -ms-overflow-style: none;
+          scrollbar-width: none;
+        }
+        .hide-scrollbar::-webkit-scrollbar {
+          display: none;
+        }
+      `}</style>
     </main>
   )
 }

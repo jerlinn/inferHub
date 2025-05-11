@@ -53,13 +53,24 @@ const gridComponentMap = {
 
 export default function BentoView() {
   const searchParams = useSearchParams()
-  const example = searchParams.get('example')
+  const example = searchParams.get('example') || 'default'
+  const timestamp = searchParams.get('t')
   
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
   const [useDefault, setUseDefault] = useState(false)
   const [isExample, setIsExample] = useState(false)
   const [refreshKey, setRefreshKey] = useState(Date.now()) // 添加强制刷新的 key
+  const [currentTab, setCurrentTab] = useState(example)
+  const [isFromGeneration, setIsFromGeneration] = useState(false) // 判断是否来自生成页面
+
+  // 检测URL参数变化更新当前tab
+  useEffect(() => {
+    setCurrentTab(example)
+    
+    // 检测是否来自生成页面的跳转 - 有时间戳参数但没有example参数
+    setIsFromGeneration(searchParams.has('t') && !searchParams.has('example'))
+  }, [example, searchParams])
 
   // 强制刷新函数
   const handleRefresh = () => {
@@ -68,8 +79,8 @@ export default function BentoView() {
   }
 
   useEffect(() => {
-    // 检查是否是示例模式
-    if (example === 'default') {
+    // 检查是否是示例模式或来自生成页面
+    if (example === 'default' && !isFromGeneration) {
       setIsExample(true)
       setLoading(false)
       return
@@ -94,7 +105,13 @@ export default function BentoView() {
     }
 
     fetchBentoStatus()
-  }, [refreshKey, example]) // 依赖refreshKey和example参数
+  }, [refreshKey, example, isFromGeneration]) // 依赖refreshKey, example和isFromGeneration
+
+  // 隐藏滚动条样式
+  const hideScrollbarStyle = {
+    msOverflowStyle: 'none',
+    scrollbarWidth: 'none',
+  }
 
   return (
     <main className="min-h-screen bg-slate-50 pb-8 pt-8 px-6 md:p-8">
@@ -102,39 +119,74 @@ export default function BentoView() {
         <div className="mb-6 flex justify-between items-center">
           <Link 
             href="/"
-            className="inline-flex items-center text-gray-600 hover:text-gray-800 transition-colors"
+            className="inline-flex items-center text-sm text-gray-600 hover:text-gray-800 transition-colors"
           >
             <House className="mr-2 h-4 w-4" />
             Home
           </Link>
 
-          {/* 示例按钮区 居中 */}
-          <div className="flex items-center gap-4">
-            <Link href="/bento-view?example=default" className="flex flex-row items-center px-4 py-2 rounded-full bg-white border border-gray-200 shadow-sm hover:bg-blue-50 transition group gap-2">
-              <Grid className="text-gray-600" size={16} />
-              <span className="text-xs text-gray-900 font-medium">默认</span>
-            </Link>
-            <Link href="/bento-view?example=BentoGrid_BIO" className="flex flex-row items-center px-4 py-2 rounded-full bg-white border border-gray-200 shadow-sm hover:bg-blue-50 transition group gap-2">
-              <User className="text-gray-600" size={16} />
-              <span className="text-xs text-gray-900 font-medium">个人档案</span>
-            </Link>
-            <Link href="/bento-view?example=BentoGrid_goods" className="flex flex-row items-center px-4 py-2 rounded-full bg-white border border-gray-200 shadow-sm hover:bg-blue-50 transition group gap-2">
-              <ShoppingBag className="text-gray-600" size={16} />
-              <span className="text-xs text-gray-900 font-medium">商品</span>
-            </Link>
-            <Link href="/bento-view?example=BentoGrid_knowledge_nagomi" className="flex flex-row items-center px-4 py-2 rounded-full bg-white border border-gray-200 shadow-sm hover:bg-blue-50 transition group gap-2">
-              <BookOpen className="text-gray-600" size={16} />
-              <span className="text-xs text-gray-900 font-medium">概念讲解</span>
-            </Link>
-            <Link href="/bento-view?example=BentoGrid_konwledge_NVR" className="flex flex-row items-center px-4 py-2 rounded-full bg-white border border-gray-200 shadow-sm hover:bg-blue-50 transition group gap-2">
-              <BarChart3 className="text-gray-600" size={16} />
-              <span className="text-xs text-gray-900 font-medium">数据信息</span>
-            </Link>
-          </div>
+          {/* 根据不同状态显示不同内容：示例分类tab或生成结果标题 */}
+          {isFromGeneration ? (
+            <div className="flex-1 flex justify-center">
+              <h2 className="text-gray-800 font-medium text-sm md:text-base">
+                生成结果
+              </h2>
+            </div>
+          ) : (
+            <div className="overflow-x-auto flex items-center -mx-2" style={hideScrollbarStyle}>
+              <div className="flex items-center gap-3 px-4 py-1 whitespace-nowrap">
+                <Link 
+                  href="/bento-view?example=default" 
+                  className={`flex flex-row items-center px-3 py-2 rounded-full bg-white border shadow-sm hover:bg-blue-50 transition group gap-2 min-w-[72px] justify-center
+                    ${currentTab === 'default' ? 'border-blue-400 bg-blue-50 shadow-sm' : 'border-gray-200'}`}
+                  onClick={() => setCurrentTab('default')}
+                >
+                  <Grid className={`${currentTab === 'default' ? 'text-blue-500' : 'text-gray-600'}`} size={16} />
+                  <span className="text-xs text-gray-900 font-medium">默认</span>
+                </Link>
+                <Link 
+                  href="/bento-view?example=BentoGrid_BIO" 
+                  className={`flex flex-row items-center px-3 py-2 rounded-full bg-white border shadow-sm hover:bg-blue-50 transition group gap-2 min-w-[72px] justify-center
+                    ${currentTab === 'BentoGrid_BIO' ? 'border-blue-400 bg-blue-50 shadow-sm' : 'border-gray-200'}`}
+                  onClick={() => setCurrentTab('BentoGrid_BIO')}
+                >
+                  <User className={`${currentTab === 'BentoGrid_BIO' ? 'text-blue-500' : 'text-gray-600'}`} size={16} />
+                  <span className="text-xs text-gray-900 font-medium">档案</span>
+                </Link>
+                <Link 
+                  href="/bento-view?example=BentoGrid_goods" 
+                  className={`flex flex-row items-center px-3 py-2 rounded-full bg-white border shadow-sm hover:bg-blue-50 transition group gap-2 min-w-[72px] justify-center
+                    ${currentTab === 'BentoGrid_goods' ? 'border-blue-400 bg-blue-50 shadow-sm' : 'border-gray-200'}`}
+                  onClick={() => setCurrentTab('BentoGrid_goods')}
+                >
+                  <ShoppingBag className={`${currentTab === 'BentoGrid_goods' ? 'text-blue-500' : 'text-gray-600'}`} size={16} />
+                  <span className="text-xs text-gray-900 font-medium">商品</span>
+                </Link>
+                <Link 
+                  href="/bento-view?example=BentoGrid_knowledge_nagomi" 
+                  className={`flex flex-row items-center px-3 py-2 rounded-full bg-white border shadow-sm hover:bg-blue-50 transition group gap-2 min-w-[72px] justify-center
+                    ${currentTab === 'BentoGrid_knowledge_nagomi' ? 'border-blue-400 bg-blue-50 shadow-sm' : 'border-gray-200'}`}
+                  onClick={() => setCurrentTab('BentoGrid_knowledge_nagomi')}
+                >
+                  <BookOpen className={`${currentTab === 'BentoGrid_knowledge_nagomi' ? 'text-blue-500' : 'text-gray-600'}`} size={16} />
+                  <span className="text-xs text-gray-900 font-medium">概念</span>
+                </Link>
+                <Link 
+                  href="/bento-view?example=BentoGrid_konwledge_NVR" 
+                  className={`flex flex-row items-center px-3 py-2 rounded-full bg-white border shadow-sm hover:bg-blue-50 transition group gap-2 min-w-[72px] justify-center
+                    ${currentTab === 'BentoGrid_konwledge_NVR' ? 'border-blue-400 bg-blue-50 shadow-sm' : 'border-gray-200'}`}
+                  onClick={() => setCurrentTab('BentoGrid_konwledge_NVR')}
+                >
+                  <BarChart3 className={`${currentTab === 'BentoGrid_konwledge_NVR' ? 'text-blue-500' : 'text-gray-600'}`} size={16} />
+                  <span className="text-xs text-gray-900 font-medium">数据</span>
+                </Link>
+              </div>
+            </div>
+          )}
 
           <button
             onClick={handleRefresh}
-            className="inline-flex items-center text-gray-600 hover:text-gray-800 transition-colors p-2 rounded-full hover:bg-gray-100"
+            className="inline-flex items-center text-gray-600 hover:text-gray-800 transition-colors p-2 rounded-full hover:bg-gray-100 ml-4"
             title="刷新"
           >
             <RefreshCw className="h-4 w-4" />
@@ -150,6 +202,13 @@ export default function BentoView() {
             <div className="p-4 md:p-8">
               {/* 动态加载对应 BentoGrid 组件 */}
               {(() => {
+                // 如果是从生成页面跳转来的，且没有标记为使用默认组件，加载动态生成的 BentoGrid
+                if (isFromGeneration && !useDefault) {
+                  console.log('Loading dynamically generated BentoGrid')
+                  return <DynamicBentoGrid key={refreshKey} />;
+                }
+                
+                // 否则加载对应的示例组件
                 const key = example && gridComponentMap[example] ? example : 'default';
                 const GridComponent = gridComponentMap[key];
                 return <GridComponent key={refreshKey} />
@@ -158,7 +217,6 @@ export default function BentoView() {
           )}
         </div>
       </div>
-      {/* Footer 居中下移 */}
       <footer className="mt-10 flex justify-center items-center w-full text-xs text-gray-400">
         © 2024 Bento Grid Maker
       </footer>

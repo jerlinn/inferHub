@@ -1,18 +1,8 @@
 'use client'
 
 import React from 'react'
+import { BadgeInfo, Heart, Gift, Calendar, MessageCircleHeart, Coffee, UtensilsCrossed } from 'lucide-react'
 import Link from 'next/link'
-import {
-  BadgeInfo,
-  Globe,
-  CreditCard,
-  ArrowRightLeft,
-  Building,
-  Wallet,
-  Bank,
-  Banknote,
-  ExternalLink
-} from 'lucide-react'
 
 // SafeIcon: if failed, use BadgeInfo as fallback
 const SafeIcon = ({ icon: Icon, fallback: Fallback = BadgeInfo, ...props }) => {
@@ -31,93 +21,52 @@ const SafeIcon = ({ icon: Icon, fallback: Fallback = BadgeInfo, ...props }) => {
 
 const BentoGrid = () => {
   return (
-    <div className="w-full max-w-4xl mx-auto p-4">
+    <div className="w-full max-w-5xl mx-auto p-4 bg-[#fefefe]">
       <div className="grid grid-cols-3 gap-4">
-        {/* Row 1 - Full Width Card */}
-        <div className="col-span-3 bg-blue-50 p-6 rounded-2xl">
-          <div className="flex items-center justify-between mb-4">
-            <h2 className="text-xl font-bold text-gray-800">海外资金回款路径</h2>
-            <SafeIcon icon={Globe} size={32} className="text-blue-500" />
-          </div>
-          <p className="text-base text-gray-700">
-            安全高效的四步海外资金回流方案
-          </p>
+        {/* Row 1: Full-width header */}
+        <div className="col-span-3 bg-rose-50 p-6 rounded-2xl flex flex-col items-center justify-center">
+          <SafeIcon icon={Heart} size={48} className="text-rose-500 mb-3" />
+          <h2 className="text-xl font-bold text-rose-900 text-center">母亲节庆祝指南</h2>
         </div>
 
-        {/* Row 2 - Two Cards */}
-        <div className="col-span-2 bg-blue-50/70 p-6 rounded-2xl">
-          <div className="flex items-center mb-3">
-            <div className="bg-blue-500 text-white rounded-full w-10 h-10 flex items-center justify-center font-bold text-lg mr-3">
-              1
-            </div>
-            <h3 className="text-lg font-bold text-gray-800">境外支付渠道</h3>
-          </div>
-          <div className="flex items-center">
-            <SafeIcon icon={Wallet} size={24} className="text-blue-500 mr-2" />
-            <p className="text-base text-gray-700">
-              香港公司开通 Stripe/Paypal 收款
-            </p>
-          </div>
-        </div>
-        
-        <div className="col-span-1 bg-blue-50/70 p-6 rounded-2xl">
-          <div className="flex items-center mb-3">
-            <div className="bg-blue-500 text-white rounded-full w-10 h-10 flex items-center justify-center font-bold text-lg mr-3">
-              2
-            </div>
-            <h3 className="text-lg font-bold text-gray-800">提现流转</h3>
-          </div>
-          <div className="flex items-center">
-            <SafeIcon icon={Building} size={24} className="text-blue-500 mr-2" />
-            <p className="text-base text-gray-700">
-              空中云汇公司账户
-            </p>
-          </div>
+        {/* Row 2: Three equal cards */}
+        <div className="bg-rose-50/70 p-5 rounded-2xl">
+          <SafeIcon icon={Calendar} size={32} className="text-rose-500 mb-2" />
+          <h3 className="font-semibold text-rose-900 mb-1">日期</h3>
+          <p className="text-rose-800 text-base">五月第二个星期日</p>
         </div>
 
-        {/* Row 3 - Two Cards */}
-        <div className="col-span-1 bg-blue-50/70 p-6 rounded-2xl">
-          <div className="flex items-center mb-3">
-            <div className="bg-blue-500 text-white rounded-full w-10 h-10 flex items-center justify-center font-bold text-lg mr-3">
-              3
-            </div>
-            <h3 className="text-lg font-bold text-gray-800">个人香港卡</h3>
-          </div>
-          <div className="flex items-center">
-            <SafeIcon icon={CreditCard} size={24} className="text-blue-500 mr-2" />
-            <p className="text-base text-gray-700">
-              提现到香港银行卡
-            </p>
-          </div>
-        </div>
-        
-        <div className="col-span-2 bg-blue-50/70 p-6 rounded-2xl">
-          <div className="flex items-center mb-3">
-            <div className="bg-blue-500 text-white rounded-full w-10 h-10 flex items-center justify-center font-bold text-lg mr-3">
-              4
-            </div>
-            <h3 className="text-lg font-bold text-gray-800">国内到账</h3>
-          </div>
-          <div className="flex items-center">
-            <SafeIcon icon={Bank} size={24} className="text-blue-500 mr-2" />
-            <p className="text-base text-gray-700">
-              转入个人国内银行卡
-            </p>
-          </div>
+        <div className="bg-rose-50/70 p-5 rounded-2xl">
+          <SafeIcon icon={Gift} size={32} className="text-rose-500 mb-2" />
+          <h3 className="font-semibold text-rose-900 mb-1">礼物推荐</h3>
+          <p className="text-rose-800 text-base">个性化纪念品</p>
         </div>
 
-        {/* Row 4 - Full Width Card */}
-        <Link href="https://x.com/intent/follow?screen_name=eviljer" 
-              className="col-span-3 bg-blue-50/70 p-6 rounded-2xl hover:bg-blue-100/80 transition-colors group">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center">
-              <SafeIcon icon={ArrowRightLeft} size={24} className="text-blue-500 mr-3" />
-              <p className="text-base text-gray-700">
-                完整资金流：香港公司收款 → 空中云汇 → 香港卡 → 国内银行卡
-              </p>
-            </div>
-            <SafeIcon icon={ExternalLink} size={20} className="text-blue-500 opacity-0 group-hover:opacity-100 transition-opacity" />
-          </div>
+        <div className="bg-rose-50/70 p-5 rounded-2xl">
+          <SafeIcon icon={MessageCircleHeart} size={32} className="text-rose-500 mb-2" />
+          <h3 className="font-semibold text-rose-900 mb-1">表达感谢</h3>
+          <p className="text-rose-800 text-base">真挚问候与感谢</p>
+        </div>
+
+        {/* Row 3: Two cards - one double width, one single */}
+        <div className="col-span-2 bg-rose-50/70 p-5 rounded-2xl">
+          <SafeIcon icon={UtensilsCrossed} size={32} className="text-rose-500 mb-2" />
+          <h3 className="font-semibold text-rose-900 mb-1">特别活动</h3>
+          <p className="text-rose-800 text-base">准备一顿丰盛早餐或温馨家庭聚餐</p>
+        </div>
+
+        <div className="bg-rose-50/70 p-5 rounded-2xl">
+          <SafeIcon icon={Coffee} size={32} className="text-rose-500 mb-2" />
+          <h3 className="font-semibold text-rose-900 mb-1">品质时光</h3>
+          <p className="text-rose-800 text-base">陪伴交流最珍贵</p>
+        </div>
+
+        {/* Row 4: Full-width footer */}
+        <Link 
+          href="https://x.com/intent/follow?screen_name=eviljer" 
+          className="col-span-3 bg-rose-50/70 p-5 rounded-2xl text-center hover:bg-rose-100/80 transition-colors"
+        >
+          <p className="text-rose-800 text-base font-medium">感恩母亲的爱与付出，每一天都是感谢的好时机</p>
         </Link>
       </div>
     </div>
@@ -126,4 +75,4 @@ const BentoGrid = () => {
 
 export default BentoGrid
 
-// Generated at: 2025-05-11T06:12:59.893Z
+// Generated at: 2025-05-11T13:06:41.451Z

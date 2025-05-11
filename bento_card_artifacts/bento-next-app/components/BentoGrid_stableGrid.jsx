@@ -8,7 +8,7 @@ import {
   Focus, 
   Heart, 
   LineChart, 
-  Settings, 
+  Sprout, 
   Target, 
   ZapOff 
 } from 'lucide-react'
@@ -83,7 +83,7 @@ export default function FlowStateBentoGrid() {
 
         <div className="col-span-1 bg-blue-50/70 p-5 rounded-2xl flex flex-col">
           <Link href="https://x.com/intent/follow?screen_name=eviljer" className="w-full h-full flex flex-col">
-            <SafeIcon icon={Settings} size={48} className="text-blue-500 mb-3" />
+            <SafeIcon icon={Sprout} size={48} className="text-blue-500 mb-3" />
             <h3 className="font-medium text-gray-800 mb-1">培养方法</h3>
             <p className="text-gray-700 text-base">减少干扰，增加挑战性</p>
           </Link>

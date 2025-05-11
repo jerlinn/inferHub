@@ -3,11 +3,11 @@
 import React from 'react'
 import { 
   BadgeInfo, 
-  Star, 
+  Bird, 
   Award, 
   Droplets, 
   HeartHandshake, 
-  Zap, 
+  AudioWaveform, 
   Gift, 
   ShowerHead, 
   Lightbulb
@@ -37,7 +37,7 @@ export default function BentoGrid() {
         <div className="col-span-12 bg-pink-100 rounded-2xl p-6 flex flex-col justify-between">
           <div className="flex items-start justify-between">
             <h2 className="text-2xl font-bold text-pink-900">逗豆鸟</h2>
-            <SafeIcon icon={Star} size={48} className="text-pink-500" />
+            <SafeIcon icon={Bird} size={48} className="text-pink-500" />
           </div>
           <p className="mt-2 text-pink-800">
             经典入门级设计 · 震动+吮吸 · 破亿销售额 · 天猫类目Top1
@@ -46,7 +46,7 @@ export default function BentoGrid() {
 
         {/* 三卡片一行 */}
         <div className="col-span-4 bg-pink-50 rounded-2xl p-4 flex flex-col">
-          <SafeIcon icon={Zap} size={32} className="text-pink-500 mb-2" />
+          <SafeIcon icon={AudioWaveform} size={32} className="text-pink-500 mb-2" />
           <h3 className="font-semibold text-pink-800">声波技术</h3>
           <p className="text-sm text-pink-700 mt-1">
             Sonic声波吮吸技术
