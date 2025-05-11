@@ -26,6 +26,8 @@ def generate():
         config=generate_content_config,
     ):
         print(chunk.text, end="")
+        # The usage_metadata provides detailed token counts.
+        print(chunk.usage_metadata)
 
 if __name__ == "__main__":
     generate()

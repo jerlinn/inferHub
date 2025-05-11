@@ -1,13 +1,11 @@
 from google import genai
 from google.genai import types
 
-# 测试 vertex 只需要 key 加 -590
 def generate():
     client = genai.Client(
         api_key="sk-***", # 🔑 换成你在 AiHubMix 生成的密钥
         http_options={"base_url": "https://aihubmix.com/gemini"},
     )
-
 
     model = "gemini-2.0-flash"
     contents = [

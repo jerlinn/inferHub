@@ -12,3 +12,4 @@ response = client.responses.create(
 )
 
 print(response)
+print(response.usage)
