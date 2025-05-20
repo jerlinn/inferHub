@@ -7,7 +7,7 @@ client = OpenAI(
 )
 
 response = client.responses.create(
-  model="gpt-4o-mini",
+  model="codex-mini-latest",
   instructions="You are a helpful assistant.",
   input="Hello!",
   stream=True

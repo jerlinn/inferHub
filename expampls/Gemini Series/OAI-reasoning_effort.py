@@ -11,7 +11,7 @@ completion = client.chat.completions.create(
     messages=[
         {
             "role": "user",
-            "content": "Explain the Occam's Razor concept and provide everyday examples of it"
+            "content": "金融领域的「72 法则」是如何推导的？"
         }
     ],
     stream=True
@@ -20,4 +20,10 @@ completion = client.chat.completions.create(
 #print(completion.choices[0].message.content)
 
 for chunk in completion:
+    # 打印内容部分
     print(chunk.choices[0].delta)
+    # 只在最后一个 chunk（包含完整 usage 数据）时打印 usage 信息
+    if chunk.usage and chunk.usage.completion_tokens > 0:
+        print(f"输出 tokens: {chunk.usage.completion_tokens}")
+        print(f"输入 tokens: {chunk.usage.prompt_tokens}")
+        print(f"总 tokens: {chunk.usage.total_tokens}")

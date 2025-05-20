@@ -7,7 +7,7 @@ client = OpenAI(
 )
 
 response = client.responses.create(
-  model="gpt-4o-mini",
+  model="gpt-4o-mini", # codex-mini-latest
   input="Tell me a three sentence bedtime story about a unicorn."
 )
 

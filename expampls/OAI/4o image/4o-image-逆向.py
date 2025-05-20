@@ -14,7 +14,7 @@ stream = client.chat.completions.create(
             "content": [
                 {
                     "type": "text",
-                    "text": """redesign poster of the movie [Black Swam], 3D cartoon, smooth render, bright tone, 2:3
+                    "text": """a painting of The Predator as "Mona Lisa", 2:3, 2:3
 """
                 }
             ]

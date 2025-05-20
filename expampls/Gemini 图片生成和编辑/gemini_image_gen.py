@@ -5,20 +5,20 @@ from io import BytesIO
 import base64
 
 client = OpenAI(
-    api_key="sk-***", # 🔑 换成你在 AiHubMix 生成的密钥
+    api_key=os.getenv("AIHUBMIX_API_KEY"), # 🔑 换成你在 AiHubMix 生成的密钥
     base_url="https://aihubmix.com/v1",
 )
 
 # Using text-only input
 response = client.chat.completions.create(
-    model="gemini-2.0-flash-exp",
+    model="gemini-2.0-flash-preview-image-generation",
     messages=[
         {
             "role": "user",
             "content": [
                 {
                     "type": "text",
-                    "text": "generate an adorable mermaid in the sea, bold outline, chibi cartoon, in the style of Children coloring book, B&W",
+                    "text": "generate an adorable mermaid in the sea, bold outline, chibi cartoon, in the style of Children coloring book, B&W, HD",
                 }
             ],
         },
