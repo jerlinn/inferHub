@@ -42,7 +42,7 @@ with open(source_image_path, "rb") as image_file:
     response = requests.post(
       "https://aihubmix.com/ideogram/v1/ideogram-v3/replace-background",
       headers={
-        "Api-Key": "sk-***" # 替换为你的 AIHUBMIX API 密钥
+        "Api-Key": os.getenv("AIHUBMIX_API_KEY"), # 替换为你的 AIHUBMIX API 密钥
       },
       data=data,
       files=files

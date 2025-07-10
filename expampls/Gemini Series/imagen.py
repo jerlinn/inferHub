@@ -7,16 +7,17 @@ from io import BytesIO
 
 client = genai.Client(
     api_key=os.getenv("AIHUBMIX_API_KEY"), # 🔑 换成你在 AiHubMix 生成的密钥
-    http_options={"base_url": "https://api.aihubmix.com/gemini"},
+    http_options={"base_url": "https://aihubmix.com/gemini"},
 )
 
 # 目前只支持英文 prompt，绘制大量文本的表现较差
 response = client.models.generate_images(
-    model='imagen-3.0-generate-002',
-    prompt='A minimalist logo for a LLM router market company on a solid white background. trident in a circle as the main symbol, with ONLY text \'InferEra\' below.',
+    model='imagen-4.0-ultra-generate-preview-06-06', # imagen-4.0-generate-preview-05-20、imagen-3.0-generate-002、imagen-4.0-ultra-generate-exp-05-20, imagen-4.0-generate-preview-06-06, imagen-4.0-ultra-generate-preview-06-06
+    prompt="Asuka with skintight fighting suit, in beautiful scene. low angle, dynamic lighting, female gesture, dynamic pose, delicate detailed, isometric 3d",
     config=types.GenerateImagesConfig(
         number_of_images=1,
-        aspect_ratio="1:1", # supports "1:1", "9:16", "16:9", "3:4", or "4:3".
+        aspect_ratio="16:9", # supports "1:1", "9:16", "16:9", "3:4", or "4:3".
+        person_generation="allow_adult"
     )
 )
 

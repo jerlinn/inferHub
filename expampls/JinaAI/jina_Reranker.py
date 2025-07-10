@@ -1,10 +1,13 @@
 import requests
+import os
 
 url = 'https://aihubmix.com/v1/rerank'
 headers = {
     'Content-Type': 'application/json',
-    'Authorization': 'Bearer sk-***' # 替换为你的 AiHubMix 密钥
+    "Authorization": f"Bearer {os.environ.get('AIHUBMIX_API_KEY')}",
+    'APP-Code': '******'
 }
+
 data = {
     "model": "jina-reranker-m0",
     "query": "small language model data extraction",

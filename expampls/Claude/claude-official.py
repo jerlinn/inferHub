@@ -7,7 +7,8 @@ client = anthropic.Anthropic(
 )
 
 message = client.messages.create(
-    model="claude-3-7-sonnet-20250219",
+    extra_headers={"APP-Code":"******"},
+    model="claude-3-7-sonnet-20250219", # claude-opus-4-20250514, claude-sonnet-4-20250514
     max_tokens=1024,
     messages=[
         {"role": "user", "content": "Hello, Claude"}

@@ -10,7 +10,7 @@ async function generateBentoWithClaudeStream(content, onProgress) {
     const apiKey = process.env.AIHUBMIX_API_KEY
     
     if (!apiKey) {
-      throw new Error("API密钥未配置，请设置 AIHUBMIX_API_KEY 环境变量")
+      throw new Error("API 密钥未配置，请设置 AIHUBMIX_API_KEY 环境变量")
     }
     
     const systemPrompt = BENTO_SYSTEM_PROMPT
@@ -24,7 +24,7 @@ async function generateBentoWithClaudeStream(content, onProgress) {
         'content-type': 'application/json',
       },
       body: JSON.stringify({
-        model: 'claude-3-7-sonnet-20250219',
+        model: 'claude-3-7-sonnet-20250219', // claude-opus-4-20250514, claude-sonnet-4-20250514, claude-3-7-sonnet-20250219
         max_tokens: 6144,
         stream: true,
         messages: [
@@ -41,7 +41,7 @@ async function generateBentoWithClaudeStream(content, onProgress) {
     
     if (!response.ok) {
       const errorText = await response.text().catch(() => '');
-      throw new Error(`API 请求失败: ${response.status}${errorText ? ' - ' + errorText : ''}`)
+      throw new Error(`API 请求失败：${response.status}${errorText ? ' - ' + errorText : ''}`)
     }
     
     // 读取流式响应
@@ -100,12 +100,12 @@ async function generateBentoWithClaudeStream(content, onProgress) {
             }
           }
         } catch (e) {
-          console.warn('解析流式响应数据块失败:', e)
+          console.warn('解析流式响应数据块失败：', e)
         }
       }
     }
     
-    console.log("Claude 完整响应收集完毕，长度:", fullResponse.length)
+    console.log("Claude 完整响应收集完毕，长度：", fullResponse.length)
     
     // 如果在流式处理中已提取 JSX 代码，直接使用
     if (jsxContent.trim()) {
@@ -174,20 +174,20 @@ async function generateBentoWithClaudeStream(content, onProgress) {
     
     if (!jsxContent) {
       // 如果仍然无法提取，直接使用响应体创建一个基本组件
-      console.log("无法提取JSX代码，将使用整个响应体创建基本组件")
+      console.log("无法提取 JSX 代码，将使用整个响应体创建基本组件")
       jsxContent = createComponentFromResponse(fullResponse)
     }
     
     // 验证和修复 JSX 内容
     jsxContent = validateAndFixJSX(jsxContent)
     
-    // 打印提取的JSX内容
-    console.log("提取的JSX代码:", jsxContent)
+    // 打印提取的 JSX 内容
+    console.log("提取的 JSX 代码：", jsxContent)
     
     return jsxContent
     
   } catch (error) {
-    console.error("调用Claude API生成Bento Grid失败:", error)
+    console.error("调用 Claude API 生成 Bento Grid 失败：", error)
     throw error
   }
 }
@@ -239,7 +239,7 @@ function validateAndFixJSX(jsxContent) {
     return useClientCount === 1 ? match : '';
   });
   
-  // 修复lucide-react中常见的错误图标名称引用
+  // 修复 lucide-react 中常见的错误图标名称引用
   jsxContent = jsxContent.replace(/icon={HandShake}/g, 'icon={Handshake}');
   jsxContent = jsxContent.replace(/icon={BarChart}/g, 'icon={BarChart2}');
   jsxContent = jsxContent.replace(/icon={ArrowDown}/g, 'icon={ArrowDownRight}');
@@ -279,14 +279,14 @@ export default function BentoGrid() {
         <div className="flex items-start">
           <SafeIcon icon={AlertCircle} className="text-yellow-500 mr-2 h-5 w-5 flex-shrink-0 mt-0.5" />
           <p className="text-yellow-700">
-            无法正确解析AI生成的代码，显示原始响应。您可以重新尝试生成。
+            无法正确解析 AI 生成的代码，显示原始响应。您可以重新尝试生成。
           </p>
         </div>
       </div>
       
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         <div className="col-span-1 md:col-span-2 bg-blue-50 rounded-2xl p-6">
-          <h2 className="text-2xl font-bold text-blue-800 mb-4">AI响应</h2>
+          <h2 className="text-2xl font-bold text-blue-800 mb-4">AI 响应</h2>
           <pre className="whitespace-pre-wrap text-sm bg-white p-4 rounded-lg overflow-auto max-h-[500px] border border-gray-100">
             {${JSON.stringify(responseText.replace(/```jsx|```/g, ''))}}
           </pre>
@@ -323,7 +323,7 @@ function saveBentoGridComponent(jsxContent) {
     
     return true
   } catch (error) {
-    console.error("保存Bento Grid组件失败:", error)
+    console.error("保存 Bento Grid 组件失败：", error)
     throw error
   }
 }
@@ -387,7 +387,7 @@ export async function POST(request) {
     const encoder = new TextEncoder()
     const stream = new ReadableStream({
       async start(controller) {
-        // 创建一个节流版本的发送进度函数，最高频率为每150ms发送一次
+        // 创建一个节流版本的发送进度函数，最高频率为每 150ms 发送一次
         const throttledSend = throttle((text) => {
           // 格式化文本块
           const formattedText = formatStreamChunk(text)
@@ -395,7 +395,7 @@ export async function POST(request) {
           // 如果格式化后为空，则跳过发送
           if (!formattedText) return;
           
-          // 创建SSE格式的消息并发送
+          // 创建 SSE 格式的消息并发送
           const message = `data: ${JSON.stringify({ text: formattedText })}\n\n`
           controller.enqueue(encoder.encode(message))
         }, 150);
@@ -405,12 +405,12 @@ export async function POST(request) {
           try {
             throttledSend(text);
           } catch (error) {
-            console.error('发送进度更新失败:', error)
+            console.error('发送进度更新失败：', error)
           }
         }
         
         try {
-          // 调用Claude API生成Bento Grid
+          // 调用 Claude API 生成 Bento Grid
           const jsxContent = await generateBentoWithClaudeStream(content, sendProgress)
           
           // 保存生成的组件
@@ -441,7 +441,7 @@ export async function POST(request) {
     })
     
   } catch (error) {
-    console.error('处理请求失败:', error)
+    console.error('处理请求失败：', error)
     return NextResponse.json({ error: error.message || '处理请求失败' }, { status: 500 })
   }
 } 

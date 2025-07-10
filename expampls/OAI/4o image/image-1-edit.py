@@ -72,7 +72,3 @@ for i, image_item in enumerate(result.data):
         print(f"第 {i+1} 张编辑后的图片已保存至：{file_path}")
     except Exception as e:
         print(f"保存第 {i+1} 张图片时出错 ({file_path}): {e}")
-
-# --- 循环结束 ---
-
-# (旧的单文件保存逻辑已被移除)

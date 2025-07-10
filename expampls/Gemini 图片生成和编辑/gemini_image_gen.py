@@ -3,7 +3,7 @@ from openai import OpenAI
 from PIL import Image
 from io import BytesIO
 import base64
-
+# 旧版
 client = OpenAI(
     api_key=os.getenv("AIHUBMIX_API_KEY"), # 🔑 换成你在 AiHubMix 生成的密钥
     base_url="https://aihubmix.com/v1",
@@ -11,7 +11,8 @@ client = OpenAI(
 
 # Using text-only input
 response = client.chat.completions.create(
-    model="gemini-2.0-flash-preview-image-generation",
+    extra_headers={"APP-Code":"******"},
+    model="imagen-3.0-generate-002", #imagen-4.0-generate-preview-06-06, imagen-4.0-ultra-generate-preview-06-06
     messages=[
         {
             "role": "user",

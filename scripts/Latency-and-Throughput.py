@@ -18,7 +18,7 @@ import time
 import numpy as np
 
 # 全局变量：模型 ID
-MODEL_ID = "gemini-2.0-flash"
+MODEL_ID = "gemini-2.5-pro-preview-06-05"
 
 client = OpenAI(
     api_key=os.getenv("AIHUBMIX_API_KEY"),

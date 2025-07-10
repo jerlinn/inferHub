@@ -1,14 +1,14 @@
 import requests
-import json
+import os
 
 url = 'https://aihubmix.com/v1/embeddings'
 headers = {
     'Content-Type': 'application/json',
-    'Authorization': 'Bearer sk-***' # 替换为你的 AiHubMix 密钥
+    "Authorization": f"Bearer {os.environ.get('AIHUBMIX_API_KEY')}",
 }
 
 data = {
-    "model": "jina-clip-v2",
+    "model": "jina-embeddings-v4", # jina-embeddings-v4, jina-embeddings-v3, jina-clip-v2
     "input": [
         {
             "text": "A beautiful sunset over the beach"
@@ -29,11 +29,10 @@ data = {
             "image": "https://i.ibb.co/r5w8hG8/beach2.jpg"
         },
         {
-            "image": "R0lGODlhEAAQAMQAAORHHOVSKudfOulrSOp3WOyDZu6QdvCchPGolfO0o/XBs/fNwfjZ0frl3/zy7////wAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACH5BAkAABAALAAAAAAQABAAAAVVICSOZGlCQAosJ6mu7fiyZeKqNKToQGDsM8hBADgUXoGAiqhSvp5QAnQKGIgUhwFUYLCVDFCrKUE1lBavAViFIDlTImbKC5Gm2hB0SlBCBMQiB0UjIQA7"
+            "image": "iVBORw0KGgoAAAANSUhEUgAAABwAAAA4CAIAAABhUg/jAAAAMklEQVR4nO3MQREAMAgAoLkoFreTiSzhy4MARGe9bX99lEqlUqlUKpVKpVKpVCqVHksHaBwCA2cPf0cAAAAASUVORK5CYII="
         }
     ]
 }
 
-response = requests.post(url, headers=headers, data=json.dumps(data))
-
+response = requests.post(url, headers=headers, json=data)
 print(response.json())

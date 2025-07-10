@@ -3,6 +3,7 @@ A public repository for developers to explore and experience pre-built API usage
 
 # Catalog
 - README.md
+- security_check.py # 密钥安全检查
 - docs/
   - faq.md
 - bento_card_artifacts # 便当卡片生成器  
@@ -10,25 +11,41 @@ A public repository for developers to explore and experience pre-built API usage
     - README.md # 说明
     - script # Python 免编译版本，输出到 html_output 目录
 - expampls/
-  - Claude Text Edit Tool/
+  - deepseek.py
+  - Claude/
+    - claude-official.py
+    - claude-official-stream.py
+    - claude-cache.py
     - textEdit.py
   - Gemini Series/
     - 2.0flash.py
     - 2.5flash.py
     - 2.5pro.py
-    - Audio-understanding.py
+    - 2.5_with_thinking.py
     - Code-execution.py
     - Gemini-2.5-reasoning-OAI.py
+    - imagen.py
     - Image-understanding.py
-    - Video-understanding-url.py # Youtube 视频链接
+    - Audio-understanding.py
     - Video-understanding.py
+    - Video-understanding-url.py # Youtube 视频链接
     - OAI-reasoning_effort.py # 推理深度
     - 非流式.py
+    - Gemini-Function-call.py
+    - gemini-context-caching.py
+    - veo3.0.py
+    - veo3逆向.py
+    - veo2.0.py
+    - veo2.0-i2v.py
   - Gemini 图片生成和编辑/
     - Gemini 图片生成和编辑.md
-    - Gemini-Function-call.py
     - gemini_image_gen.py
   - IdeogramAI 绘图/
+    - v3_generate.py
+    - v3_generate-with-reference.py
+    - v3_edit.py
+    - v3_remix.py
+    - v3_replace-background.py
     - aihubmix_ideogram_generate.py
     - aihubmix_ideogram_describe.py
     - aihubmix_ideogram_edit.py
@@ -43,10 +60,13 @@ A public repository for developers to explore and experience pre-built API usage
     - Responses API/
       - Text_input.py
       - Image_input.py
+      - imageGenerationTool.py
       - Streaming.py
       - Reasoning.py
       - Functions.py
       - Web_search.py
+      - CodeInterpreter.py
+      - RemoteMCP.py
     - 4o image/
       - image-1-generate.py
       - image-1-edit.py
@@ -55,7 +75,11 @@ A public repository for developers to explore and experience pre-built API usage
       - 4o-image-逆向.py
       - 4o-image-i2i-逆向.py
       - 4o-image-is2i-逆向.py
-  - FIM.py # 代码补全
+    - tts-gpt.py
+    - tts-audio-preview.py
+    - tts-kokoro.py
+    - tts-latency.py  # tts 延迟测试
+    - FIM.py # 代码补全
   - Web/
     - inferEra-Grounding-with-Google.py
     - inferEra-surfing.py

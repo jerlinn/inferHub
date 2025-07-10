@@ -1,17 +1,18 @@
 from openai import OpenAI
+import os
 
 client = OpenAI(
-    api_key="sk-***", # 🔑 换成你在 AiHubMix 生成的密钥
+    api_key=os.getenv("AIHUBMIX_API_KEY"), # 🔑 换成你在 AiHubMix 生成的密钥
     base_url="https://aihubmix.com/v1",
 )
 
 completion = client.chat.completions.create(
-    model="gemini-2.5-flash-preview-04-17",
+    model="gemini-2.5-pro-preview-05-06",
     reasoning_effort="low", #"low", "medium", and "high", which behind the scenes we map to 1K, 8K, and 24K thinking token budgets. If you want to disable thinking, you can set the reasoning effort to "none".
     messages=[
         {
             "role": "user",
-            "content": "金融领域的「72 法则」是如何推导的？"
+            "content": "金融领域的「72 法则」是如何推导的？中文回复"
         }
     ],
     stream=True

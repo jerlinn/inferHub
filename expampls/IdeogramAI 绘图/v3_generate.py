@@ -1,7 +1,7 @@
 import requests
 import os
 
-# 准备请求数据 - 使用字典而不是JSON
+# 准备请求数据 - 使用字典而不是 JSON
 data = {
   "prompt": "Delicate 3D cover design with various combat machines flying from an portal. The machines have different shapes, sizes, and colors. The portal is emitting swirling energy. The background contains a futuristic city with tall buildings. The text \"One Gateway, Infinite Models\" is placed in the center with neon lights, expansive view, cinematic lighting, vivid color, bright tone. clean text, cyber punk, smooth render",
   "rendering_speed": "QUALITY",
@@ -20,7 +20,8 @@ for key, value in data.items():
 response = requests.post(
   "https://aihubmix.com/ideogram/v1/ideogram-v3/generate",
   headers={
-    "Api-Key": "sk-***" # 替换为你的 AIHUBMIX API 密钥
+    "Api-Key": os.getenv("AIHUBMIX_API_KEY"), # 替换为你的 AIHUBMIX API 密钥
+    'APP-Code': '******'
   },
   files=files
 )

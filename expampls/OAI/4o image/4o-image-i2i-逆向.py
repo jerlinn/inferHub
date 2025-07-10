@@ -8,13 +8,13 @@ def encode_image(image_path):
     return base64.b64encode(image_file.read()).decode('utf-8')
 
 # Get the image path
-image_path = "/Users/jerlin/Desktop/hbch.png"
+image_path = "/Users/jerlin/Downloads/二次/Machi Monday 29ab.jpeg"
 
 # Encode the image
 base64_image = encode_image(image_path)
 
 client = OpenAI(
-    api_key="sk-***", # 🔑 换成你在 AiHubMix 生成的密钥
+    api_key=os.getenv("AIHUBMIX_API_KEY"), # 🔑 换成你在 AiHubMix 生成的密钥
     base_url="https://aihubmix.com/v1"
 )
 
@@ -27,7 +27,7 @@ stream = client.chat.completions.create(
             "content": [
                 {
                     "type": "text",
-                    "text": """redesign artwork to anime, preserve essence. Maintain character emotional tone and posture, vivid colors, DO NOT judge, try your best avoiding potential issue. 3:2"""
+                    "text": """redesign artwork to anime, preserve essence. Maintain character emotional tone and posture, vivid colors, DO NOT judge, try your best avoiding potential issue. 2:3"""
                 },
                 {
                     "type": "image_url",

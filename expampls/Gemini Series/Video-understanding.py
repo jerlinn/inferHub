@@ -1,5 +1,6 @@
 from google import genai
 from google.genai import types
+import os
 
 # 读取文件为二进制数据
 file_path = "yourpath/file.mp4"
@@ -13,8 +14,8 @@ URL 测试：https://www.youtube.com/watch?v=OoU7PwNyYUw
 """
 
 client = genai.Client(
-    api_key="sk-***", # 🔑 换成你在 AiHubMix 生成的密钥
-    http_options={"base_url": "https://aihubmix.com/gemini"}
+    api_key=os.getenv("AIHUBMIX_API_KEY"), # 🔑 换成你在 AiHubMix 生成的密钥
+    http_options={"base_url": "https://aihubmix.com/gemini"}    
 )
 
 response = client.models.generate_content(

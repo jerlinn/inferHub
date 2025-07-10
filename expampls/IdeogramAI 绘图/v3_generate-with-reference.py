@@ -2,11 +2,11 @@ import requests
 import os
 
 data = {
-  "prompt": "Delicate 3D cover design with various combat machines flying from an portal. The machines have different shapes, sizes, and colors. The portal is emitting swirling energy. The background contains a futuristic city with tall buildings. The text \"One Gateway, Infinite Models\" is placed in the center with neon lights, expansive view, cinematic lighting, vivid color, bright tone. clean text, cyber punk, smooth render",
+  "prompt": "Delicate 3D cover design with various combat machines flying from an portal. The machines have different functions and style. The portal is emitting swirling energy. The background contains a futuristic city with tall buildings. The text \"One Gateway, Infinite Models\" is placed in the center with neon lights, expansive view, cinematic lighting, vivid color, bright tone. clean text, cyber punk, smooth render",
   "rendering_speed": "QUALITY", # 新增参数，可选 TURBO/DEFAULT/QUALITY 📍
   "num_images": 2, #integer Optional >=1 <=8 Defaults to 1
   # "seed": "998", # integer Optional >=0 <=2147483647 多张图时不要使用 seed
-  "aspect_ratio": "2x1",  # 可选 ['1x3', '3x1', '1x2', '2x1', '9x16', '16x9', '10x16', '16x10', '2x3', '3x2', '3x4', '4x3', '4x5', '5x4', '1x1'] 和 V3 以下不同 📍
+  "aspect_ratio": "16x9",  # 可选 ['1x3', '3x1', '1x2', '2x1', '9x16', '16x9', '10x16', '16x10', '2x3', '3x2', '3x4', '4x3', '4x5', '5x4', '1x1'] 和 V3 以下不同 📍
   "magic_prompt": "AUTO",
   "style_type": "AUTO", #string Optional AUTO/GENERAL/REALISTIC/DESIGN 类型缩减 📍
   "negative_prompt": "blurry, watermark",
@@ -16,7 +16,7 @@ data = {
 files = None
 
 # 样式参考图路径
-style_reference_path = "/Users/jerlin/inferHub/expampls/IdeogramAI 绘图/img/cover-jerlin.jpeg"
+style_reference_path = "/Users/jerlin/Desktop/a-cinematic-lighting-3d-render.png"
 use_reference_image = True
 
 if use_reference_image and os.path.exists(style_reference_path):
@@ -32,7 +32,8 @@ elif use_reference_image:
 response = requests.post(
   "https://aihubmix.com/ideogram/v1/ideogram-v3/generate",
   headers={
-    "Api-Key": "sk-***" # 替换为你的 AIHUBMIX API 密钥
+    "Api-Key": os.getenv("AIHUBMIX_API_KEY"), # 替换为你的 AIHUBMIX API 密钥
+    "App-code": "******",
   },
   data=data,
   files=files
