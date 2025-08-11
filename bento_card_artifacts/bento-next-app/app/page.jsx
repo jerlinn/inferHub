@@ -1,21 +1,22 @@
 'use client'
 
 import { useState, useRef, useEffect } from 'react'
-import { useRouter } from 'next/navigation'
 import { Wand, Twitter, Github, LoaderPinwheel, Lightbulb, Grid, User, ShoppingBag, BookOpen, BarChart3 } from 'lucide-react'
 import Link from 'next/link'
+
 
 export default function Home() {
   const [content, setContent] = useState('')
   const [isLoading, setIsLoading] = useState(false)
-  const [error, setError] = useState('')
   const [streamOutput, setStreamOutput] = useState([])
   const [isHovering, setIsHovering] = useState(false)
   const [isMounted, setIsMounted] = useState(false)
-  const router = useRouter()
+  const [selectedModel, setSelectedModel] = useState('claude')
+  
   const streamRef = useRef(null)
   const streamAbortController = useRef(null)
   const outputBuffer = useRef('') // 用于累积不完整的文本片段
+  const reasoningTimeoutRef = useRef(null) // 推理超时定时器
 
   // 客户端加载后设置挂载状态
   useEffect(() => {
@@ -44,7 +45,6 @@ export default function Home() {
     if (!content.trim()) return
     
     setIsLoading(true)
-    setError('')
     setStreamOutput(['Ingredients locked and loaded, chef at work!'])
     outputBuffer.current = '' // 重置缓冲区
     
@@ -58,7 +58,7 @@ export default function Home() {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ content }),
+        body: JSON.stringify({ content, model: selectedModel }),
         signal: streamAbortController.current.signal
       })
       
@@ -97,9 +97,72 @@ export default function Home() {
             const dataStr = message.substring(5).trim()
             const data = JSON.parse(dataStr)
             
+            // 处理思维链事件（仅针对推理模型）
+            if (data.streamEvent && selectedModel === 'gpt-5') {
+              if (data.streamEvent.type === 'response.in_progress') {
+                setStreamOutput(prev => {
+                  const filtered = prev.filter(line => !line.includes('💭') && !line.includes('🧠'))
+                  return [...filtered, '⚡ GPT-5 极速模式启动...']
+                })
+                
+                // 在minimal模式下，设置更短的超时时间（10秒）
+                if (reasoningTimeoutRef.current) {
+                  clearTimeout(reasoningTimeoutRef.current)
+                }
+                reasoningTimeoutRef.current = setTimeout(() => {
+                  setStreamOutput(prev => {
+                    const hasReasoningStatus = prev.some(line => line.includes('💭') || line.includes('🧠') || line.includes('⚡'))
+                    if (hasReasoningStatus) {
+                      const filtered = prev.filter(line => !line.includes('💭') && !line.includes('🧠') && !line.includes('⚡'))
+                      return [...filtered, '🤔 处理时间较长，请稍候...']
+                    }
+                    return prev
+                  })
+                }, 10000) // minimal模式应该更快，减少到10秒
+              } else if (data.streamEvent.type === 'response.reasoning_summary.delta' && data.streamEvent.delta?.text) {
+                // 显示实际的推理过程，累积显示
+                const reasoningText = data.streamEvent.delta.text
+                setStreamOutput(prev => {
+                  const filtered = prev.filter(line => !line.includes('💭') && !line.includes('🧠 推理:'))
+                  const lastReasoning = prev.find(line => line.includes('🧠 推理:'))
+                  const currentReasoning = lastReasoning ? lastReasoning.replace('🧠 推理: ', '') + reasoningText : reasoningText
+                  
+                  // 限制推理内容长度，避免过长
+                  const truncatedReasoning = currentReasoning.length > 200 ? 
+                    currentReasoning.substring(0, 200) + '...' : currentReasoning
+                  
+                  return [...filtered, `🧠 推理: ${truncatedReasoning}`]
+                })
+              } else if (data.streamEvent.type === 'response.reasoning_summary.done') {
+                // 推理完成，准备开始内容生成
+                if (reasoningTimeoutRef.current) {
+                  clearTimeout(reasoningTimeoutRef.current)
+                  reasoningTimeoutRef.current = null
+                }
+                setStreamOutput(prev => {
+                  const filtered = prev.filter(line => !line.includes('💭') && !line.includes('🧠'))
+                  return [...filtered, '✨ 推理完成，开始生成内容...']
+                })
+              }
+            }
+            
             if (data.text) {
-              // 不截断或格式化消息，直接显示原始返回
-              setStreamOutput(prev => [...prev, data.text])
+              console.log('收到文本消息:', data.text)
+              // 当开始接收实际内容时，清理推理状态并显示内容
+              setStreamOutput(prev => {
+                // 如果是真正的内容输出（不是状态消息），清理状态显示
+                const isActualContent = !data.text.includes('💭') && !data.text.includes('🧠') && !data.text.includes('🤔') && !data.text.includes('⚡')
+                if (isActualContent) {
+                  // 清理推理超时器
+                  if (reasoningTimeoutRef.current) {
+                    clearTimeout(reasoningTimeoutRef.current)
+                    reasoningTimeoutRef.current = null
+                  }
+                  const filtered = prev.filter(line => !line.includes('💭') && !line.includes('🧠') && !line.includes('🤔') && !line.includes('⚡'))
+                  return [...filtered, data.text]
+                }
+                return [...prev, data.text]
+              })
               
               // 如果收到完成消息，准备重定向
               if (data.text === '✅ 便当制作完成') {
@@ -113,9 +176,6 @@ export default function Home() {
                   
                   // 使用window.location进行强制跳转，确保不带example参数
                   window.location.href = `/bento-view?t=${timestamp}`
-                  
-                  // 保留router作为备用方案
-                  // router.push(`/bento-view?t=${timestamp}`)
                 }, 1000)
               }
             }
@@ -127,11 +187,11 @@ export default function Home() {
       
     } catch (error) {
       console.error('生成 Bento Grid 请求失败：', error)
-      setError(error.message || '生成失败，请重试')
       setStreamOutput(prev => [...prev, `❌ 错误：${error.message || '未知错误'}`])
     } finally {
       setIsLoading(false)
       streamAbortController.current = null
+      
     }
   }
 
@@ -203,6 +263,34 @@ export default function Home() {
               <span className="text-4xl">🍱</span> 
               <span>Bento Grid Maker</span>
             </h1>
+            
+            {/* 模型选择器 */}
+            <div className="mb-4">
+              <div className="flex gap-2 p-1 bg-gray-100 rounded-lg">
+                <button
+                  type="button"
+                  onClick={() => setSelectedModel('claude')}
+                  className={`flex-1 py-2 px-3 text-sm font-medium rounded-md transition-all duration-200 ${
+                    selectedModel === 'claude' 
+                      ? 'bg-white text-gray-900 shadow-sm' 
+                      : 'text-gray-600 hover:text-gray-900'
+                  }`}
+                >
+                  Claude 4
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setSelectedModel('gpt-5')}
+                  className={`flex-1 py-2 px-3 text-sm font-medium rounded-md transition-all duration-200 ${
+                    selectedModel === 'gpt-5' 
+                      ? 'bg-white text-gray-900 shadow-sm' 
+                      : 'text-gray-600 hover:text-gray-900'
+                  }`}
+                >
+                  GPT-5 Thinking
+                </button>
+              </div>
+            </div>
             
             <form onSubmit={handleSubmit} className="flex flex-col gap-5">
               <textarea
@@ -364,7 +452,7 @@ export default function Home() {
           <div></div>
           
           <div className="flex items-center space-x-6">
-            <p>Powered by Claude Sonnet 3.7</p>
+            <p>Powered by Aihubmix</p>
             <span className="mx-1">⋮</span>
             <Link 
               href="https://x.com/intent/follow?screen_name=eviljer" 
@@ -395,6 +483,7 @@ export default function Home() {
           display: none;
         }
       `}</style>
+
     </main>
   )
 }

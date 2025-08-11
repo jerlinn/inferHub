@@ -26,7 +26,7 @@ Implementation notes:
 - Return only the JSX component code - compatible with Next.js App Router
 - The component should be a 'use client' component
 - Include all necessary imports
-- Create a SafeIcon component for icon rendering with fallback { BadgeInfo } :
+- Create a SafeIcon component for icon rendering with fallback BadgeInfo:
 \`\`\`jsx
 // SafeIcon: if failed, use BadgeInfo as fallback
 const SafeIcon = ({ icon: Icon, fallback: Fallback = BadgeInfo, ...props }) => {
@@ -51,4 +51,5 @@ const SafeIcon = ({ icon: Icon, fallback: Fallback = BadgeInfo, ...props }) => {
 Note:
 1. Insert spaces on both sides of numbers.
 2. Ensure the entire layout fits within a single screen (max 100vh). Avoid vertical overflow. Cap card height, compress layout density. 
-3. If URL in the content, add internal link to the appropriate card.`
+3. Ensure all cards are filled with tailwind utility class bg-*, adjusting opacity using /num
+4. If URL in the content, add internal link to the appropriate card.`;

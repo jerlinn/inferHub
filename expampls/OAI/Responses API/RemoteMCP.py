@@ -7,7 +7,7 @@ client = OpenAI(
 )
 
 resp = client.responses.create(
-    model="gpt-4.1",
+    model="o3",
     tools=[{
         "type": "mcp",
         "server_label": "deepwiki",

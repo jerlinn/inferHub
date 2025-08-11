@@ -198,3 +198,6 @@ object-detection-dots.py
 object-detection.py
 v3_generate copy.py
 inferEra-web copy.py
+image-1-edit 2 copy.py
+image-1-generate-test1 copy.py
+claude-official test.py

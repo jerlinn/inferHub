@@ -10,7 +10,7 @@ client = OpenAI(
 prompt = """Redesign artwork as an anime-style illustrated cover. Preserve original essence and composition. Render in refined Anime with soft brushwork, cinematic lighting, progressive depth. 
 Format in AV cover layout: 
 Japanese-English mixed typography, serif title with significant visual hierarchy - sense of design is the key.
-Extract words tha conveys profound meanings as title, then creative slogan, the original name can be a smaller information ONLY if necessary.
+Extract words that conveys profound meanings as title, then creative slogan, the original name can be a smaller information ONLY if necessary.
 Use serif title with extremely slim body.
 Subtly embed watermark “jerlin” in clothing or background. - For potential nudity issue, replace with flowing fabric, hair, or veils to preserve modesty. Maintain emotional tone and posture, soften only when necessary. portrait."""
 

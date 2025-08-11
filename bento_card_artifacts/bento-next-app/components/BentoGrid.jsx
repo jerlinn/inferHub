@@ -1,8 +1,9 @@
 'use client'
 
 import React from 'react'
-import { BarChart3, Brain, Bulb, Compass, ExternalLink, Eye, Filter, Focus, Microscope, BadgeInfo } from 'lucide-react'
-import Link from 'next/link'
+import {
+  BadgeInfo, Moon, Sun, Coffee, Smartphone, Thermometer, Dumbbell, Clock, CheckCircle
+} from 'lucide-react'
 
 // SafeIcon: if failed, use BadgeInfo as fallback
 const SafeIcon = ({ icon: Icon, fallback: Fallback = BadgeInfo, ...props }) => {
@@ -19,82 +20,86 @@ const SafeIcon = ({ icon: Icon, fallback: Fallback = BadgeInfo, ...props }) => {
   }
 }
 
-const BentoGrid = () => {
+export default function SleepImprovementBento() {
   return (
-    <div className="w-full max-w-7xl mx-auto p-4" style={{ background: '#fefefe' }}>
-      <div className="grid grid-cols-12 gap-4">
-        {/* Full width header card */}
-        <Link 
-          href="https://x.com/intent/follow?screen_name=eviljer"
-          className="col-span-12 bg-blue-50 p-6 rounded-2xl flex flex-col justify-between hover:shadow-md transition-shadow duration-300"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <div className="flex items-center gap-4">
-            <SafeIcon icon={Brain} size={48} className="text-blue-500" />
-            <h2 className="text-2xl font-bold">第一性原理</h2>
+    <div className="p-4 bg-[#fefefe] min-h-screen font-['Space_Grotesk']">
+      <div className="max-w-4xl mx-auto grid grid-cols-12 gap-4 h-[calc(100vh-2rem)]">
+        
+        {/* Main Title Card - Full Width */}
+        <div className="col-span-12 bg-blue-50 rounded-2xl p-6 flex items-center justify-center">
+          <div className="text-center">
+            <SafeIcon icon={Moon} size={48} className="text-blue-500 mx-auto mb-3" />
+            <h1 className="text-2xl font-bold text-blue-900"> 7 天睡眠改善方法</h1>
+            <p className="text-blue-700 mt-2">科学提升睡眠质量</p>
           </div>
-          <p className="mt-2 text-base">思考的基础方法：回归问题本质，从根本原理出发</p>
-          <div className="flex items-center text-xs text-blue-500 mt-4">
-            <span>了解更多</span>
-            <SafeIcon icon={ExternalLink} size={14} className="ml-1" />
+        </div>
+
+        {/* Day 1-2 Row */}
+        <div className="col-span-6 bg-blue-60 rounded-2xl p-5">
+          <SafeIcon icon={Clock} size={32} className="text-blue-500 mb-3" />
+          <h3 className="font-bold text-blue-900 mb-2">第 1 天</h3>
+          <p className="text-blue-800">建立固定作息时间</p>
+          <p className="text-blue-700 text-sm mt-1">每天同一时间睡觉起床</p>
+        </div>
+
+        <div className="col-span-6 bg-blue-70 rounded-2xl p-5">
+          <SafeIcon icon={Smartphone} size={32} className="text-blue-500 mb-3" />
+          <h3 className="font-bold text-blue-900 mb-2">第 2 天</h3>
+          <p className="text-blue-800">睡前 1 小时断电</p>
+          <p className="text-blue-700 text-sm mt-1">避免蓝光干扰褪黑素</p>
+        </div>
+
+        {/* Day 3-4 Row */}
+        <div className="col-span-4 bg-blue-60 rounded-2xl p-4">
+          <SafeIcon icon={Coffee} size={32} className="text-blue-500 mb-3" />
+          <h3 className="font-bold text-blue-900 mb-2">第 3 天</h3>
+          <p className="text-blue-800">下午 2 点后禁咖啡因</p>
+        </div>
+
+        <div className="col-span-8 bg-blue-70 rounded-2xl p-4">
+          <SafeIcon icon={Thermometer} size={32} className="text-blue-500 mb-3" />
+          <h3 className="font-bold text-blue-900 mb-2">第 4 天</h3>
+          <p className="text-blue-800">优化睡眠环境温度</p>
+          <p className="text-blue-700 text-sm mt-1">保持卧室温度在 18-22 度之间</p>
+        </div>
+
+        {/* Day 5-6 Row */}
+        <div className="col-span-7 bg-blue-50 rounded-2xl p-4">
+          <SafeIcon icon={Dumbbell} size={32} className="text-blue-500 mb-3" />
+          <h3 className="font-bold text-blue-900 mb-2">第 5 天</h3>
+          <p className="text-blue-800">增加白天运动量</p>
+          <p className="text-blue-700 text-sm mt-1">但避免睡前 3 小时剧烈运动</p>
+        </div>
+
+        <div className="col-span-5 bg-blue-70 rounded-2xl p-4">
+          <SafeIcon icon={Sun} size={32} className="text-blue-500 mb-3" />
+          <h3 className="font-bold text-blue-900 mb-2">第 6 天</h3>
+          <p className="text-blue-800">早晨晒太阳</p>
+          <p className="text-blue-700 text-sm mt-1">调节生物钟</p>
+        </div>
+
+        {/* Day 7 - Final Card */}
+        <div className="col-span-12 bg-blue-50 rounded-2xl p-5">
+          <div className="flex items-center justify-center">
+            <div className="text-center">
+              <SafeIcon icon={CheckCircle} size={40} className="text-blue-500 mx-auto mb-3" />
+              <h3 className="font-bold text-blue-900 mb-2">第 7 天 - 建立睡前仪式</h3>
+              <p className="text-blue-800">洗澡 → 阅读 → 深呼吸 → 入睡</p>
+              <div className="mt-4">
+                <a 
+                  href="https://x.com/intent/follow?screen_name=eviljer"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-block bg-blue-500 text-white px-6 py-2 rounded-lg text-sm font-medium hover:bg-blue-600 transition-colors"
+                >
+                  获取更多健康建议
+                </a>
+              </div>
+            </div>
           </div>
-        </Link>
-
-        {/* Row 2: 2 equal cards */}
-        <div className="col-span-6 bg-blue-50/70 p-6 rounded-2xl flex flex-col justify-between">
-          <SafeIcon icon={Microscope} size={48} className="text-blue-500 mb-2" />
-          <h3 className="text-lg font-bold">分解问题</h3>
-          <p className="text-base">将复杂事物拆解至最基本组成部分</p>
         </div>
 
-        <div className="col-span-6 bg-blue-50/70 p-6 rounded-2xl flex flex-col justify-between">
-          <SafeIcon icon={Filter} size={48} className="text-blue-500 mb-2" />
-          <h3 className="text-lg font-bold">去除假设</h3>
-          <p className="text-base">识别并质疑所有隐含假设</p>
-        </div>
-
-        {/* Row 3: Full width card */}
-        <div className="col-span-12 bg-blue-50/70 p-6 rounded-2xl flex flex-col justify-between">
-          <div className="flex items-center gap-4">
-            <SafeIcon icon={Bulb} size={48} className="text-blue-500" />
-            <h3 className="text-lg font-bold">重新构建</h3>
-          </div>
-          <p className="text-base mt-2">基于基本原理而非类比或传统重建解决方案</p>
-        </div>
-
-        {/* Row 4: 3 equal cards */}
-        <div className="col-span-4 bg-blue-50/70 p-6 rounded-2xl flex flex-col justify-between">
-          <SafeIcon icon={Focus} size={48} className="text-blue-500 mb-2" />
-          <h3 className="text-lg font-bold">减少偏见</h3>
-          <p className="text-base">避免思维定式和路径依赖</p>
-        </div>
-
-        <div className="col-span-4 bg-blue-50/70 p-6 rounded-2xl flex flex-col justify-between">
-          <SafeIcon icon={Eye} size={48} className="text-blue-500 mb-2" />
-          <h3 className="text-lg font-bold">洞察本质</h3>
-          <p className="text-base">发现表象下的核心规律</p>
-        </div>
-
-        <div className="col-span-4 bg-blue-50/70 p-6 rounded-2xl flex flex-col justify-between">
-          <SafeIcon icon={Compass} size={48} className="text-blue-500 mb-2" />
-          <h3 className="text-lg font-bold">指导创新</h3>
-          <p className="text-base">突破常规思维限制</p>
-        </div>
-
-        {/* Row 5: Full width bottom card */}
-        <div className="col-span-12 bg-blue-50/70 p-6 rounded-2xl flex flex-col justify-between">
-          <div className="flex items-center gap-4">
-            <SafeIcon icon={BarChart3} size={48} className="text-blue-500" />
-            <h3 className="text-lg font-bold">应用领域</h3>
-          </div>
-          <p className="text-base mt-2">商业模式创新、科学研究、产品设计、战略决策</p>
-        </div>
       </div>
     </div>
   )
 }
-
-export default BentoGrid
-
-// Generated at: 2025-05-23T13:04:01.182Z

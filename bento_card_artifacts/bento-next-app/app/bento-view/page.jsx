@@ -10,6 +10,7 @@ import html2canvas from 'html2canvas'
 // 动态导入Toast组件
 const Toast = dynamic(() => import('../../components/Toast'), { ssr: false })
 
+
 // 导入布局画布组件（帮助html2canvas预渲染和解析网格间隙）
 const BlankGridCanvas = dynamic(() => import('../../components/BlankGridCanvas'), { ssr: false })
 
@@ -75,6 +76,8 @@ export default function BentoView() {
   const [showToast, setShowToast] = useState(false) // 控制Toast的显示
   const [toastMessage, setToastMessage] = useState('') // Toast消息
   const bentoGridRef = useRef(null) // 添加对Bento Grid的引用
+  
+  
 
   // 检测URL参数变化更新当前tab
   useEffect(() => {
@@ -267,36 +270,39 @@ export default function BentoView() {
             </div>
           )}
 
-          <button
-            onClick={handleDownload}
-            className={`inline-flex items-center transition-all duration-300 rounded-full px-3 py-1.5 ml-4 ${
-              isDownloading 
-                ? 'bg-blue-100 text-blue-700 cursor-wait' 
-                : downloadSuccess
-                  ? 'bg-green-100 text-green-700'
-                  : 'text-gray-600 hover:text-gray-800 hover:bg-gray-100'
-            }`}
-            title="下载为PNG"
-            disabled={isDownloading}
-          >
-            {isDownloading ? (
-              <>
-                <Download className="h-4 w-4 animate-pulse mr-1.5" />
-                <span className="text-xs font-medium">处理中...</span>
-              </>
-            ) : downloadSuccess ? (
-              <>
-                <svg className="h-4 w-4 mr-1.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                </svg>
-                <span className="text-xs font-medium">已保存</span>
-              </>
-            ) : (
-              <>
-                <Download className="h-4 w-4 mr-1.5" />
-              </>
-            )}
-          </button>
+          <div className="flex items-center gap-2 ml-4">
+            {/* 下载按钮 */}
+            <button
+              onClick={handleDownload}
+              className={`inline-flex items-center transition-all duration-300 rounded-full px-3 py-1.5 ${
+                isDownloading 
+                  ? 'bg-blue-100 text-blue-700 cursor-wait' 
+                  : downloadSuccess
+                    ? 'bg-green-100 text-green-700'
+                    : 'text-gray-600 hover:text-gray-800 hover:bg-gray-100'
+              }`}
+              title="下载为PNG"
+              disabled={isDownloading}
+            >
+              {isDownloading ? (
+                <>
+                  <Download className="h-4 w-4 animate-pulse mr-1.5" />
+                  <span className="text-xs font-medium">处理中...</span>
+                </>
+              ) : downloadSuccess ? (
+                <>
+                  <svg className="h-4 w-4 mr-1.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                  </svg>
+                  <span className="text-xs font-medium">已保存</span>
+                </>
+              ) : (
+                <>
+                  <Download className="h-4 w-4 mr-1.5" />
+                </>
+              )}
+            </button>
+          </div>
         </div>
 
         <div className="bento-card-container relative">
@@ -343,6 +349,7 @@ export default function BentoView() {
           onClose={() => setShowToast(false)}
         />
       )}
+
 
       {/* 全局样式已移至globals.css */}
     </main>

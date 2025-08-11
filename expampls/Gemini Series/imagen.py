@@ -12,7 +12,7 @@ client = genai.Client(
 
 # 目前只支持英文 prompt，绘制大量文本的表现较差
 response = client.models.generate_images(
-    model='imagen-4.0-ultra-generate-preview-06-06', # imagen-4.0-generate-preview-05-20、imagen-3.0-generate-002、imagen-4.0-ultra-generate-exp-05-20, imagen-4.0-generate-preview-06-06, imagen-4.0-ultra-generate-preview-06-06
+    model='imagen-3.0-generate-002', # imagen-4.0-generate-preview-05-20、imagen-3.0-generate-002、imagen-4.0-ultra-generate-exp-05-20, imagen-4.0-generate-preview-06-06, imagen-4.0-ultra-generate-preview-06-06
     prompt="Asuka with skintight fighting suit, in beautiful scene. low angle, dynamic lighting, female gesture, dynamic pose, delicate detailed, isometric 3d",
     config=types.GenerateImagesConfig(
         number_of_images=1,

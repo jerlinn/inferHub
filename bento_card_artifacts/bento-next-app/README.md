@@ -1,11 +1,11 @@
 # 🍱 Bento Grid 生成器
 
-基于 Next.js 和 Claude 3.7 Sonnet 的 Bento Grid 可视化应用，帮你快速生成简洁、美观的信息卡片。
+基于 Next.js 的 Bento Grid 可视化应用，帮你快速生成简洁、美观的信息卡片。
 
 ## 功能特性
 
 - 📝 输入或粘贴任意文本内容，精美的 Bento 卡片片刻送达
-- 🧠 基于 Claude 3.7 Sonnet 的智能提取和可视化
+- 🧠 基于 Claude 4 / GPT-5-Thinking 的智能提取和可视化
 - 🎨 原子化的视觉 prompt 配置，方便 DIY
 - 🔄 实时渲染和更新
 - 📱 响应式设计，适配各种设备
@@ -57,8 +57,7 @@ npm run dev
 - [Next.js 14](https://nextjs.org/) - React 框架
 - [Tailwind CSS 3.4.17](https://tailwindcss.com/) - 样式框架
 - [Lucide React](https://lucide.dev/) - 图标库
-- [Claude 3.7 Sonnet](https://www.anthropic.com/claude) - AI 大语言模型
-- [AiHubMix API](https://aihubmix.com) - LLM 接口
+- [AiHubMix API](https://aihubmix.com) - LLM 接口，配备了 Claude 4 和 GPT-5
 
 ## API 路由
 
@@ -88,6 +87,8 @@ inferHub/bento_card_artifacts/bento-next-app/
 
 ## Todo
 
+- [x] 移除时间戳插入，不破坏 bento 卡片页面的解析
+- [x] 扩展模型选择，支持 GPT-5
 - [x] 支持导出图片
 - [ ] 导出图片进一步优化，更准确，更简洁
 - [] 支持链接
