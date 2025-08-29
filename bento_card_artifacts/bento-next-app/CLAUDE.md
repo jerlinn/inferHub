@@ -2,3 +2,4 @@
 - 该项目不允许任何模拟
 - @/components/BentoGrid.jsx 是 LLM 生成的结果，里面出现的问题都应该反推出修复方案，从根源处理，而不是在结果页面修复。
 - 核心后端 @app/api/generate-bento/route.js
+- system prompt @/components/SystemPrompt.ts

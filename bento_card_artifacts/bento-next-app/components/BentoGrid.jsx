@@ -2,7 +2,7 @@
 
 import React from 'react'
 import {
-  BadgeInfo, Moon, Sun, Coffee, Smartphone, Thermometer, Dumbbell, Clock, CheckCircle
+  BadgeInfo, Leaf, Fish, Apple, Wheat, Droplets, HeartPulse, ChefHat, CupSoda, Beef
 } from 'lucide-react'
 
 // SafeIcon: if failed, use BadgeInfo as fallback
@@ -20,86 +20,169 @@ const SafeIcon = ({ icon: Icon, fallback: Fallback = BadgeInfo, ...props }) => {
   }
 }
 
-export default function SleepImprovementBento() {
+export default function BentoMediterraneanDiet() {
+  // Palette: single hue family (teal). Vivid for main, soft for secondary. Icons use accent teal-500.
+  // Layout: 2 rows, tightly-packed, full rectangular coverage, 7 blocks total.
+  // Max height control to avoid overflow on mobile.
   return (
-    <div className="p-4 bg-[#fefefe] min-h-screen font-['Space_Grotesk']">
-      <div className="max-w-4xl mx-auto grid grid-cols-12 gap-4 h-[calc(100vh-2rem)]">
-        
-        {/* Main Title Card - Full Width */}
-        <div className="col-span-12 bg-blue-50 rounded-2xl p-6 flex items-center justify-center">
-          <div className="text-center">
-            <SafeIcon icon={Moon} size={48} className="text-blue-500 mx-auto mb-3" />
-            <h1 className="text-2xl font-bold text-blue-900"> 7 天睡眠改善方法</h1>
-            <p className="text-blue-700 mt-2">科学提升睡眠质量</p>
-          </div>
-        </div>
-
-        {/* Day 1-2 Row */}
-        <div className="col-span-6 bg-blue-60 rounded-2xl p-5">
-          <SafeIcon icon={Clock} size={32} className="text-blue-500 mb-3" />
-          <h3 className="font-bold text-blue-900 mb-2">第 1 天</h3>
-          <p className="text-blue-800">建立固定作息时间</p>
-          <p className="text-blue-700 text-sm mt-1">每天同一时间睡觉起床</p>
-        </div>
-
-        <div className="col-span-6 bg-blue-70 rounded-2xl p-5">
-          <SafeIcon icon={Smartphone} size={32} className="text-blue-500 mb-3" />
-          <h3 className="font-bold text-blue-900 mb-2">第 2 天</h3>
-          <p className="text-blue-800">睡前 1 小时断电</p>
-          <p className="text-blue-700 text-sm mt-1">避免蓝光干扰褪黑素</p>
-        </div>
-
-        {/* Day 3-4 Row */}
-        <div className="col-span-4 bg-blue-60 rounded-2xl p-4">
-          <SafeIcon icon={Coffee} size={32} className="text-blue-500 mb-3" />
-          <h3 className="font-bold text-blue-900 mb-2">第 3 天</h3>
-          <p className="text-blue-800">下午 2 点后禁咖啡因</p>
-        </div>
-
-        <div className="col-span-8 bg-blue-70 rounded-2xl p-4">
-          <SafeIcon icon={Thermometer} size={32} className="text-blue-500 mb-3" />
-          <h3 className="font-bold text-blue-900 mb-2">第 4 天</h3>
-          <p className="text-blue-800">优化睡眠环境温度</p>
-          <p className="text-blue-700 text-sm mt-1">保持卧室温度在 18-22 度之间</p>
-        </div>
-
-        {/* Day 5-6 Row */}
-        <div className="col-span-7 bg-blue-50 rounded-2xl p-4">
-          <SafeIcon icon={Dumbbell} size={32} className="text-blue-500 mb-3" />
-          <h3 className="font-bold text-blue-900 mb-2">第 5 天</h3>
-          <p className="text-blue-800">增加白天运动量</p>
-          <p className="text-blue-700 text-sm mt-1">但避免睡前 3 小时剧烈运动</p>
-        </div>
-
-        <div className="col-span-5 bg-blue-70 rounded-2xl p-4">
-          <SafeIcon icon={Sun} size={32} className="text-blue-500 mb-3" />
-          <h3 className="font-bold text-blue-900 mb-2">第 6 天</h3>
-          <p className="text-blue-800">早晨晒太阳</p>
-          <p className="text-blue-700 text-sm mt-1">调节生物钟</p>
-        </div>
-
-        {/* Day 7 - Final Card */}
-        <div className="col-span-12 bg-blue-50 rounded-2xl p-5">
-          <div className="flex items-center justify-center">
-            <div className="text-center">
-              <SafeIcon icon={CheckCircle} size={40} className="text-blue-500 mx-auto mb-3" />
-              <h3 className="font-bold text-blue-900 mb-2">第 7 天 - 建立睡前仪式</h3>
-              <p className="text-blue-800">洗澡 → 阅读 → 深呼吸 → 入睡</p>
-              <div className="mt-4">
-                <a 
-                  href="https://x.com/intent/follow?screen_name=eviljer"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-block bg-blue-500 text-white px-6 py-2 rounded-lg text-sm font-medium hover:bg-blue-600 transition-colors"
-                >
-                  获取更多健康建议
-                </a>
-              </div>
+    <section
+      className="w-full max-w-5xl mx-auto px-4"
+      style={{ background: '#fefefe' }}
+    >
+      <div
+        className="grid gap-4"
+        style={{
+          gridTemplateColumns: 'repeat(12, minmax(0, 1fr))',
+          // keep within single screen
+          maxHeight: '100vh'
+        }}
+      >
+        {/* Row 1: 12 columns total */}
+        {/* Main Hero Card spans 8 cols */}
+        <a
+          href="https://x.com/intent/follow?screen_name=eviljer"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="col-span-12 sm:col-span-8 rounded-2xl p-4 bg-teal-100/70 overflow-hidden"
+          style={{ borderRadius: '16px' }}
+        >
+          <div className="flex items-start gap-3">
+            <SafeIcon icon={HeartPulse} size={48} className="text-teal-500 shrink-0" />
+            <div className="min-w-0">
+              <h2 className="text-lg font-semibold text-neutral-900 truncate">
+                地中海饮食法
+              </h2>
+              <p className="text-sm text-neutral-700 mt-1">
+                关键词：橄榄油、全谷、蔬果、豆类、坚果、鱼类、适量奶酪，少红肉
+              </p>
+              <ul className="text-sm text-neutral-800 mt-3 space-y-1">
+                <li>核心益处：心血管支持、代谢平衡、抗炎</li>
+                <li>结构原则：植物为主，优质脂肪，适度蛋白，多样与适量</li>
+                <li>生活方式：与家人共享、慢食、日常活动</li>
+              </ul>
             </div>
           </div>
+        </a>
+
+        {/* Supporting card spans 4 cols */}
+        <div
+          className="col-span-12 sm:col-span-4 rounded-2xl p-4 bg-teal-50/70"
+          style={{ borderRadius: '16px' }}
+        >
+          <div className="flex items-center gap-3">
+            <SafeIcon icon={Leaf} size={32} className="text-teal-500" />
+            <div className="text-neutral-900 text-base font-medium">
+              每日基底
+            </div>
+          </div>
+          <ul className="mt-2 text-sm text-neutral-800 space-y-1">
+            <li>蔬果丰富：颜色多样</li>
+            <li>全谷主食：燕麦、糙米、全麦</li>
+            <li>豆类与坚果：纤维与微量营养素</li>
+          </ul>
         </div>
 
+        {/* Row 2: 12 columns total */}
+        <div
+          className="col-span-12 sm:col-span-3 rounded-2xl p-4 bg-teal-50/70"
+          style={{ borderRadius: '16px' }}
+        >
+          <div className="flex items-center gap-3">
+            <SafeIcon icon={Droplets} size={32} className="text-teal-500" />
+            <div className="text-neutral-900 text-base font-medium">
+              橄榄油为主
+            </div>
+          </div>
+          <p className="mt-2 text-sm text-neutral-800">
+            主要用特级初榨橄榄油，替代黄油与精炼油
+          </p>
+        </div>
+
+        <div
+          className="col-span-12 sm:col-span-3 rounded-2xl p-4 bg-teal-50/70"
+          style={{ borderRadius: '16px' }}
+        >
+          <div className="flex items-center gap-3">
+            <SafeIcon icon={Fish} size={32} className="text-teal-500" />
+            <div className="text-neutral-900 text-base font-medium">
+              海鲜与鱼
+            </div>
+          </div>
+          <p className="mt-2 text-sm text-neutral-800">
+            每周 2 - 3 次鱼类或海鲜，优先富脂鱼
+          </p>
+        </div>
+
+        <div
+          className="col-span-12 sm:col-span-2 rounded-2xl p-4 bg-teal-50/70"
+          style={{ borderRadius: '16px' }}
+        >
+          <div className="flex items-center gap-3">
+            <SafeIcon icon={Apple} size={32} className="text-teal-500" />
+            <div className="text-neutral-900 text-base font-medium">
+              乳制品
+            </div>
+          </div>
+          <p className="mt-2 text-sm text-neutral-800">
+            适量酸奶、奶酪，注意总量
+          </p>
+        </div>
+
+        <div
+          className="col-span-12 sm:col-span-2 rounded-2xl p-4 bg-teal-50/70"
+          style={{ borderRadius: '16px' }}
+        >
+          <div className="flex items-center gap-3">
+            <SafeIcon icon={Beef} size={32} className="text-teal-500" />
+            <div className="text-neutral-900 text-base font-medium">
+              少红肉
+            </div>
+          </div>
+          <p className="mt-2 text-sm text-neutral-800">
+            红肉与加工肉减少，禽类适量
+          </p>
+        </div>
+
+        <div
+          className="col-span-12 sm:col-span-2 rounded-2xl p-4 bg-teal-50/70"
+          style={{ borderRadius: '16px' }}
+        >
+          <div className="flex items-center gap-3">
+            <SafeIcon icon={Wheat} size={32} className="text-teal-500" />
+            <div className="text-neutral-900 text-base font-medium">
+              全谷优先
+            </div>
+          </div>
+          <p className="mt-2 text-sm text-neutral-800">
+            精制替换为全谷，控制份量
+          </p>
+        </div>
+
+        {/* Single full-width row (still part of row 2 in mobile, row 3 in sm+) */}
+        <div
+          className="col-span-12 rounded-2xl p-4 bg-teal-50/70"
+          style={{ borderRadius: '16px' }}
+        >
+          <div className="flex items-center gap-3">
+            <SafeIcon icon={ChefHat} size={32} className="text-teal-500" />
+            <div className="text-neutral-900 text-base font-medium">
+              实用要点
+            </div>
+          </div>
+          <ul className="mt-2 text-sm text-neutral-800 grid grid-cols-2 gap-x-4 gap-y-1">
+            <li>用油替黄油，冷拌与低温烹</li>
+            <li>每餐加一份蔬菜或沙拉</li>
+            <li>坚果一小把，避免加盐糖</li>
+            <li>餐桌慢食，与人共享</li>
+            <li>每日步行与日光暴露</li>
+            <li>限制含糖饮料与甜点</li>
+          </ul>
+          <div className="mt-3 flex items-center gap-2 text-xs text-neutral-600">
+            <SafeIcon icon={CupSoda} size={16} className="text-teal-500" />
+            <span>酒精非必需，若饮用，餐时少量红酒为宜</span>
+          </div>
+        </div>
       </div>
-    </div>
+    </section>
   )
 }

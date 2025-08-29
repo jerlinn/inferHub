@@ -1,0 +1,294 @@
+---
+title: "STT Speech-to-Text"
+description: "Use Whisper models to convert audio files to text, supporting transcription and translation features"
+icon: "microphone"
+---
+
+## Introduction
+
+The Speech-to-Text (STT) API based on OpenAI's Whisper models can convert audio files to text. It supports various use cases:
+
+- Transcribing audio files to text
+- Translating multilingual audio to English
+- Supporting multiple audio format inputs
+- Providing multiple output format options
+
+**Available Model List:**
+
+- **whisper-large-v3** —— Latest large Whisper model, supports multiple languages. For Chinese recognition, use with appropriate prompts and low temperature values
+- **whisper-1** —— Original Whisper model, stable and reliable, supports multiple languages
+- **distil-whisper-large-v3-en** —— Distilled model, faster processing speed but slightly lower accuracy, recommended with low temperature values
+
+<Tip>
+  **Performance Recommendations:** 
+  - For Chinese audio, recommend using `whisper-large-v3` model with appropriate prompts and lower temperature values (e.g., 0.2) to reduce hallucinations
+  - For English audio or faster processing, use `distil-whisper-large-v3-en` model
+  - Supported audio formats: mp3, mp4, mpeg, mpga, m4a, wav, webm
+  - File size limit: maximum 25MB
+</Tip>
+
+## Model Usage
+
+### Speech Transcription
+
+Use `/v1/audio/transcriptions` endpoint via `client.audio.transcriptions.create()` method to transcribe audio to text in the original language.
+
+### Speech Translation
+
+Use `/v1/audio/translations` endpoint via `client.audio.translations.create()` method to translate audio to English text.
+
+### Request Parameters
+
+#### Transcription Parameters
+
+<ParamField body="file" type="file" required>
+  Audio file object to transcribe. Supported formats: mp3, mp4, mpeg, mpga, m4a, wav, webm, maximum 25MB
+</ParamField>
+
+<ParamField body="model" type="string" required>
+  Model ID to use. Options: `whisper-large-v3`, `whisper-1`, `distil-whisper-large-v3-en`
+</ParamField>
+
+<ParamField body="language" type="string">
+  Language of the input audio in ISO-639-1 format (e.g., 'en', 'zh'). Specifying the language can improve accuracy and latency
+</ParamField>
+
+<ParamField body="prompt" type="string">
+  Optional text prompt to guide the model's style or continue a previous audio segment. The prompt should match the audio language
+</ParamField>
+
+<ParamField body="response_format" type="string">
+  Transcription output format. Options: `json` (default), `text`, `srt`, `verbose_json`, `vtt`
+</ParamField>
+
+<ParamField body="temperature" type="number">
+  Sampling temperature between 0 and 1. Higher values make output more random, lower values make it more focused and deterministic. Default is 0
+</ParamField>
+
+<ParamField body="timestamp_granularities[]" type="array">
+  Timestamp granularities. Options: `word`, `segment`. Only available when response_format is verbose_json
+</ParamField>
+
+#### Translation Parameters
+
+<ParamField body="file" type="file" required>
+  Audio file object to translate. Same formats as transcription
+</ParamField>
+
+<ParamField body="model" type="string" required>
+  Model ID to use, same as transcription parameters
+</ParamField>
+
+<ParamField body="prompt" type="string">
+  Optional English text prompt to guide translation style
+</ParamField>
+
+<ParamField body="response_format" type="string">
+  Translation output format, same as transcription parameters
+</ParamField>
+
+<ParamField body="temperature" type="number">
+  Sampling temperature, same as transcription parameters
+</ParamField>
+
+## Usage Examples
+
+<CodeGroup>
+
+```shell Curl Transcription
+curl https://aihubmix.com/v1/audio/transcriptions \
+  -H "Authorization: Bearer $AIHUBMIX_API_KEY" \
+  -H "Content-Type: multipart/form-data" \
+  -F file="@/path/to/file/audio.mp3" \
+  -F model="whisper-large-v3" \
+  -F response_format="text" \
+  -F temperature="0.2"
+```
+
+```shell Curl Translation
+curl https://aihubmix.com/v1/audio/translations \
+  -H "Authorization: Bearer $AIHUBMIX_API_KEY" \
+  -H "Content-Type: multipart/form-data" \
+  -F file="@/path/to/file/audio.mp3" \
+  -F model="whisper-large-v3" \
+  -F prompt="autocorrect, clean up the stammer, and translate to english" \
+  -F response_format="text" \
+  -F temperature="0.2"
+```
+
+```py Speech Transcription
+from openai import OpenAI
+import os
+
+client = OpenAI(
+  api_key="sk-***", # Replace with your AiHubMix API key
+  base_url="https://aihubmix.com/v1"
+)
+
+# Open audio file
+audio_file = open("path/to/audio.mp3", "rb")
+
+# Transcribe audio
+transcript = client.audio.transcriptions.create(
+  model="whisper-large-v3",
+  file=audio_file,
+  language="en",  # Specify English for better accuracy
+  prompt="Please transcribe accurately with proper punctuation and grammar",
+  response_format="text",
+  temperature=0.2  # Lower randomness to reduce hallucinations
+)
+
+print(transcript)
+```
+
+```py Speech Translation
+from openai import OpenAI
+import os
+
+client = OpenAI(
+  api_key="sk-***", # Replace with your AiHubMix API key
+  base_url="https://aihubmix.com/v1"
+)
+
+# Open audio file
+audio_file = open("path/to/audio.m4a", "rb")
+
+# Translate audio to English
+translation = client.audio.translations.create(
+  model="whisper-large-v3",
+  file=audio_file,
+  prompt="autocorrect, clean up the stammer, and translate to english",
+  response_format="text",
+  temperature=0.2
+)
+
+print(translation)
+```
+
+```py Verbose Output Format
+from openai import OpenAI
+import os
+
+client = OpenAI(
+  api_key="sk-***", # Replace with your AiHubMix API key
+  base_url="https://aihubmix.com/v1"
+)
+
+audio_file = open("path/to/audio.wav", "rb")
+
+# Get detailed transcription results with timestamps
+transcript = client.audio.transcriptions.create(
+  model="whisper-large-v3",
+  file=audio_file,
+  response_format="verbose_json",
+  timestamp_granularities=["word"],
+  temperature=0.2
+)
+
+# Output results with word-level timestamps
+print(f"Text: {transcript.text}")
+print(f"Language: {transcript.language}")
+for word in transcript.words:
+    print(f"'{word.word}' at {word.start}s - {word.end}s")
+```
+
+```py SRT Subtitle Format
+from openai import OpenAI
+import os
+
+client = OpenAI(
+  api_key="sk-***", # Replace with your AiHubMix API key
+  base_url="https://aihubmix.com/v1"
+)
+
+audio_file = open("path/to/video_audio.mp4", "rb")
+
+# Generate SRT subtitle file
+srt_transcript = client.audio.transcriptions.create(
+  model="whisper-large-v3",
+  file=audio_file,
+  response_format="srt",
+  language="en",
+  temperature=0.2
+)
+
+# Save as .srt file
+with open("subtitles.srt", "w", encoding="utf-8") as f:
+    f.write(srt_transcript)
+
+print("SRT subtitle file generated")
+```
+
+</CodeGroup>
+
+## Response Formats
+
+### JSON Format (Default)
+
+```json
+{
+  "text": "This is the transcribed text content"
+}
+```
+
+### Verbose JSON Format (verbose_json)
+
+```json
+{
+  "task": "transcribe",
+  "language": "english",
+  "duration": 8.470000267028809,
+  "text": "This is the transcribed text content",
+  "segments": [
+    {
+      "id": 0,
+      "seek": 0,
+      "start": 0.0,
+      "end": 8.470000267028809,
+      "text": " This is the transcribed text content",
+      "tokens": [50364, 50365, 50365, 50365],
+      "temperature": 0.2,
+      "avg_logprob": -0.9929364013671875,
+      "compression_ratio": 0.8888888888888888,
+      "no_speech_prob": 0.0963134765625
+    }
+  ]
+}
+```
+
+### Text Format
+
+```
+This is the transcribed text content
+```
+
+### SRT Format
+
+```srt
+1
+00:00:00,000 --> 00:00:08,470
+This is the transcribed text content
+```
+
+### VTT Format
+
+```vtt
+WEBVTT
+
+00:00:00.000 --> 00:00:08.470
+This is the transcribed text content
+```
+
+## Best Practices
+
+1. **Chinese Audio Processing**: Use `whisper-large-v3` model, set `language="zh"`, `temperature=0.2`, and provide appropriate Chinese prompts
+
+2. **English Audio Processing**: Use `distil-whisper-large-v3-en` for faster processing speed
+
+3. **Noise Handling**: Use prompts to instruct the model to ignore background noise or clean up stammering issues
+
+4. **Long Audio Processing**: API automatically segments long audio; recommend preprocessing audio quality for best results
+
+5. **Timestamp Requirements**: Use `verbose_json` format and `timestamp_granularities` when precise timestamps are needed
+
+6. **Subtitle Creation**: Use `srt` or `vtt` format output directly without additional processing

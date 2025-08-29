@@ -83,8 +83,10 @@ async function generateBentoWithGPT5Stream(content, onProgress, onStreamingEvent
           
           const data = JSON.parse(dataStr)
           
-          // 调试：打印所有接收到的数据结构
-          console.log('GPT-5 原始数据结构:', JSON.stringify(data, null, 2))
+          // 简化调试：只打印有用信息
+          if (data.choices && data.choices[0] && data.choices[0].delta && data.choices[0].delta.content) {
+            console.log('GPT-5 Content:', data.choices[0].delta.content)
+          }
           
           // 处理推理内容 - 检查多种可能的reasoning字段
           const choice = data.choices && data.choices[0]
@@ -122,14 +124,11 @@ async function generateBentoWithGPT5Stream(content, onProgress, onStreamingEvent
           
           // 在minimal模式下，可能直接输出content而没有reasoning数据
           if (!hasReasoningData && choice && choice.delta && choice.delta.content) {
-            console.log('Minimal模式：直接输出内容，跳过推理阶段')
             // 在minimal模式下，不发送推理相关的事件，直接进入内容生成
           }
           
           if (data.choices && data.choices[0] && data.choices[0].delta && data.choices[0].delta.content) {
             const deltaText = data.choices[0].delta.content
-            
-            console.log(deltaText)
             
             fullResponse += deltaText
             
@@ -541,6 +540,29 @@ function validateAndFixJSX(jsxContent) {
     jsxContent = jsxContent.replace("'use client'\n\n", "'use client'\n\nimport React from 'react'\n")
   }
   
+  // 3.1. 确保BadgeInfo在lucide-react导入中（SafeIcon必需）
+  if (jsxContent.includes('lucide-react') && jsxContent.includes('SafeIcon')) {
+    const lucideImportMatch = jsxContent.match(/import\s*{\s*([^}]*?)\s*}\s*from\s*['"]lucide-react['"]/)
+    if (lucideImportMatch) {
+      const currentImports = lucideImportMatch[1].split(',').map(item => item.trim())
+      if (!currentImports.includes('BadgeInfo')) {
+        const newImports = ['BadgeInfo', ...currentImports].join(', ')
+        jsxContent = jsxContent.replace(
+          /(import\s*{\s*)([^}]*?)(\s*}\s*from\s*['"]lucide-react['"])/,
+          `$1${newImports}$3`
+        )
+        console.log('添加缺失的 BadgeInfo 导入')
+      }
+    } else if (!jsxContent.includes('import') || !jsxContent.includes('BadgeInfo')) {
+      // 如果没有lucide-react导入但有SafeIcon，添加BadgeInfo导入
+      jsxContent = jsxContent.replace(
+        "import React from 'react'\n",
+        "import React from 'react'\nimport { BadgeInfo } from 'lucide-react'\n"
+      )
+      console.log('添加缺失的 BadgeInfo 完整导入')
+    }
+  }
+  
   // 4. 检查是否包含基本的组件结构
   const hasExportDefault = jsxContent.includes('export default')
   const hasFunction = jsxContent.includes('function ') || jsxContent.includes('const ') && jsxContent.includes('=>')
@@ -672,6 +694,23 @@ function cleanTypescriptSyntax(content) {
   // 3. 修复多余的闭合括号
   // 查找 export default 后的多余括号
   cleaned = cleaned.replace(/(export\s+default\s+\w+)\s*\n\s*\}/g, '$1')
+  
+  // 4. 清理文件末尾的多余括号和内容
+  cleaned = cleaned.replace(/}\s*\n\s*No newline at end of file\s*$/g, '')
+  cleaned = cleaned.replace(/\n\s*No newline at end of file\s*$/g, '')
+  cleaned = cleaned.replace(/No newline at end of file/g, '')
+  
+  // 5. 移除未使用的import项
+  cleaned = cleaned.replace(/import\s*\{\s*([^}]*?)\s*\}\s*from\s*['"]([^'"]+)['"]/g, (_, imports, source) => {
+    const importList = imports.split(',').map(item => item.trim()).filter(item => item)
+    const usedImports = importList.filter(importItem => {
+      const iconName = importItem.includes(' as ') ? importItem.split(' as ')[1].trim() : importItem
+      return cleaned.includes(`icon={${iconName}}`) || cleaned.includes(`<${iconName}`)
+    })
+    
+    if (usedImports.length === 0) return '' // 移除整个import语句
+    return `import {\n  ${usedImports.join(', ')}\n} from '${source}'`
+  })
   
   return cleaned
 }
@@ -820,7 +859,14 @@ export async function POST(request) {
   try {
     const { content, model = 'claude' } = await request.json()
     
+    console.log('=== POST 请求分析 ===')
+    console.log('模型:', model)
+    console.log('内容长度:', content ? content.length : 0)
+    console.log('内容预览:', content ? content.substring(0, 100) : 'undefined/null')
+    console.log('内容类型:', typeof content)
+    
     if (!content || typeof content !== 'string' || content.trim() === '') {
+      console.log('内容验证失败，返回400错误')
       return NextResponse.json(
         { error: '内容不能为空' },
         { status: 400 }

@@ -1,0 +1,294 @@
+---
+title: "STT 音声認識"
+description: "Whisperモデルを使用してオーディオファイルをテキストに変換、転写と翻訳機能をサポート"
+icon: "microphone"
+---
+
+## 概要
+
+音声認識（STT）APIは、OpenAIのWhisperモデルに基づいてオーディオファイルをテキストに変換できます。様々な用途に対応：
+
+- オーディオファイルのテキスト転写
+- 多言語オーディオの英語翻訳
+- 複数のオーディオ形式入力をサポート
+- 複数の出力形式オプション提供
+
+**利用可能モデル一覧：**
+
+- **whisper-large-v3** —— 最新の大型Whisperモデル、多言語対応。中国語認識には適切なプロンプトと低温度値の使用が必要
+- **whisper-1** —— 初代Whisperモデル、安定して信頼性があり、多言語対応
+- **distil-whisper-large-v3-en** —— 蒸留モデル、処理速度が速いが精度がやや低い、低温度値との組み合わせを推奨
+
+<Tip>
+  **パフォーマンス推奨事項：** 
+  - 中国語オーディオの場合、`whisper-large-v3`モデルの使用を推奨、適切なプロンプトとより低い温度値（0.2など）を組み合わせて幻覚を減らす
+  - 英語オーディオまたは高速処理が必要な場合、`distil-whisper-large-v3-en`モデルを使用
+  - サポートされるオーディオ形式：mp3, mp4, mpeg, mpga, m4a, wav, webm
+  - ファイルサイズ制限：最大25MB
+</Tip>
+
+## モデル呼び出し方法
+
+### 音声転写（Transcriptions）
+
+`/v1/audio/transcriptions`エンドポイントを使用、`client.audio.transcriptions.create()`メソッドで呼び出し、オーディオを元の言語のテキストに転写。
+
+### 音声翻訳（Translations）
+
+`/v1/audio/translations`エンドポイントを使用、`client.audio.translations.create()`メソッドで呼び出し、オーディオを英語のテキストに翻訳。
+
+### リクエストパラメータ
+
+#### 転写パラメータ（Transcriptions）
+
+<ParamField body="file" type="file" required>
+  転写するオーディオファイルオブジェクト。サポート形式：mp3, mp4, mpeg, mpga, m4a, wav, webm、最大25MB
+</ParamField>
+
+<ParamField body="model" type="string" required>
+  使用するモデルID。オプション：`whisper-large-v3`、`whisper-1`、`distil-whisper-large-v3-en`
+</ParamField>
+
+<ParamField body="language" type="string">
+  入力オーディオの言語、ISO-639-1形式（例：'en'、'ja'）。言語指定により精度と遅延を改善可能
+</ParamField>
+
+<ParamField body="prompt" type="string">
+  モデルのスタイルを指導する、または以前のオーディオセグメントを続けるオプションのテキストプロンプト。プロンプトはオーディオ言語と一致する必要がある
+</ParamField>
+
+<ParamField body="response_format" type="string">
+  転写出力形式。オプション：`json`（デフォルト）、`text`、`srt`、`verbose_json`、`vtt`
+</ParamField>
+
+<ParamField body="temperature" type="number">
+  0と1の間のサンプリング温度。高い値はより無作為な出力を、低い値はより集中した決定的な出力を生成。デフォルトは0
+</ParamField>
+
+<ParamField body="timestamp_granularities[]" type="array">
+  タイムスタンプの粒度。オプション：`word`、`segment`。response_formatがverbose_jsonの場合のみ利用可能
+</ParamField>
+
+#### 翻訳パラメータ（Translations）
+
+<ParamField body="file" type="file" required>
+  翻訳するオーディオファイルオブジェクト。転写と同じ形式
+</ParamField>
+
+<ParamField body="model" type="string" required>
+  使用するモデルID、転写パラメータと同じ
+</ParamField>
+
+<ParamField body="prompt" type="string">
+  翻訳スタイルを指導するオプションの英語テキストプロンプト
+</ParamField>
+
+<ParamField body="response_format" type="string">
+  翻訳出力形式、転写パラメータと同じ
+</ParamField>
+
+<ParamField body="temperature" type="number">
+  サンプリング温度、転写パラメータと同じ
+</ParamField>
+
+## 使用方法
+
+<CodeGroup>
+
+```shell Curl 転写
+curl https://aihubmix.com/v1/audio/transcriptions \
+  -H "Authorization: Bearer $AIHUBMIX_API_KEY" \
+  -H "Content-Type: multipart/form-data" \
+  -F file="@/path/to/file/audio.mp3" \
+  -F model="whisper-large-v3" \
+  -F response_format="text" \
+  -F temperature="0.2"
+```
+
+```shell Curl 翻訳
+curl https://aihubmix.com/v1/audio/translations \
+  -H "Authorization: Bearer $AIHUBMIX_API_KEY" \
+  -H "Content-Type: multipart/form-data" \
+  -F file="@/path/to/file/audio.mp3" \
+  -F model="whisper-large-v3" \
+  -F prompt="autocorrect, clean up the stammer, and translate to english" \
+  -F response_format="text" \
+  -F temperature="0.2"
+```
+
+```py 音声転写
+from openai import OpenAI
+import os
+
+client = OpenAI(
+  api_key="sk-***", # あなたのAiHubMix APIキーに置き換え
+  base_url="https://aihubmix.com/v1"
+)
+
+# オーディオファイルを開く
+audio_file = open("path/to/audio.mp3", "rb")
+
+# オーディオを転写
+transcript = client.audio.transcriptions.create(
+  model="whisper-large-v3",
+  file=audio_file,
+  language="ja",  # 日本語を指定して精度を向上
+  prompt="正確に転写し、句読点と文法に注意してください",
+  response_format="text",
+  temperature=0.2  # 無作為性を下げて幻覚を減らす
+)
+
+print(transcript)
+```
+
+```py 音声翻訳
+from openai import OpenAI
+import os
+
+client = OpenAI(
+  api_key="sk-***", # あなたのAiHubMix APIキーに置き換え
+  base_url="https://aihubmix.com/v1"
+)
+
+# オーディオファイルを開く
+audio_file = open("path/to/audio.m4a", "rb")
+
+# オーディオを英語に翻訳
+translation = client.audio.translations.create(
+  model="whisper-large-v3",
+  file=audio_file,
+  prompt="autocorrect, clean up the stammer, and translate to english",
+  response_format="text",
+  temperature=0.2
+)
+
+print(translation)
+```
+
+```py 詳細出力形式
+from openai import OpenAI
+import os
+
+client = OpenAI(
+  api_key="sk-***", # あなたのAiHubMix APIキーに置き換え
+  base_url="https://aihubmix.com/v1"
+)
+
+audio_file = open("path/to/audio.wav", "rb")
+
+# タイムスタンプ付きの詳細転写結果を取得
+transcript = client.audio.transcriptions.create(
+  model="whisper-large-v3",
+  file=audio_file,
+  response_format="verbose_json",
+  timestamp_granularities=["word"],
+  temperature=0.2
+)
+
+# 単語レベルタイムスタンプ付きの結果を出力
+print(f"Text: {transcript.text}")
+print(f"Language: {transcript.language}")
+for word in transcript.words:
+    print(f"'{word.word}' at {word.start}s - {word.end}s")
+```
+
+```py SRT字幕形式
+from openai import OpenAI
+import os
+
+client = OpenAI(
+  api_key="sk-***", # あなたのAiHubMix APIキーに置き換え
+  base_url="https://aihubmix.com/v1"
+)
+
+audio_file = open("path/to/video_audio.mp4", "rb")
+
+# SRT字幕ファイルを生成
+srt_transcript = client.audio.transcriptions.create(
+  model="whisper-large-v3",
+  file=audio_file,
+  response_format="srt",
+  language="ja",
+  temperature=0.2
+)
+
+# .srtファイルとして保存
+with open("subtitles.srt", "w", encoding="utf-8") as f:
+    f.write(srt_transcript)
+
+print("SRT字幕ファイルが生成されました")
+```
+
+</CodeGroup>
+
+## レスポンス形式
+
+### JSON形式（デフォルト）
+
+```json
+{
+  "text": "これは転写されたテキストの内容です"
+}
+```
+
+### 詳細JSON形式（verbose_json）
+
+```json
+{
+  "task": "transcribe",
+  "language": "japanese",
+  "duration": 8.470000267028809,
+  "text": "これは転写されたテキストの内容です",
+  "segments": [
+    {
+      "id": 0,
+      "seek": 0,
+      "start": 0.0,
+      "end": 8.470000267028809,
+      "text": " これは転写されたテキストの内容です",
+      "tokens": [50364, 50365, 50365, 50365],
+      "temperature": 0.2,
+      "avg_logprob": -0.9929364013671875,
+      "compression_ratio": 0.8888888888888888,
+      "no_speech_prob": 0.0963134765625
+    }
+  ]
+}
+```
+
+### テキスト形式
+
+```
+これは転写されたテキストの内容です
+```
+
+### SRT形式
+
+```srt
+1
+00:00:00,000 --> 00:00:08,470
+これは転写されたテキストの内容です
+```
+
+### VTT形式
+
+```vtt
+WEBVTT
+
+00:00:00.000 --> 00:00:08.470
+これは転写されたテキストの内容です
+```
+
+## ベストプラクティス
+
+1. **日本語オーディオ処理**：`whisper-large-v3`モデルを使用、`language="ja"`を設定、`temperature=0.2`、適切な日本語プロンプトを提供
+
+2. **英語オーディオ処理**：より高速な処理速度を得るために`distil-whisper-large-v3-en`を使用可能
+
+3. **ノイズ処理**：バックグラウンドノイズを無視したり、どもりを除去するようにプロンプトを使用
+
+4. **長いオーディオ処理**：APIが長いオーディオを自動的にセグメント処理、最良の結果を得るためオーディオ品質の前処理を推奨
+
+5. **タイムスタンプが必要な場合**：正確なタイムスタンプが必要な時は`verbose_json`形式と`timestamp_granularities`を使用
+
+6. **字幕作成**：追加処理なしで`srt`または`vtt`形式出力を直接使用

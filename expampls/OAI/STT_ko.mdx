@@ -1,0 +1,294 @@
+---
+title: "STT 음성인식"
+description: "Whisper 모델을 사용하여 오디오 파일을 텍스트로 변환, 전사 및 번역 기능 지원"
+icon: "microphone"
+---
+
+## 소개
+
+음성인식(STT) API는 OpenAI의 Whisper 모델을 기반으로 오디오 파일을 텍스트로 변환할 수 있습니다. 다양한 용도를 지원합니다:
+
+- 오디오 파일을 텍스트로 전사
+- 다국어 오디오를 영어로 번역
+- 다양한 오디오 형식 입력 지원
+- 여러 출력 형식 옵션 제공
+
+**사용 가능한 모델 목록:**
+
+- **whisper-large-v3** —— 최신 대형 Whisper 모델, 다국어 지원, 중국어 인식에는 적절한 프롬프트와 낮은 temperature 값 사용 필요
+- **whisper-1** —— 초기 Whisper 모델, 안정적이고 신뢰할 수 있으며 다국어 지원
+- **distil-whisper-large-v3-en** —— 증류 모델, 처리 속도가 빠르지만 정확도가 다소 낮음, 낮은 temperature 값과 함께 사용 권장
+
+<Tip>
+  **성능 권장사항:** 
+  - 중국어 오디오의 경우 `whisper-large-v3` 모델 사용을 권장하며, 적절한 프롬프트와 더 낮은 temperature 값(예: 0.2)을 조합하여 환각을 줄임
+  - 영어 오디오나 빠른 처리가 필요한 경우 `distil-whisper-large-v3-en` 모델 사용
+  - 지원되는 오디오 형식: mp3, mp4, mpeg, mpga, m4a, wav, webm
+  - 파일 크기 제한: 최대 25MB
+</Tip>
+
+## 모델 호출 방법
+
+### 음성 전사(Transcriptions)
+
+`/v1/audio/transcriptions` 엔드포인트를 사용하여 `client.audio.transcriptions.create()` 메서드로 호출, 오디오를 원래 언어의 텍스트로 전사.
+
+### 음성 번역(Translations)
+
+`/v1/audio/translations` 엔드포인트를 사용하여 `client.audio.translations.create()` 메서드로 호출, 오디오를 영어 텍스트로 번역.
+
+### 요청 매개변수
+
+#### 전사 매개변수(Transcriptions)
+
+<ParamField body="file" type="file" required>
+  전사할 오디오 파일 객체, 지원 형식: mp3, mp4, mpeg, mpga, m4a, wav, webm, 최대 25MB
+</ParamField>
+
+<ParamField body="model" type="string" required>
+  사용할 모델 ID. 옵션: `whisper-large-v3`, `whisper-1`, `distil-whisper-large-v3-en`
+</ParamField>
+
+<ParamField body="language" type="string">
+  입력 오디오의 언어, ISO-639-1 형식(예: 'en', 'ko'). 언어 지정으로 정확도와 지연시간 개선 가능
+</ParamField>
+
+<ParamField body="prompt" type="string">
+  모델의 스타일을 가이드하거나 이전 오디오 세그먼트를 계속하는 선택적 텍스트 프롬프트. 프롬프트는 오디오 언어와 일치해야 함
+</ParamField>
+
+<ParamField body="response_format" type="string">
+  전사 출력 형식. 옵션: `json`(기본값), `text`, `srt`, `verbose_json`, `vtt`
+</ParamField>
+
+<ParamField body="temperature" type="number">
+  0과 1 사이의 샘플링 temperature. 높은 값은 더 무작위한 출력을, 낮은 값은 더 집중적이고 결정적인 출력을 생성. 기본값은 0
+</ParamField>
+
+<ParamField body="timestamp_granularities[]" type="array">
+  타임스탬프 세분화. 옵션: `word`, `segment`. response_format이 verbose_json일 때만 사용 가능
+</ParamField>
+
+#### 번역 매개변수(Translations)
+
+<ParamField body="file" type="file" required>
+  번역할 오디오 파일 객체, 전사와 동일한 형식
+</ParamField>
+
+<ParamField body="model" type="string" required>
+  사용할 모델 ID, 전사 매개변수와 동일
+</ParamField>
+
+<ParamField body="prompt" type="string">
+  번역 스타일을 가이드하는 선택적 영어 텍스트 프롬프트
+</ParamField>
+
+<ParamField body="response_format" type="string">
+  번역 출력 형식, 전사 매개변수와 동일
+</ParamField>
+
+<ParamField body="temperature" type="number">
+  샘플링 temperature, 전사 매개변수와 동일
+</ParamField>
+
+## 사용 방법
+
+<CodeGroup>
+
+```shell Curl 전사
+curl https://aihubmix.com/v1/audio/transcriptions \
+  -H "Authorization: Bearer $AIHUBMIX_API_KEY" \
+  -H "Content-Type: multipart/form-data" \
+  -F file="@/path/to/file/audio.mp3" \
+  -F model="whisper-large-v3" \
+  -F response_format="text" \
+  -F temperature="0.2"
+```
+
+```shell Curl 번역
+curl https://aihubmix.com/v1/audio/translations \
+  -H "Authorization: Bearer $AIHUBMIX_API_KEY" \
+  -H "Content-Type: multipart/form-data" \
+  -F file="@/path/to/file/audio.mp3" \
+  -F model="whisper-large-v3" \
+  -F prompt="autocorrect, clean up the stammer, and translate to english" \
+  -F response_format="text" \
+  -F temperature="0.2"
+```
+
+```py 음성 전사
+from openai import OpenAI
+import os
+
+client = OpenAI(
+  api_key="sk-***", # AiHubMix API 키로 교체
+  base_url="https://aihubmix.com/v1"
+)
+
+# 오디오 파일 열기
+audio_file = open("path/to/audio.mp3", "rb")
+
+# 오디오 전사
+transcript = client.audio.transcriptions.create(
+  model="whisper-large-v3",
+  file=audio_file,
+  language="ko",  # 한국어 지정으로 정확도 향상
+  prompt="정확히 전사하고 구두점과 문법에 주의하세요",
+  response_format="text",
+  temperature=0.2  # 무작위성을 낮춰 환각 감소
+)
+
+print(transcript)
+```
+
+```py 음성 번역
+from openai import OpenAI
+import os
+
+client = OpenAI(
+  api_key="sk-***", # AiHubMix API 키로 교체
+  base_url="https://aihubmix.com/v1"
+)
+
+# 오디오 파일 열기
+audio_file = open("path/to/audio.m4a", "rb")
+
+# 오디오를 영어로 번역
+translation = client.audio.translations.create(
+  model="whisper-large-v3",
+  file=audio_file,
+  prompt="autocorrect, clean up the stammer, and translate to english",
+  response_format="text",
+  temperature=0.2
+)
+
+print(translation)
+```
+
+```py 상세 출력 형식
+from openai import OpenAI
+import os
+
+client = OpenAI(
+  api_key="sk-***", # AiHubMix API 키로 교체
+  base_url="https://aihubmix.com/v1"
+)
+
+audio_file = open("path/to/audio.wav", "rb")
+
+# 타임스탬프가 포함된 상세 전사 결과 가져오기
+transcript = client.audio.transcriptions.create(
+  model="whisper-large-v3",
+  file=audio_file,
+  response_format="verbose_json",
+  timestamp_granularities=["word"],
+  temperature=0.2
+)
+
+# 단어 수준 타임스탬프가 포함된 결과 출력
+print(f"Text: {transcript.text}")
+print(f"Language: {transcript.language}")
+for word in transcript.words:
+    print(f"'{word.word}' at {word.start}s - {word.end}s")
+```
+
+```py SRT 자막 형식
+from openai import OpenAI
+import os
+
+client = OpenAI(
+  api_key="sk-***", # AiHubMix API 키로 교체
+  base_url="https://aihubmix.com/v1"
+)
+
+audio_file = open("path/to/video_audio.mp4", "rb")
+
+# SRT 자막 파일 생성
+srt_transcript = client.audio.transcriptions.create(
+  model="whisper-large-v3",
+  file=audio_file,
+  response_format="srt",
+  language="ko",
+  temperature=0.2
+)
+
+# .srt 파일로 저장
+with open("subtitles.srt", "w", encoding="utf-8") as f:
+    f.write(srt_transcript)
+
+print("SRT 자막 파일이 생성되었습니다")
+```
+
+</CodeGroup>
+
+## 응답 형식
+
+### JSON 형식(기본값)
+
+```json
+{
+  "text": "이것은 전사된 텍스트 내용입니다"
+}
+```
+
+### 상세 JSON 형식(verbose_json)
+
+```json
+{
+  "task": "transcribe",
+  "language": "korean",
+  "duration": 8.470000267028809,
+  "text": "이것은 전사된 텍스트 내용입니다",
+  "segments": [
+    {
+      "id": 0,
+      "seek": 0,
+      "start": 0.0,
+      "end": 8.470000267028809,
+      "text": " 이것은 전사된 텍스트 내용입니다",
+      "tokens": [50364, 50365, 50365, 50365],
+      "temperature": 0.2,
+      "avg_logprob": -0.9929364013671875,
+      "compression_ratio": 0.8888888888888888,
+      "no_speech_prob": 0.0963134765625
+    }
+  ]
+}
+```
+
+### 텍스트 형식
+
+```
+이것은 전사된 텍스트 내용입니다
+```
+
+### SRT 형식
+
+```srt
+1
+00:00:00,000 --> 00:00:08,470
+이것은 전사된 텍스트 내용입니다
+```
+
+### VTT 형식
+
+```vtt
+WEBVTT
+
+00:00:00.000 --> 00:00:08.470
+이것은 전사된 텍스트 내용입니다
+```
+
+## 모범 사례
+
+1. **한국어 오디오 처리**: `whisper-large-v3` 모델 사용, `language="ko"` 설정, `temperature=0.2`, 적절한 한국어 프롬프트 제공
+
+2. **영어 오디오 처리**: 더 빠른 처리 속도를 위해 `distil-whisper-large-v3-en` 사용 가능
+
+3. **노이즈 처리**: 배경 소음을 무시하거나 말더듬을 정리하도록 프롬프트 사용
+
+4. **긴 오디오 처리**: API가 긴 오디오를 자동으로 분할 처리하므로, 최상의 결과를 위해 오디오 품질 전처리 권장
+
+5. **타임스탬프 필요시**: 정확한 타임스탬프가 필요할 때 `verbose_json` 형식과 `timestamp_granularities` 사용
+
+6. **자막 제작**: 추가 처리 없이 `srt` 또는 `vtt` 형식 출력을 직접 사용

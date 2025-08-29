@@ -17,7 +17,11 @@ A public repository for developers to explore and experience pre-built API usage
     - claude-official-stream.py
     - claude-cache.py
     - textEdit.py
-  - Gemini Series/
+  - Gemini/
+    - 2.5flash-image-with-image.py
+    - 2.5flash-image.py
+    - gemini_image_gen.py
+    - nano-banana-edit.py
     - 2.0flash.py
     - 2.5flash.py
     - 2.5pro.py
@@ -37,9 +41,6 @@ A public repository for developers to explore and experience pre-built API usage
     - veo3逆向.py
     - veo2.0.py
     - veo2.0-i2v.py
-  - Gemini 图片生成和编辑/
-    - Gemini 图片生成和编辑.md
-    - gemini_image_gen.py
   - IdeogramAI 绘图/
     - v3_generate.py
     - v3_generate-with-reference.py
@@ -58,6 +59,7 @@ A public repository for developers to explore and experience pre-built API usage
     - jina_DeepSearch.py # 深度搜索
   - OAI/
     - Responses API/
+      - gpt-5-series.py
       - Text_input.py
       - Image_input.py
       - imageGenerationTool.py

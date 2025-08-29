@@ -1,7 +1,7 @@
 'use client'
 
 import React from 'react'
-import { BadgeInfo, Activity, HeartPulse, Pizza, Cookie, Candy, Salt, Brain, BarChart3, ChartPie, Ham, Flame } from 'lucide-react'
+import { BadgeInfo, Activity, HeartPulse, Pizza, Cookie, Candy, Droplets, Brain, BarChart3, ChartPie, Ham, Flame } from 'lucide-react'
 import Link from 'next/link'
 
 // SafeIcon: if failed, use BadgeInfo as fallback
@@ -101,7 +101,7 @@ const BentoGrid = () => {
             </div>
             <div className="bg-white/70 p-3 rounded-lg">
               <div className="flex items-center mb-1">
-                <SafeIcon icon={Salt} size={16} className="text-blue-500 mr-1" />
+                <SafeIcon icon={Droplets} size={16} className="text-blue-500 mr-1" />
                 <span className="text-sm font-bold text-blue-900">钠</span>
               </div>
               <p className="text-gray-700 text-xs">NRV% {'>'} 30% 已偏高</p>

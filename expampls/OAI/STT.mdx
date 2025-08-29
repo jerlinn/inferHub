@@ -1,0 +1,294 @@
+---
+title: "STT 语音转文本"
+description: "使用 Whisper 模型将音频文件转换为文本，支持转录和翻译功能"
+icon: "microphone"
+---
+
+## 介绍
+
+语音转文本（STT）API 基于 OpenAI 的 Whisper 模型，可以将音频文件转换为文本。支持多种用途：
+
+- 音频文件转录为文本
+- 多语言音频翻译为英文
+- 支持多种音频格式输入
+- 提供多种输出格式选择
+
+**可用模型列表：**
+
+- **whisper-large-v3** —— 最新的大型 Whisper 模型，支持多语言，中文识别需配合 prompt 和低 temperature 使用
+- **whisper-1** —— 初代 Whisper 模型，稳定可靠，支持多语言
+- **distil-whisper-large-v3-en** —— 蒸馏模型，处理速度更快，但准确性略低，建议配合低 temperature 值
+
+<Tip>
+  **性能建议：** 
+  - 对于中文音频，推荐使用 `whisper-large-v3` 模型，配合适当的 prompt 和较低的 temperature 值（如 0.2）以减少幻觉
+  - 对于英文音频或需要快速处理，可使用 `distil-whisper-large-v3-en` 模型
+  - 支持的音频格式：mp3, mp4, mpeg, mpga, m4a, wav, webm
+  - 文件大小限制：最大 25MB
+</Tip>
+
+## 模型调用方式
+
+### 语音转录（Transcriptions）
+
+使用 `/v1/audio/transcriptions` 端点，通过 `client.audio.transcriptions.create()` 方法调用，将音频转录为原始语言的文本。
+
+### 语音翻译（Translations）
+
+使用 `/v1/audio/translations` 端点，通过 `client.audio.translations.create()` 方法调用，将音频翻译为英文文本。
+
+### 请求参数
+
+#### 转录参数（Transcriptions）
+
+<ParamField body="file" type="file" required>
+  要转录的音频文件对象，支持格式：mp3, mp4, mpeg, mpga, m4a, wav, webm，最大 25MB
+</ParamField>
+
+<ParamField body="model" type="string" required>
+  要使用的模型 ID。可选值：`whisper-large-v3`、`whisper-1`、`distil-whisper-large-v3-en`
+</ParamField>
+
+<ParamField body="language" type="string">
+  输入音频的语言，ISO-639-1 格式（如 'en', 'zh'）。指定语言可以提高准确性和延迟
+</ParamField>
+
+<ParamField body="prompt" type="string">
+  可选的文本提示，用于指导模型的风格或继续之前的音频片段。提示应该匹配音频语言
+</ParamField>
+
+<ParamField body="response_format" type="string">
+  转录输出格式。可选值：`json`（默认）、`text`、`srt`、`verbose_json`、`vtt`
+</ParamField>
+
+<ParamField body="temperature" type="number">
+  采样温度，介于 0 和 1 之间。较高的值会使输出更随机，较低的值会使其更集中和确定。默认为 0
+</ParamField>
+
+<ParamField body="timestamp_granularities[]" type="array">
+  时间戳粒度。可选值：`word`、`segment`。仅当 response_format 为 verbose_json 时可用
+</ParamField>
+
+#### 翻译参数（Translations）
+
+<ParamField body="file" type="file" required>
+  要翻译的音频文件对象，支持格式同转录
+</ParamField>
+
+<ParamField body="model" type="string" required>
+  要使用的模型 ID，同转录参数
+</ParamField>
+
+<ParamField body="prompt" type="string">
+  可选的英文文本提示，用于指导翻译风格
+</ParamField>
+
+<ParamField body="response_format" type="string">
+  翻译输出格式，同转录参数
+</ParamField>
+
+<ParamField body="temperature" type="number">
+  采样温度，同转录参数
+</ParamField>
+
+## 使用方法
+
+<CodeGroup>
+
+```shell Curl 转录
+curl https://aihubmix.com/v1/audio/transcriptions \
+  -H "Authorization: Bearer $AIHUBMIX_API_KEY" \
+  -H "Content-Type: multipart/form-data" \
+  -F file="@/path/to/file/audio.mp3" \
+  -F model="whisper-large-v3" \
+  -F response_format="text" \
+  -F temperature="0.2"
+```
+
+```shell Curl 翻译
+curl https://aihubmix.com/v1/audio/translations \
+  -H "Authorization: Bearer $AIHUBMIX_API_KEY" \
+  -H "Content-Type: multipart/form-data" \
+  -F file="@/path/to/file/audio.mp3" \
+  -F model="whisper-large-v3" \
+  -F prompt="autocorrect, clean up the stammer, and translate to english" \
+  -F response_format="text" \
+  -F temperature="0.2"
+```
+
+```py 语音转录
+from openai import OpenAI
+import os
+
+client = OpenAI(
+  api_key="sk-***", # 替换为你的 AiHubMix API 密钥
+  base_url="https://aihubmix.com/v1"
+)
+
+# 打开音频文件
+audio_file = open("path/to/audio.mp3", "rb")
+
+# 转录音频
+transcript = client.audio.transcriptions.create(
+  model="whisper-large-v3",
+  file=audio_file,
+  language="zh",  # 指定中文以提高准确性
+  prompt="请准确转录中文内容，注意标点符号和语法",
+  response_format="text",
+  temperature=0.2  # 降低随机性以减少幻觉
+)
+
+print(transcript)
+```
+
+```py 语音翻译
+from openai import OpenAI
+import os
+
+client = OpenAI(
+  api_key="sk-***", # 替换为你的 AiHubMix API 密钥
+  base_url="https://aihubmix.com/v1"
+)
+
+# 打开音频文件
+audio_file = open("path/to/audio.m4a", "rb")
+
+# 翻译音频为英文
+translation = client.audio.translations.create(
+  model="whisper-large-v3",
+  file=audio_file,
+  prompt="autocorrect, clean up the stammer, and translate to english",
+  response_format="text",
+  temperature=0.2
+)
+
+print(translation)
+```
+
+```py 详细输出格式
+from openai import OpenAI
+import os
+
+client = OpenAI(
+  api_key="sk-***", # 替换为你的 AiHubMix API 密钥
+  base_url="https://aihubmix.com/v1"
+)
+
+audio_file = open("path/to/audio.wav", "rb")
+
+# 获取详细的转录结果，包含时间戳
+transcript = client.audio.transcriptions.create(
+  model="whisper-large-v3",
+  file=audio_file,
+  response_format="verbose_json",
+  timestamp_granularities=["word"],
+  temperature=0.2
+)
+
+# 输出包含单词级时间戳的结果
+print(f"Text: {transcript.text}")
+print(f"Language: {transcript.language}")
+for word in transcript.words:
+    print(f"'{word.word}' at {word.start}s - {word.end}s")
+```
+
+```py SRT 字幕格式
+from openai import OpenAI
+import os
+
+client = OpenAI(
+  api_key="sk-***", # 替换为你的 AiHubMix API 密钥
+  base_url="https://aihubmix.com/v1"
+)
+
+audio_file = open("path/to/video_audio.mp4", "rb")
+
+# 生成 SRT 字幕文件
+srt_transcript = client.audio.transcriptions.create(
+  model="whisper-large-v3",
+  file=audio_file,
+  response_format="srt",
+  language="en",
+  temperature=0.2
+)
+
+# 保存为 .srt 文件
+with open("subtitles.srt", "w", encoding="utf-8") as f:
+    f.write(srt_transcript)
+
+print("SRT 字幕文件已生成")
+```
+
+</CodeGroup>
+
+## 响应格式
+
+### JSON 格式（默认）
+
+```json
+{
+  "text": "这是转录的文本内容"
+}
+```
+
+### 详细 JSON 格式（verbose_json）
+
+```json
+{
+  "task": "transcribe",
+  "language": "chinese",
+  "duration": 8.470000267028809,
+  "text": "这是转录的文本内容",
+  "segments": [
+    {
+      "id": 0,
+      "seek": 0,
+      "start": 0.0,
+      "end": 8.470000267028809,
+      "text": " 这是转录的文本内容",
+      "tokens": [50364, 50365, 50365, 50365],
+      "temperature": 0.2,
+      "avg_logprob": -0.9929364013671875,
+      "compression_ratio": 0.8888888888888888,
+      "no_speech_prob": 0.0963134765625
+    }
+  ]
+}
+```
+
+### 文本格式（text）
+
+```
+这是转录的文本内容
+```
+
+### SRT 格式
+
+```srt
+1
+00:00:00,000 --> 00:00:08,470
+这是转录的文本内容
+```
+
+### VTT 格式
+
+```vtt
+WEBVTT
+
+00:00:00.000 --> 00:00:08.470
+这是转录的文本内容
+```
+
+## 最佳实践
+
+1. **中文音频处理**：使用 `whisper-large-v3` 模型，设置 `language="zh"`，`temperature=0.2`，并提供合适的中文 prompt
+
+2. **英文音频处理**：可使用 `distil-whisper-large-v3-en` 获得更快的处理速度
+
+3. **噪音处理**：使用 prompt 提示模型忽略背景噪音或清理结巴等问题
+
+4. **长音频处理**：API 自动将长音频分段处理，建议预处理音频质量以获得最佳效果
+
+5. **时间戳需求**：需要精确时间戳时使用 `verbose_json` 格式和 `timestamp_granularities`
+
+6. **字幕制作**：直接使用 `srt` 或 `vtt` 格式输出，无需额外处理

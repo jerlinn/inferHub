@@ -1,13 +1,14 @@
 from google import genai
 from google.genai import types
+import os
 
 def generate():
     client = genai.Client(
-        api_key="sk-***", # 🔑 换成你在 AiHubMix 生成的密钥
+        api_key=os.getenv("AIHUBMIX_API_KEY"), # 🔑 换成你在 AiHubMix 生成的密钥
         http_options={"base_url": "https://aihubmix.com/gemini"},
     )
 
-    model = "gemini-2.0-flash"
+    model = "gemini-2.5-pro"
     contents = [
         types.Content(
             role="user",
@@ -20,6 +21,9 @@ def generate():
     print(client.models.generate_content(
         model=model,
         contents=contents,
+        config=types.GenerateContentConfig(
+          temperature=0
+        )
     ))
 
 if __name__ == "__main__":

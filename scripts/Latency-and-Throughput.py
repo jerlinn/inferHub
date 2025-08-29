@@ -18,7 +18,7 @@ import time
 import numpy as np
 
 # 全局变量：模型 ID
-MODEL_ID = "claude-sonnet-4-20250514"
+MODEL_ID = "qwen-3-coder-480b"
 
 client = OpenAI(
     api_key=os.getenv("AIHUBMIX_API_KEY"),

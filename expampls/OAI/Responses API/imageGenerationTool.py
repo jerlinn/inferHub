@@ -4,11 +4,11 @@ import os
 
 client = OpenAI(
     api_key=os.getenv("AIHUBMIX_API_KEY"),
-    base_url="https://aihubmix.com/v1"
+    base_url="https://api.aihubmix.com/v1"
 )
 
 response = client.responses.create(
-    model="gpt-4.1-mini",
+    model="gpt-4o",
     input="Generate an image of gray tabby cat hugging an otter with an orange scarf",
     tools=[{"type": "image_generation"}],
 )

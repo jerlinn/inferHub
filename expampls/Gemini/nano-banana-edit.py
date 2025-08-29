@@ -3,24 +3,38 @@ from openai import OpenAI
 from PIL import Image
 from io import BytesIO
 import base64
-# 旧版
+
 client = OpenAI(
-    api_key=os.getenv("AIHUBMIX_API_KEY"), # 🔑 换成你在 AiHubMix 生成的密钥
+    api_key=os.getenv("AIHUBMIX_API_KEY"), # 🔑 Replace with your key generated on AiHubMix
     base_url="https://aihubmix.com/v1",
 )
 
-# Using text-only input
+project_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+
+image_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "resources", "logo.png")
+if not os.path.exists(image_path):
+    raise FileNotFoundError(f"image {image_path} not exists")
+
+def encode_image(image_path):
+    with open(image_path, "rb") as image_file:
+        return base64.b64encode(image_file.read()).decode("utf-8")
+
+base64_image = encode_image(image_path)
+
 response = client.chat.completions.create(
-    extra_headers={"APP-Code":"******"},
-    model="imagen-3.0-generate-002", #imagen-4.0-generate-preview-06-06, imagen-4.0-ultra-generate-preview-06-06
+    model="gemini-2.5-flash-image-preview",
     messages=[
         {
             "role": "user",
             "content": [
                 {
                     "type": "text",
-                    "text": "generate an adorable mermaid in the sea, bold outline, chibi cartoon, in the style of Children coloring book, B&W, HD",
-                }
+                    "text": "extract the logo shape, blend it to a banana on desk scene, isometric angle. pixar 3d",
+                },
+                {
+                    "type": "image_url", 
+                    "image_url": {"url": f"data:image/jpeg;base64,{base64_image}"},
+                },     
             ],
         },
     ],
@@ -28,10 +42,9 @@ response = client.chat.completions.create(
     temperature=0.7,
 )
 try:
-    # Print basic response information
+    # Print basic response information without base64 data
     print(f"Creation time: {response.created}")
     print(f"Token usage: {response.usage.total_tokens}")
-    #print(response.usage_metadata)
     
     # Check if multi_mod_content field exists
     if (
@@ -54,9 +67,9 @@ try:
                 image.show()
                 
                 # Save image
-                output_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), "output")
+                output_dir = os.path.join(os.path.dirname(image_path), "output")
                 os.makedirs(output_dir, exist_ok=True)
-                output_path = os.path.join(output_dir, "generated_image.jpg")
+                output_path = os.path.join(output_dir, "edited_image.jpg")
                 image.save(output_path)
                 print(f"✅ Image saved to: {output_path}")
             

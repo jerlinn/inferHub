@@ -2,12 +2,12 @@ from openai import OpenAI
 import os
 
 client = OpenAI(
-    api_key="sk-***", # 🔑 换成你在 AiHubMix 生成的密钥
-    base_url="https://aihubmix.com/v1",
+    api_key=os.getenv("AIHUBMIX_API_KEY"), # 🔑 换成你在 AiHubMix 生成的密钥
+    base_url="https://api.aihubmix.com/v1",
 )
 
 completion = client.chat.completions.create(
-    model="gemini-2.5-flash-preview-04-17-nothink",
+    model="gemini-2.5-pro",
     messages=[
         {
             "role": "user",
