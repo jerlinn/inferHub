@@ -47,7 +47,7 @@ def generate():
         types.Content(
             role="user",
             parts=[
-                types.Part.from_text(text="""generate image and give me the title: an adorable mermaid in the sea, bold outline, chibi cartoon, in the style of Children coloring book, title 'sylvia' on top, super cute, B&W, HD"""),
+                types.Part.from_text(text="""generate a wide shot image: an adorable mermaid in the sea, bold outline, chibi cartoon, in the style of Children coloring book, title 'sylvia' on top, super cute, B&W, HD, aspect ratio 16:9"""),
             ],
         ),
     ]
@@ -79,7 +79,7 @@ def generate():
             save_binary_file(f"{file_name}{file_extension}", data_buffer)
         else:
             print(chunk.text)
-            print(chunk.usage_metadata)
+            # print(chunk.usage_metadata)
 
 if __name__ == "__main__":
     generate()

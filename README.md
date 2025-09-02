@@ -2,6 +2,8 @@
 A public repository for developers to explore and experience pre-built API usage examples for inferEra. Access major LLMs through a unified interface with bilingual (English &amp; Chinese) quickstart guides. Build smarter, faster.
 
 # Catalog
+![usage](assets/usage.svg)
+
 - README.md
 - security_check.py # 密钥安全检查
 - docs/
@@ -10,7 +12,7 @@ A public repository for developers to explore and experience pre-built API usage
   - bento-next-app # 主程序
     - README.md # 说明
     - script # Python 免编译版本，输出到 html_output 目录
-- expampls/
+- examples/
   - deepseek.py
   - Claude/
     - claude-official.py

@@ -1,7 +1,17 @@
 nano-banana-edit copy.py
 2.5flash copy.py
 expampls/Gemini/output
+claude-official-stream copy.py
+claude-cache-test.py
 safety-check.md
+反脆弱.md
+v0.md
+examples/Gemini/output/
+resources/
+2.5flash-image-with-image copy.py
+2.5flash-image-with-image-jer.py
+examples/OAI/4o image/imgs
+examples/OAI/audio
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
