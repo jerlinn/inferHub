@@ -20,10 +20,10 @@ A public repository for developers to explore and experience pre-built API usage
     - claude-cache.py
     - textEdit.py
   - Gemini/
-    - 2.5flash-image-with-image.py
-    - 2.5flash-image.py
-    - gemini_image_gen.py
-    - nano-banana-edit.py
+    - 2.5flash-image-with-image.py # nano banana 图片编辑，gemini 原生
+    - 2.5flash-image.py            # nano banana 文生图，gemini 原生
+    - gemini_image_gen.py          # nano banana 文生图，openai 格式
+    - nano-banana-edit.py          # nano banana 图片编辑，openai 格式
     - 2.0flash.py
     - 2.5flash.py
     - 2.5pro.py
